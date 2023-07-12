@@ -1,12 +1,26 @@
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import ClientLayout from './layouts/ClientLayout';
+import HomePage from './pages/HomePage';
+import ProductPage from './pages/ProductPage';
 
-
+const router = createBrowserRouter([
+   {
+      path: '/',
+      element: <ClientLayout />,
+      children: [
+         {
+            path: '/',
+            element: <HomePage />
+         },
+         {
+            path: '/products',
+            element: <ProductPage />
+         }
+      ]
+   }
+]);
 function App() {
-
-   return (
-      <>
-        <h1 className="text-sm bg-red-200">heelo</h1>
-      </>
-   );
+   return <RouterProvider router={router} />;
 }
 
 export default App;
