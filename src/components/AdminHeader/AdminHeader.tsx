@@ -11,7 +11,7 @@ function AdminHeader(props: IProps) {
    const handleToggleMenu = () => props.toggleMenu();
 
    return (
-        <div className='flex px-2 w-full h-16 bg-gray-200 items-center justify-between drop-shadow-lg'>
+        <div className='flex px-2 rounded-3xl w-full h-16 bg-sectionBg items-center mb-[24px] justify-between drop-shadow-lg'>
             <button onClick={() => handleToggleMenu()} className='p-2 rounded-full hover:bg-gray-400'>
                 <MenuIcon height='20' width='20'/>
             </button>

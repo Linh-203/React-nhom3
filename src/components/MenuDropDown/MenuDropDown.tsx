@@ -42,14 +42,14 @@ function MenuDropDown(props: IProps) {
          />
          {props.children && props.children.length > 0 && (
             <div
-               className={`bg-gray-950 h-0 transition-all overflow-hidden duration-100`}
+               className={`bg-dropBg h-0 transition-all overflow-hidden duration-100`}
                ref={menuRef}
             >
                {props.children.map((child, index) => (
                   <Button
                      key={index}
                      hadChildren={child.children && child.children.length > 0 ? true : false}
-                     onClick={props.children && props.children.length > 0 ? toggleButton : () => undefined}
+                     onClick={child.children && child.children.length > 0 ? toggleButton : () => undefined}
                      isDropdown={dropDown}
                      title={child.title}
                      icon={child.icon}
