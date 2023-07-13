@@ -3,6 +3,7 @@ import MenuDropDown from '../MenuDropDown';
 import DashBoardIcon from '../../assets/icons/DashBoardIcon';
 import ProductIcon from '../../assets/icons/ProductIcon';
 import CategoryIcon from '../../assets/icons/CategoryIcon';
+import { Link } from 'react-router-dom';
 
 type IProps = {
     isMenuActive: boolean,
@@ -33,9 +34,15 @@ function AdminSideBar(props: IProps) {
     useEffect(() => {
         setActive(props.isMenuActive)
     }, [props])
-    return <div className={`fixed drop-shadow-lg left-0 w-64 p-0 bg-slate-900 transition-all  max-h-screen h-full overflow-y-auto overflow-x-hidden overscroll-y-contain ${!active?"-translate-x-full":"translate-x-0"}`}>
-        <div className='h-16 bg-zinc-700 flex items-center justify-center'>
-            <h1>logo here</h1>
+    return <div className={`fixed rounded-3xl drop-shadow-lg left-0 h-full w-64 p-0 bg-sectionBg transition-all  max-h-screen overflow-y-auto overflow-x-hidden overscroll-y-contain ${!active?"-translate-x-full":"translate-x-0"}`}>
+        <div className='h-16 bg-yellow-200 flex items-center justify-center'>
+            <Link to={'/admin'} className='flex justify-center items-center'>
+                <img
+                   src='https://spacingtech.com/html/tm/freozy/freezy-ltr/image/logo/logo.png'
+                   alt='logo'
+                   className='aspect-[3/1] w-[50%]'
+                />
+            </Link>
         </div>
         <div>
             {menu.map((mu, index) =>(
