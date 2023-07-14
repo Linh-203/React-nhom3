@@ -3,7 +3,7 @@ import OrderOverView from "../../components/OrderOverView/OrderOverView"
 
 const analytics: IProps[] = [
   { className: "bg-green-300", title: 'Website Visits', total: 212, resultPercent: 12, state: 'Decrease'},
-  { className: "bg-green-200", title: 'New Sigups', total: 212, resultPercent: 12, state: 'Decrease'},
+  { className: "bg-green-200", title: 'New Signups', total: 212, resultPercent: 12, state: 'Decrease'},
   { className: "bg-green-100", title: 'Orders Submitted', total: 212500, resultPercent: 30, state: 'Increase'},
   { className: "bg-gradient-to-br from-black via-gray-400 via-20% to-black text-white", title: 'Profit is Taken', total: 50000, resultPercent: 20, state: ['Increase', 'Currency']},
 ]
