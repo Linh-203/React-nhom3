@@ -35,7 +35,7 @@ function AdminSideBar(props: IProps) {
         setActive(props.isMenuActive)
     }, [props])
     return <div className={`fixed rounded-3xl drop-shadow-lg left-[12px] bottom-[12px] top-[12px] w-64 p-0 bg-white transition-all  overflow-y-auto overflow-x-hidden overscroll-y-contain ${!active?"-translate-x-[110%]":"translate-x-0"}`}>
-        <div className='h-16 bg-yellow-200 flex items-center justify-center'>
+        <div className='h-16 flex items-center justify-center'>
             <Link to={'/admin'} className='flex justify-center items-center'>
                 <img
                    src='https://spacingtech.com/html/tm/freozy/freezy-ltr/image/logo/logo.png'
