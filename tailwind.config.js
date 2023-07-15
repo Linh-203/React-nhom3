@@ -9,7 +9,7 @@ export default {
             greenCus: '#8db049'
          },
          backgroundColor: {
-            primaryBg: 'rgb(228 228 228)',
+            primaryBg: 'rgba(0,0,0,0.1)',
             sectionBg: '#f1f1f1',
             navBg: '#badaf6',
             dropBg: '#e1dede'
