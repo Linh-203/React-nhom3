@@ -3,6 +3,11 @@
 @tailwind utilities;
 
 .active {
-    background-color: #badaf6;
-    color: black
+   background-color: #badaf6;
+   color: black;
 }
+
+/* .product-oderByCate .swiper-container {
+   display: flex !important;
+   flex-direction: column !important;
+} */
