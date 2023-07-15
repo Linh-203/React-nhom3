@@ -9,37 +9,50 @@ import HeadPhone from '../assets/icons/HeadPhone';
 import Money from '../assets/icons/Money';
 import Load from '../assets/icons/Load';
 import { banner } from '../../db.json';
-import { trending } from '../../db.json';
-import { products } from '../../db.json';
 import { blog } from '../../db.json';
+import productService from '../api/product';
+import { useEffect, useState } from 'react';
 const HomePage = () => {
+   const [products, setProduct] = useState([]);
+   useEffect(() => {
+      productService
+         .getAllProduct()
+         .then(({ data }) => setProduct(data))
+         .catch(({ response }) => {
+            alert(response.data.message);
+         });
+   }, []);
+   console.log(products);
+
    return (
       <div className='conatiner'>
          <hr />
          <div className='product px-28'>
-            <Swiper
-               modules={[Navigation, Pagination, Scrollbar, A11y]}
-               spaceBetween={50}
-               slidesPerView={4}
-               // navigation
-               // pagination={{ clickable: true }}
-               // scrollbar={{ draggable: true }}
-               onSwiper={(swiper) => console.log(swiper)}
-               onSlideChange={() => console.log('slide change')}
-               loop={true}
-            >
-               {products.map((slide) => (
-                  <SwiperSlide key={slide.image}>
-                     <div className='flex justify-center items-center'>
-                        <img src={slide.image} alt={slide.title} className='w-[110px] h-[130px]' />
-                        <div className='ml-2 flex flex-col justify-center'>
-                           <h4 className='text-red-500'>Healthy food</h4>
-                           <p>15+ items</p>
+            {products.length > 0 && (
+               <Swiper
+                  modules={[Navigation, Pagination, Scrollbar, A11y]}
+                  spaceBetween={50}
+                  slidesPerView={4}
+                  // navigation
+                  // pagination={{ clickable: true }}
+                  // scrollbar={{ draggable: true }}
+                  onSwiper={(swiper) => console.log(swiper)}
+                  onSlideChange={() => console.log('slide change')}
+                  loop={true}
+               >
+                  {products.map((slide) => (
+                     <SwiperSlide key={slide.images}>
+                        <div className='flex justify-center items-center'>
+                           <img src={slide.images[0].url} className='w-[90px] h-[80px]' />
+                           <div className='ml-2 flex flex-col justify-center'>
+                              <h4 className='text-red-500'>Healthy food</h4>
+                              <p>15+ items</p>
+                           </div>
                         </div>
-                     </div>
-                  </SwiperSlide>
-               ))}
-            </Swiper>
+                     </SwiperSlide>
+                  ))}
+               </Swiper>
+            )}
          </div>
          <div className='banner relative'>
             <Swiper
@@ -135,27 +148,28 @@ const HomePage = () => {
             <h2 className='text text-center font-bold  text-[32px] '>Trending product</h2>
          </div>
          <div className='mx-24 my-24 bg-[#f8f8f8]'>
-            <Swiper
-               modules={[Navigation, Pagination, Scrollbar, A11y]}
-               spaceBetween={50}
-               slidesPerView={4}
-               navigation
-               onSwiper={(swiper) => console.log(swiper)}
-               onSlideChange={() => console.log('slide change')}
-               loop={true}
-            >
-               {trending.map((slide) => (
-                  <SwiperSlide key={slide.image}>
-                     <img
-                        src={slide.image}
-                        alt={slide.title}
-                        className='w-full h-auto shadow-md rounded-lg hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105'
-                     />
-                     <h3 className='text text-center font-bold mt-4 text-[18px] '>{slide.title}</h3>
-                     <p className='text text-center font-bold mt-1 text-[20px] text-[#7aa32a]'>${slide.price}</p>
-                  </SwiperSlide>
-               ))}
-            </Swiper>
+            {products.length > 0 && (
+               <Swiper
+                  modules={[Navigation, Pagination, Scrollbar, A11y]}
+                  spaceBetween={50}
+                  slidesPerView={4}
+                  navigation
+                  onSwiper={(swiper) => console.log(swiper)}
+                  onSlideChange={() => console.log('slide change')}
+                  loop={true}
+               >
+                  {products.map((slide) => (
+                     <SwiperSlide key={slide.images}>
+                        <img
+                           src={slide.images[0].url}
+                           className='w-full h-auto shadow-md rounded-lg hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105'
+                        />
+                        <h3 className='text text-center font-bold mt-4 text-[18px] '>{slide.title}</h3>
+                        <p className='text text-center font-bold mt-1 text-[20px] text-[#7aa32a]'>${slide.price}</p>
+                     </SwiperSlide>
+                  ))}
+               </Swiper>
+            )}
          </div>
          <div className='text pt-20 pb-12'>
             <h4 className='text text-center font-bold  text-[16px]  text-[#e80808] '>ORGANIC LATEST STORY</h4>

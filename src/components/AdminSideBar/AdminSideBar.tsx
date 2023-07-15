@@ -34,8 +34,8 @@ function AdminSideBar(props: IProps) {
     useEffect(() => {
         setActive(props.isMenuActive)
     }, [props])
-    return <div className={`fixed rounded-3xl drop-shadow-lg left-0 h-full w-64 p-0 bg-sectionBg transition-all  max-h-screen overflow-y-auto overflow-x-hidden overscroll-y-contain ${!active?"-translate-x-full":"translate-x-0"}`}>
-        <div className='h-16 bg-yellow-200 flex items-center justify-center'>
+    return <div className={`fixed rounded-3xl drop-shadow-lg left-[12px] bottom-[12px] top-[12px] w-64 p-0 bg-white transition-all  overflow-y-auto overflow-x-hidden overscroll-y-contain ${!active?"-translate-x-[110%]":"translate-x-0"}`}>
+        <div className='h-16 flex items-center justify-center'>
             <Link to={'/admin'} className='flex justify-center items-center'>
                 <img
                    src='https://spacingtech.com/html/tm/freozy/freezy-ltr/image/logo/logo.png'
@@ -44,7 +44,7 @@ function AdminSideBar(props: IProps) {
                 />
             </Link>
         </div>
-        <div>
+        <div className='p-2'>
             {menu.map((mu, index) =>(
                 <MenuDropDown key={index} {...mu}/>
             ))}
