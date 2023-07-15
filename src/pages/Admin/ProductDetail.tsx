@@ -10,7 +10,7 @@ function ProductDetail(props: IProps) {
    const [toggle, setToggle] = useState<boolean>(false);
 
    const getItem = async () => {
-        const res = await productService.getByID(props.id, {});
+        const res = await productService.getProductById(props.id);
         console.log(res.data[0]);
         setItem(res.data[0]);
         setLoading(false);
