@@ -1,0 +1,10 @@
+products :
+productName : string
+categoryId : string
+stock: number
+solded :number
+favorite: number
+images : {url:string,public_id:string}[]
+price : number
+discount : number
+desc: string

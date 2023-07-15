@@ -12,11 +12,11 @@ function AdminLayout() {
       setMenuState((prev) => !prev);
    };
    return (
-      <div className='h-full w-full bg-primaryBg'>
+      <div className='h-full p-3 w-full bg-primaryBg'>
          <AdminSideBar isMenuActive={menuState} />
          <div className={`min-h-screen rounded-3xl transition-all ${menuState ? 'ml-[280px]' : 'ml-0'}`}>
             <AdminHeader toggleMenu={toggleMenu} />
-            <div className='min-h-screen px-4 py-5 drop-shadow-2xl bg-white rounded-3xl'>
+            <div className='min-h-screen px-4 py-5 bg-white rounded-3xl'>
                <Outlet />
             </div>
          </div>
