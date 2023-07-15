@@ -17,5 +17,5 @@ const addProduct = (product: number) => {
 //   const updateProduct = (id, product) => {
 //     return instanse.patch('/products/' + id, product);
 //   };
-const productService = { getAllProduct, getProductById, deleteProduct, addProduct };
+const productService = { getAllProduct, deleteProduct, addProduct };
 export default productService
