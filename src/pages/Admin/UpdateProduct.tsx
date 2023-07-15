@@ -1,52 +1,6 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'
-import productService from '../../api/product';;
-import categoryService from '../../api/category';
-
-const AddProduct = () => {
-  const navigate = useNavigate()
-
-  const [categories, setCategories] = useState([])
-
-  const getAllCategory = async () => {
-    const res = await categoryService.getAllCategory()
-    setCategories(res.data)
-  }
-  useEffect(() => {
-    getAllCategory()
-  }, [])
-  console.log(categories);
 
 
-  const onHandleAdd = async (product) => {
-  await productService.addProduct(product)
-      .then(() => {
-        //  productService.getAllProduct.then(({ data }) => setProduct(data));
-        navigate('/admin/products')
-      })
-      .catch(({ response }) => alert());
-  };
-
-
-  const onhandleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    const product = {
-
-      name: e.target[0].value,
-      price: e.target[1].value,
-      stock: e.target[2].value,
-      solded: e.target[3].value,
-      discount: e.target[4].value,
-      favorite: e.target[5].value,
-      categoryId: e.target[6].value,
-      images:[{url: 'https://picsum.photos/300/200', public_id: '123'}],
-      desc: e.target[8].value
-    }
-    console.log(product);
-
-await onHandleAdd(product)
-
-  }
+const UpdateProduct = () => {
   return (
     <div>
       <div><h2 className="text-4xl font-bold dark:text-white">Add Product</h2></div>
@@ -119,4 +73,4 @@ await onHandleAdd(product)
   )
 }
 
-export default AddProduct
+export default UpdateProduct
