@@ -1,12 +1,12 @@
 import { useNavigate } from 'react-router-dom'
-import { addProduct } from '../../api/product'
+
 const AddProduct = () => {
   const navigate = useNavigate()
 
   const onhandleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      await addProduct()
+      // await addProduct()
       navigate('/admin/products')
     } catch (error : any) {
       return
