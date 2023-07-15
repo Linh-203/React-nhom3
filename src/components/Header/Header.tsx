@@ -3,7 +3,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 import GlassIcon from '../../assets/icons/GlassIcon';
 import HeartIcon from '../../assets/icons/HeartIcon';
 import CartIcon from '../../assets/icons/CartIcon';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type NavLink = {
    path: string;
@@ -27,6 +27,7 @@ const navItems: NavLink[] = [
 const Header = () => {
    const location = useLocation();
    const [path, setPath] = useState<string>('');
+   const headerRef = useRef(null);
    useEffect(() => {
       setPath(location.pathname);
    }, [location.pathname]);
@@ -36,7 +37,7 @@ const Header = () => {
       //set history of each time scroll
       // smaller than history -> up -> fixed header
       // contrary
-      <header className={`${styles['header']}`}>
+      <header className={`${styles['header']}`} ref={headerRef}>
          <div className='w-[20%]'>
             <img
                src='https://spacingtech.com/html/tm/freozy/freezy-ltr/image/logo/logo.png'

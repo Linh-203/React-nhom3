@@ -7,7 +7,6 @@ const ClientLayout = () => {
       <>
          <Header />
          <Outlet/>
-         <div className='h-[1000px]'></div>
       </>
    );
 };
