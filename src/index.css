@@ -6,3 +6,23 @@
     background-color: #badaf6;
     color: black;
 }
+input[type="range"] {
+    -webkit-appearance: none !important;
+   appearance: none ;
+    background: transparent;
+    cursor: pointer;
+    width: 10rem;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+    background: #053a5f;
+    height: 0.1rem;
+}
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    margin-top: -7px; /* Centers thumb on the track */
+    background-color: #053a5f;
+    height: 1rem;
+    width: 0.5rem;
+    border-radius: 2px;    
+}
