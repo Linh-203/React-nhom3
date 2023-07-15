@@ -2,18 +2,30 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import SearchIcon from '../../assets/icons/SearchIcon';
 import ProductDetail from './ProductDetail';
+import productService from '../../api/product';
 
 const ProductListPage = () => {
-   const [idItem, setIdItem] = useState<string>("")
+   const [idItem, setIdItem] = useState<string>('');
+   const [item, setItem] = useState<any[]>([])
    const handleChangeId = (id: string) => {
-      setIdItem(id)
-   }
+      setIdItem(id);
+   };
    const clearId = () => {
-      setIdItem('')
-   }
+      setIdItem('');
+   };
+
+   const getAllProducts = async () => {
+      const res = await productService.getAllProduct();
+      setItem(res.data);
+   };
+   useEffect(() => {
+      getAllProducts().catch(() => {
+         console.log('getAllProducts failed');
+      });
+   }, []);
    return (
       <div>
-         {idItem !== "" ? <ProductDetail id={idItem} setID={clearId}></ProductDetail> : ""} 
+         <ProductDetail id={idItem} setID={clearId}></ProductDetail>
          <div className='flex pb-4 justify-between items-center'>
             <h1 className='text-4xl font-bold'>Product List</h1>
             <div className='flex'>
@@ -51,64 +63,42 @@ const ProductListPage = () => {
                </tr>
             </thead>
             <tbody>
-               <tr className='active:bg-primaryBg border-b-[1px] border-gray-400 h-[160px]'>
-                  <th className='p-2' scope='col'>
-                     1
-                  </th>
-                  <th className='p-2' scope='col'>
-                     <img src={'https://picsum.photos/300/200'} className='w-52 h-36 mx-auto' alt='' />
-                  </th>
-                  <th className='p-2' scope='col'>
-                     Potato
-                  </th>
-                  <th className='p-2' scope='col'>
-                     $1.00
-                  </th>
-                  <th className='p-2' scope='col'>
-                     1000
-                  </th>
-                  <th className='p-2 flex gap-2 justify-center items-center h-[160px]' scope='col'>
-                     <button onClick={() => handleChangeId("64b1638b211876a5918a345c")} 
-                        className='p-2 rounded-xl bg-green-400 hover:bg-green-500 text-[15px] text-white'
-                     >
-                        Detail
-                     </button>
-                     {/* <Link
-                        className='p-2 rounded-xl bg-blue-400 hover:bg-blue-500 text-[15px] text-white'
-                        to='/admin/products'
-                     >
-                        Update
-                     </Link>
-                     <button className='p-2 rounded-xl bg-red-400 hover:bg-red-500 text-[15px] text-white'>
-                        Delete
-                     </button> */}
-                  </th>
-               </tr>
-               {/* {order?.map((item, index) => (
-                     <tr key={index} className='border-b-[1px] border-gray-400'>
-                        <th className='p-2' scope='col'>
-                           {item.id}
-                        </th>
-                        <th className='p-2' scope='col'>
-                           {item.orderName}
-                        </th>
-                        <th className='p-2' scope='col'>
-                           {item.customerName}
-                        </th>
-                        <th className='p-2' scope='col'>
-                           {item.Location}
-                        </th>
-                        <th className='p-2' scope='col'>
-                           {item.orderStatus}
-                        </th>
-                        <th className='p-2' scope='col'>
-                           {item.deliveredTime}
-                        </th>
-                        <th className='p-2' scope='col'>
-                           {item.price}
-                        </th>
-                     </tr>
-                  ))} */}
+               {item.length > 0 && item?.map((prd, index) => (
+                  <tr key={index} className='active:bg-primaryBg border-b-[1px] border-gray-400 h-[160px]'>
+                     <th className='p-2' scope='col'>
+                        {index + 1}
+                     </th>
+                     <th className='p-2' scope='col'>
+                        <img src={prd!.images[0]!.url} className='rounded-2xl w-52 h-36 mx-auto' alt='' />
+                     </th>
+                     <th className='p-2' scope='col'>
+                        {prd.name}
+                     </th>
+                     <th className='p-2' scope='col'>
+                        {prd.price}
+                     </th>
+                     <th className='p-2' scope='col'>
+                        {prd.stock}
+                     </th>
+                     <th className='p-2 flex gap-2 justify-center items-center h-[160px]' scope='col'>
+                        <button
+                           onClick={() => handleChangeId(prd._id)}
+                           className='p-2 rounded-xl bg-green-400 hover:bg-green-500 text-[15px] text-white'
+                        >
+                           Detail
+                        </button>
+                        <Link
+                           className='p-2 rounded-xl bg-blue-400 hover:bg-blue-500 text-[15px] text-white'
+                           to='/admin/products'
+                        >
+                           Update
+                        </Link>
+                        <button className='p-2 rounded-xl bg-red-400 hover:bg-red-500 text-[15px] text-white'>
+                           Delete
+                        </button>
+                     </th>
+                  </tr>
+               ))}
             </tbody>
          </table>
       </div>
