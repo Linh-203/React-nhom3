@@ -15,8 +15,8 @@ const CheckBoxs = ({ checkboxs }: Props) => {
          {checkboxs.map((item, index) => (
             <div key={index} className='flex justify-between items-center mt-5'>
                <div>
-                  <input type='checkbox' name={item.name} id='check-box' value={item.value} />
-                  <label className='ml-2 text-grayLight200 flex items-center' htmlFor='check-box'>
+                  <input type='checkbox' name={item.name} id={item.value} value={item.value} />
+                  <label className='ml-2 text-grayLight200 flex items-center' htmlFor={item.value}>
                      <span className='ml-8'>{item.title}</span>
                   </label>
                </div>

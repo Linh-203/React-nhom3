@@ -15,6 +15,9 @@ export default {
             sectionBg: '#f1f1f1',
             navBg: '#badaf6',
             dropBg: '#e1dede'
+         },
+         screens:{
+            'lg':'1300px'
          }
       }
    },
