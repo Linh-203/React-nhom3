@@ -12,6 +12,8 @@ type Props = {
 };
 
 const CardProduct = React.memo(({ product, link }: Props) => {
+   console.log(product);
+
    return (
       <Link to={link} className={`${styles['wrapper']} block relative text-center`}>
          {product.discount > 0 && (
@@ -20,11 +22,9 @@ const CardProduct = React.memo(({ product, link }: Props) => {
             </p>
          )}
          <div className='relative'>
-            <img
-               alt='Art'
-               src={product.images[0].url}
-               className=' w-full object-cover scale-[1]  rounded-lg aspect-auto sm:h-72 lg:h-96'
-            />
+            <div className='w-full rounded-lg  sm:h-72 lg:h-96 bg-white flex justify-center items-center'>
+               <img alt='Art' src={product.images[0].url} className=' w-full object-cover scale-[1] aspect-auto ' />
+            </div>
             <div className={`${styles['mark']}`}>
                <div className='flex justify-center items-center w-[50%] gap-3'>
                   <button
@@ -43,7 +43,7 @@ const CardProduct = React.memo(({ product, link }: Props) => {
                      <span
                         className={`${styles['tooltip-arrow']} absolute min-w-[100px] bg-colorText py-1 top-[-2.5rem] left-[-2rem]`}
                      >
-                       Quick view
+                        Quick view
                      </span>
                      <EyeIcon />
                   </button>
