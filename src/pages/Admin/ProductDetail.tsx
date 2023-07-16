@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 import productService from '../../api/product';
+import { IProduct } from '../../common/product';
 type IProps = {
    id: string;
 };
 function ProductDetail(props: IProps) {
-   const [item, setItem] = useState<any>({});
+   const [item, setItem] = useState<IProduct>({});
    const [loading, setLoading] = useState<boolean>(true);
 
    const getItem = async () => {
       const res = await productService.getProductById(props.id);
-      console.log(res.data[0]);
       setItem(res.data[0]);
       setLoading(false);
    };
@@ -27,7 +27,7 @@ function ProductDetail(props: IProps) {
    //console.log(item, toggle, props.id);
 
    return (
-      <div>
+      <div className='text-black'>
          {loading && Object.keys(item).length == 0 ? (
             <div className='border border-blue-300 shadow rounded-md p-4 max-w-sm w-full mx-auto'>
                <div className='animate-pulse flex space-x-4'>

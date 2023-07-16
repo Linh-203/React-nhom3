@@ -4,15 +4,15 @@ import ProductDetail from '../../pages/Admin/ProductDetail';
 import { useState, useRef, Fragment } from 'react';
 import productService from '../../api/product';
 import ReactDOM from 'react-dom';
+import { IProduct } from '../../common/product';
 type IProps = {
-   prd: any;
+   prd: IProduct;
    index: number;
 };
 
 function ProductTbaleItem({ prd, index }: IProps) {
    const [toggle, setToggle] = useState<boolean>(false);
    const [isDeleted, setIsDeleted] = useState<boolean>(false);
-   const itemRef = useRef();
 
    const handleDeleteItem = async (id: string): Promise<void> => {
       await productService

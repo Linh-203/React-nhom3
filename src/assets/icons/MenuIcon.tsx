@@ -8,22 +8,24 @@ const MenuIcon = ({ className, width = '1rem', height = '1rem' }: IconProps) => 
       <svg
          xmlns='http://www.w3.org/2000/svg'
          version='1.1'
-         width={width}
+         width={width} 
          height={height}
          fill='none'
          stroke='currentColor'
-         strokeWidth='2'
+         strokeWidth='1'
          strokeLinecap='round'
          strokeLinejoin='round'
-         viewBox='0 0 384 284'
+         viewBox='0 0 16 16'
          className={className}
       >
          <g>
-            <path
-               d='M368 154.668H16c-8.832 0-16-7.168-16-16s7.168-16 16-16h352c8.832 0 16 7.168 16 16s-7.168 16-16 16zM368 32H16C7.168 32 0 24.832 0 16S7.168 0 16 0h352c8.832 0 16 7.168 16 16s-7.168 16-16 16zM368 277.332H16c-8.832 0-16-7.168-16-16s7.168-16 16-16h352c8.832 0 16 7.168 16 16s-7.168 16-16 16zm0 0'
-               fill='#000000'
-               data-original='#000000'
-            ></path>
+            <g data-name='31'>
+               <path
+                  d='M15.5 4H.5a.5.5 0 0 1 0-1h15a.5.5 0 0 1 0 1zM15.5 9H.5a.5.5 0 0 1 0-1h15a.5.5 0 0 1 0 1zM15.5 14H.5a.5.5 0 0 1 0-1h15a.5.5 0 0 1 0 1z'
+                  fill='#000000'
+                  data-original='#000000'
+               ></path>
+            </g>
          </g>
       </svg>
    );
