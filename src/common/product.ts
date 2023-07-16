@@ -1,4 +1,6 @@
 export type IProduct = {
+   data: any;
+   favorite: ReactNode;
    _id: string;
    name: string;
    price: number;

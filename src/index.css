@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .active {
-    background-color: #badaf6;
+    background-color: rgba(165, 215, 232,0.30);
     color: black;
 }
 

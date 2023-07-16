@@ -67,11 +67,11 @@ const order: IOrder[] = [
 
 function OrderOverView() {
    return (
-      <div className='rounded-2xl p-4 my-12 bg-dropBg'>
+      <div className='rounded-2xl p-4 my-12 bg-dropBg text-black'>
          <div>
             <h1 className='text-[20px]'>RECENTLY PLACED ORDERS</h1>
             <table className='w-full my-5 rounded-t-2xl overflow-hidden'>
-               <thead className='bg-navBg'>
+               <thead className='bg-navBg dark:bg-navDarkBg'>
                   <tr>
                      <th className='p-2' scope='col'>
                         Order ID

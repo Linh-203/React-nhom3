@@ -1,38 +1,76 @@
-import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import SearchIcon from '../../assets/icons/SearchIcon';
-import ProductDetail from './ProductDetail';
 import productService from '../../api/product';
+import ProductTbaleItem from '../../components/ProductTableItem/ProductTableItem';
+import { IProduct } from '../../common/product';
+
 
 const ProductListPage = () => {
-   const [idItem, setIdItem] = useState<string>('');
-   const [item, setItem] = useState<any[]>([])
-   const handleChangeId = (id: string) => {
-      setIdItem(id);
+   const [item, setItem] = useState<IProduct[]>([]);
+   const [pages, setPages] = useState<number>(1);
+   const [itemToRender, setItemToRender] = useState<IProduct[]>([]);
+   const [totalPages, setTotalPage] = useState<number[]>([]);
+   const [itemPerpage, setItemPerpage] = useState(5);
+   const [currentPage, setCurrentPage] = useState(1);
+
+
+   const handleSearch = (value :string) => {
+      const filter = item.filter(item => item.name.toLowerCase().match(value.toLowerCase()))
+      setItemToRender(filter)
+   }
+
+
+
+   const renderItemPerpage = (item: IProduct[]) => {
+      setPages(Math.ceil(item.length / itemPerpage))
+      setTotalPage(Array.from(Array(Math.ceil(item.length / itemPerpage)).keys()).map((page) => page + 1));
+      const start = (currentPage - 1) * itemPerpage;
+      const end = start + itemPerpage;
+      setItemToRender(item.slice(start, end));
    };
-   const clearId = () => {
-      setIdItem('');
+
+   const nextPage = () => {
+      if (currentPage < pages) {
+         setCurrentPage((prev) => (prev += 1));
+      }
+   };
+
+   const prevPage = () => {
+      if (currentPage > 1) {
+         setCurrentPage((prev) => (prev -= 1));
+      }
+   };
+   const changePage = (page: number) => {
+      setCurrentPage(page);
    };
 
    const getAllProducts = async () => {
       const res = await productService.getAllProduct();
       setItem(res.data);
    };
+
+   useEffect(() => {
+      renderItemPerpage(item)
+   // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [item, currentPage])      
+
    useEffect(() => {
       getAllProducts().catch(() => {
          console.log('getAllProducts failed');
       });
    }, []);
+   console.log(itemToRender);
+   
    return (
       <div>
-         <ProductDetail id={idItem} setID={clearId}></ProductDetail>
          <div className='flex pb-4 justify-between items-center'>
             <h1 className='text-4xl font-bold'>Product List</h1>
             <div className='flex'>
                <input
                   type='search'
                   placeholder='search here...'
-                  className='border-[1px] border-gray-300 rounded-l-2xl p-2 hover:border-black outline-none'
+                  className='border-[1px] border-gray-300 rounded-l-2xl p-2 hover:border-black text-black outline-none'
+                  onChange={e => handleSearch(e.target.value)}
                />
                <button className='border-[1px] bg-red-400 text-white hover:bg-red-500 px-3 border-gray-300 rounded-r-2xl'>
                   <SearchIcon />
@@ -40,7 +78,7 @@ const ProductListPage = () => {
             </div>
          </div>
          <table className='text-left w-full my-5 rounded-t-2xl overflow-hidden'>
-            <thead className='bg-navBg'>
+            <thead className='bg-navBg dark:bg-navDarkBg'>
                <tr className=''>
                   <th className='p-2' scope='col'>
                      ID
@@ -63,44 +101,21 @@ const ProductListPage = () => {
                </tr>
             </thead>
             <tbody>
-               {item.length > 0 && item?.map((prd, index) => (
-                  <tr key={index} className='active:bg-primaryBg border-b-[1px] border-gray-400 h-[160px]'>
-                     <th className='p-2' scope='col'>
-                        {index + 1}
-                     </th>
-                     <th className='p-2' scope='col'>
-                        <img src={prd!.images[0]!.url} className='rounded-2xl w-52 h-36 mx-auto' alt='' />
-                     </th>
-                     <th className='p-2' scope='col'>
-                        {prd.name}
-                     </th>
-                     <th className='p-2' scope='col'>
-                        {prd.price}
-                     </th>
-                     <th className='p-2' scope='col'>
-                        {prd.stock}
-                     </th>
-                     <th className='p-2 flex gap-2 justify-center items-center h-[160px]' scope='col'>
-                        <button
-                           onClick={() => handleChangeId(prd._id)}
-                           className='p-2 rounded-xl bg-green-400 hover:bg-green-500 text-[15px] text-white'
-                        >
-                           Detail
-                        </button>
-                        <Link
-                           className='p-2 rounded-xl bg-blue-400 hover:bg-blue-500 text-[15px] text-white'
-                           to='/admin/products'
-                        >
-                           Update
-                        </Link>
-                        <button className='p-2 rounded-xl bg-red-400 hover:bg-red-500 text-[15px] text-white'>
-                           Delete
-                        </button>
-                     </th>
-                  </tr>
-               ))}
+               {itemToRender.length > 0 &&
+                  itemToRender?.map((prd, index) => (
+                     <ProductTbaleItem prd={prd} index={index} key={index}/>
+                  ))}
             </tbody>
          </table>
+         <div className='paginate flex gap-1 justify-end py-3'>
+            <button className='rounded-2xl bg-navBg p-2 hover:bg-slate-400' onClick={() => prevPage()}>Prev</button>
+            {totalPages.map((page: number, index: number) => (
+               <button key={index} className={`rounded-2xl hover:bg-zinc-200 w-10 h-10 p-2 border-[1px] ${currentPage === index+1? "border-gray-500": ""}`} onClick={() => changePage(index + 1)}>
+                  <span>{index + 1}</span>
+               </button>
+            ))}
+            <button className='rounded-2xl bg-navBg p-2 hover:bg-slate-400' onClick={() => nextPage()}>Next</button>
+         </div>
       </div>
    );
 };
