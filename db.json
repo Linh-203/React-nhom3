@@ -1,0 +1,113 @@
+{
+   "banner": [
+      {
+         "image": "https://spacingtech.com/html/tm/freozy/freezy-ltr/image/slider/slider1.png",
+         "title": "Organic food’s",
+         "subTitle": "Healthy food collection",
+         "interval": 1500
+      },
+      {
+         "image": "https://spacingtech.com/html/tm/freozy/freezy-ltr/image/slider/slider2.png",
+         "title": "Black Adam",
+         "subTitle": "Nearly 5,000 years after he",
+         "interval": 500
+      },
+      {
+         "image": "https://spacingtech.com/html/tm/freozy/freezy-ltr/image/slider/slider3.png",
+         "title": "Black Panther: Wakanda Forever",
+         "subTitle": "Queen Ramonda, Shuri, M’Baku, Okoye an",
+         "interval": 2500
+      }
+   ],
+   "trending": [
+      {
+         "image": "https://spacingtech.com/html/tm/freozy/freezy-ltr/image/product/p-14.jpg",
+         "title": "Avatar: The Way of Water",
+         "price": 250
+      },
+      {
+         "image": "https://spacingtech.com/html/tm/freozy/freezy-ltr/image/product/p-23.jpg",
+         "title": "Black Adam",
+         "price": 250
+      },
+      {
+         "image": "https://spacingtech.com/html/tm/freozy/freezy-ltr/image/product/p-9.jpg",
+         "title": "Black Panther: Wakanda Forever",
+         "price": 250
+      },
+      {
+         "image": "https://spacingtech.com/html/tm/freozy/freezy-ltr/image/product/p-2.jpg",
+         "title": "Black Adam",
+         "price": 250
+      },
+      {
+         "image": "https://spacingtech.com/html/tm/freozy/freezy-ltr/image/product/p-4.jpg",
+         "title": "Black Panther: Wakanda Forever",
+         "price": 250
+      },
+      {
+         "image": "https://spacingtech.com/html/tm/freozy/freezy-ltr/image/product/p-6.jpg",
+         "title": "Black Adam",
+         "price": 250
+      }
+   ],
+   "blog": [
+      {
+         "image": "https://spacingtech.com/html/tm/freozy/freezy-ltr/image/blog/blog-3.jpg",
+         "title": "Best food for market ?",
+         "subTitle": "Nearly 5,000 years after he was bestowed with the almighty powers of the Egyptian gods—and imprisoned just as quickly—Black Adam is freed from his earthly tomb."
+      },
+      {
+         "image": "https://spacingtech.com/html/tm/freozy/freezy-ltr/image/blog/blog-4.jpg",
+         "title": "Organic is the wholeness ?",
+         "subTitle": "Nearly 5,000 years after he was bestowed with the almighty powers of the Egyptian gods—and imprisoned just as quickly—Black Adam is freed from his earthly tomb."
+      },
+      {
+         "image": "https://spacingtech.com/html/tm/freozy/freezy-ltr/image/blog/blog-5.jpg",
+         "title": "Integrity of  If you are",
+         "subTitle": "Nearly 5,000 years after he was bestowed with the almighty powers of the Egyptian gods—and imprisoned just as quickly—Black Adam is freed from his earthly tomb."
+      },
+      {
+         "image": "https://spacingtech.com/html/tm/freozy/freezy-ltr/image/blog/blog-1.jpg",
+         "title": "Instructions for healthy ?",
+         "subTitle": "Nearly 5,000 years after he was bestowed with the almighty powers of the Egyptian gods—and imprisoned just as quickly—Black Adam is freed from his earthly tomb."
+      },
+      {
+         "image": "https://spacingtech.com/html/tm/freozy/freezy-ltr/image/blog/blog-2.jpg",
+         "title": "Office food for particular ?",
+         "subTitle": "Nearly 5,000 years after he was bestowed with the almighty powers of the Egyptian gods—and imprisoned just as quickly—Black Adam is freed from his earthly tomb."
+      }
+   ],
+   "products": [
+      {
+         "image": "https://spacingtech.com/html/tm/freozy/freezy-ltr/image/product/p-14.jpg",
+         "title": "Avatar: The Way of Water",
+         "price": 250
+      },
+      {
+         "image": "https://spacingtech.com/html/tm/freozy/freezy-ltr/image/product/p-23.jpg",
+         "title": "Black Adam",
+         "price": 250
+      },
+      {
+         "image": "https://spacingtech.com/html/tm/freozy/freezy-ltr/image/product/p-9.jpg",
+         "title": "Black Panther: Wakanda Forever",
+         "price": 250
+      },
+      {
+         "image": "https://spacingtech.com/html/tm/freozy/freezy-ltr/image/product/p-2.jpg",
+         "title": "Black Adam",
+         "price": 250
+      },
+      {
+         "image": "https://spacingtech.com/html/tm/freozy/freezy-ltr/image/product/p-4.jpg",
+         "title": "Black Panther: Wakanda Forever",
+         "price": 250
+      },
+      {
+         "image": "https://spacingtech.com/html/tm/freozy/freezy-ltr/image/product/p-6.jpg",
+         "title": "Black Adam",
+         "price": 250
+      }
+   ]
+}
