@@ -11,7 +11,7 @@ const HeadPhone = ({ className, width = '1rem', height = '1rem' }: IconProps) =>
          strokeWidth='2'
          strokeLinecap='round'
          strokeLinejoin='round'
-         fill-rule='evenodd'
+         fillRule='evenodd'
          className={className}
       >
          <g>
