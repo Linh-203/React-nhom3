@@ -12,7 +12,7 @@ function AdminLayout() {
       setMenuState((prev) => !prev);
    };
    return (
-      <div className='transition-all  h-full p-3 w-full bg-primaryBg dark:bg-gradient-to-r dark:from-[#4B79A1] dark:to-[#283E51]'>
+      <div className='transition-all h-full p-3 w-full bg-primaryBg dark:bg-gradient-to-r dark:from-[#4B79A1] dark:to-[#283E51]'>
          <AdminSideBar isMenuActive={menuState} />
          <div className={`min-h-screen rounded-3xl transition-all ${menuState ? 'ml-[280px]' : 'ml-0'}`}>
             <AdminHeader toggleMenu={toggleMenu} />
