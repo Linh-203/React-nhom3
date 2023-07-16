@@ -9,8 +9,8 @@ function ProductDetail(props: IProps) {
    const [loading, setLoading] = useState<boolean>(true);
 
    const getItem = async () => {
-      const res = await productService.getProductById(props.id);
-      setItem(res.data[0]);
+      const {data} = await productService.getProductById(props.id);
+      setItem(data.data[0]);
       setLoading(false);
    };
 
