@@ -1,23 +1,18 @@
-import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import SearchIcon from '../../assets/icons/SearchIcon';
-import ProductDetail from './ProductDetail';
 import productService from '../../api/product';
 import ProductTbaleItem from '../../components/ProductTableItem/ProductTableItem';
+import { IProduct } from '../../common/product';
 
 
 const ProductListPage = () => {
-   const [idItem, setIdItem] = useState<string>('');
-   const [item, setItem] = useState<any[]>([]);
+   const [item, setItem] = useState<IProduct[]>([]);
    const [pages, setPages] = useState<number>(1);
-   const [itemToRender, setItemToRender] = useState<any[]>([]);
+   const [itemToRender, setItemToRender] = useState<IProduct[]>([]);
    const [totalPages, setTotalPage] = useState<number[]>([]);
    const [itemPerpage, setItemPerpage] = useState(5);
    const [currentPage, setCurrentPage] = useState(1);
 
-   const handleChangeId = (id: string) => {
-      setIdItem(id);
-   };
 
    const handleSearch = (value :string) => {
       const filter = item.filter(item => item.name.toLowerCase().match(value.toLowerCase()))
@@ -26,7 +21,7 @@ const ProductListPage = () => {
 
 
 
-   const renderItemPerpage = (item: any[]) => {
+   const renderItemPerpage = (item: IProduct[]) => {
       setPages(Math.ceil(item.length / itemPerpage))
       setTotalPage(Array.from(Array(Math.ceil(item.length / itemPerpage)).keys()).map((page) => page + 1));
       const start = (currentPage - 1) * itemPerpage;
@@ -49,10 +44,6 @@ const ProductListPage = () => {
       setCurrentPage(page);
    };
 
-   const clearId = () => {
-      setIdItem('');
-   };
-
    const getAllProducts = async () => {
       const res = await productService.getAllProduct();
       setItem(res.data);
@@ -60,6 +51,7 @@ const ProductListPage = () => {
 
    useEffect(() => {
       renderItemPerpage(item)
+   // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [item, currentPage])      
 
    useEffect(() => {
@@ -86,7 +78,7 @@ const ProductListPage = () => {
             </div>
          </div>
          <table className='text-left w-full my-5 rounded-t-2xl overflow-hidden'>
-            <thead className='bg-navBg'>
+            <thead className='bg-navBg dark:bg-navDarkBg'>
                <tr className=''>
                   <th className='p-2' scope='col'>
                      ID
