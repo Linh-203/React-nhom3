@@ -1,13 +1,12 @@
-import { IProduct } from "../common/product";
 import instanse from "./instanse";
 
-const getAllProduct = async (): Promise<IProduct[]> => {
+const getAllProduct = async (): Promise<any[]> => {
   const res = await instanse.get('/products?_expand');
-  return res.data as IProduct[]
+  return res.data
 };
-const getProductById = async (id: string): Promise<IProduct> => {
+const getProductById = async (id: string): Promise<any> => {
   const res = await instanse.get('/products/'+id+'?_expand')
-  return res.data as IProduct
+  return res.data
 } 
 const deleteProduct = async (id: string) => {
   return await instanse.delete('/products/' + id);
