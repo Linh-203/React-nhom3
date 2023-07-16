@@ -18,8 +18,11 @@ export default {
             dropBg: '#e1dede',
             dropDarkBg: "#ffffff1a",
             primaryDarkBg: '#0B2447',
-            sectionDarkBg: '#19376D',
+            sectionDarkBg: '#1937 6D',
             navDarkBg: 'rgba(165, 215, 232,0.30)',
+         },
+         screens:{
+            'lg':'1300px'
          }
       }
    },
