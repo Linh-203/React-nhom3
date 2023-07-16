@@ -7,6 +7,7 @@ import FilterAttribute from './components/FilterAttribute';
 import ListProduct from './components/ListProduct';
 import RangeInput from './components/RangeInput';
 import { getAllCategory } from '../../api/category';
+import Paginate from '../../components/Paginate/Paginate';
 const fakeFilter: CheckBox[] = [
    {
       name: 'attribute',
@@ -42,7 +43,7 @@ const ProductPage = () => {
       })();
    }, []);
    return (
-      <div className='min-h-[100vh] w-full bg-primaryBg'>
+      <div className='min-h-[100vh] w-full bg-primaryBg pb-10'>
          <div>Breadcrumb</div>
          <section className='w-full pt-20 flex justify-center gap-10'>
             <article className='w-[20%] flex flex-col'>
@@ -62,7 +63,7 @@ const ProductPage = () => {
                   <CheckBoxs checkboxs={categories} />
                </FilterAttribute>
             </article>
-            <main className='sm:w-[60%] lg:w-[55%]'>
+            <main className='sm:w-[60%] lg:w-[50%]'>
                <LabelRed>All Products</LabelRed>
                <img
                   src='https://spacingtech.com/html/tm/freozy/freezy-ltr/image/collection/collection-banner.jpg'

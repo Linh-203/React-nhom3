@@ -8,6 +8,7 @@ export type IQuery = {
    limit: number;
    expand: string;
    q: string;
+   page: number;
 };
 
 const getAllProduct = async ({
@@ -15,7 +16,8 @@ const getAllProduct = async ({
    order,
    limit,
    expand,
-   q
+   q,
+   page
 }: Partial<IQuery>): Promise<AxiosResponse<ResponsePaginate<IProduct[]>, any>> => {
    const res = await instanse.get(`/products`, {
       params: {
@@ -23,7 +25,8 @@ const getAllProduct = async ({
          _expand: expand,
          _limit: limit,
          _sort: sort,
-         _q: q
+         _q: q,
+         _page:page
       }
    });
    return res;

@@ -13,9 +13,11 @@ export type IProduct = {
 export type ResponsePaginate<T> = {
    message: string;
    data: T;
-   pagination: {
-      currentPage: number;
+   pagination: IPaginate;
+};
+
+export type IPaginate ={
+    currentPage: number;
       totalPages: number;
       totalItems: number;
-   };
-};
+}
