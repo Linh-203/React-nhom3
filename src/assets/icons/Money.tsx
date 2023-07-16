@@ -19,18 +19,18 @@ const Money = ({ className, width = '1rem', height = '1rem' }: IconProps) => {
                   <path d='M0 512h512V0H0Z' fill='#000000' data-original='#000000'></path>
                </clipPath>
             </defs>
-            <g clip-path='url(#a)' transform='matrix(1.33333 0 0 -1.33333 0 682.667)'>
+            <g clipPath='url(#a)' transform='matrix(1.33333 0 0 -1.33333 0 682.667)'>
                <path
                   d='M0 0h-33.334c-13.255 0-24 10.745-24 24v0c0 13.255 10.745 24 24 24h156.667c13.255 0 24-10.745 24-24v0c0-13.255-10.745-24-24-24H89.999'
                   transform='translate(211 354)'
                   fill='#e80808'
                   stroke='#000000'
-                  stroke-width='20'
-                  stroke-linecap='round'
-                  stroke-linejoin='round'
-                  stroke-miterlimit='10'
-                  stroke-dasharray='none'
-                  stroke-opacity=''
+                  strokeWidth='20'
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeMiterlimit='10'
+                  strokeDasharray='none'
+                  strokeOpacity=''
                   data-original='#000000'
                ></path>
                <path
@@ -38,12 +38,12 @@ const Money = ({ className, width = '1rem', height = '1rem' }: IconProps) => {
                   transform='translate(334.333 354)'
                   fill='#e80808'
                   stroke='#000000'
-                  stroke-width='20'
-                  stroke-linecap='round'
-                  stroke-linejoin='round'
-                  stroke-miterlimit='10'
-                  stroke-dasharray='none'
-                  stroke-opacity=''
+                  strokeWidth='20'
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeMiterlimit='10'
+                  strokeDasharray='none'
+                  strokeOpacity=''
                   data-original='#000000'
                ></path>
                <path
@@ -51,12 +51,12 @@ const Money = ({ className, width = '1rem', height = '1rem' }: IconProps) => {
                   transform='translate(151.524 493.284)'
                   fill='#e80808'
                   stroke='#000000'
-                  stroke-width='20'
-                  stroke-linecap='round'
-                  stroke-linejoin='round'
-                  stroke-miterlimit='10'
-                  stroke-dasharray='none'
-                  stroke-opacity=''
+                  strokeWidth='20'
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeMiterlimit='10'
+                  strokeDasharray='none'
+                  strokeOpacity=''
                   data-original='#000000'
                ></path>
                <path
@@ -64,12 +64,12 @@ const Money = ({ className, width = '1rem', height = '1rem' }: IconProps) => {
                   transform='translate(283.493 236.117)'
                   fill='#e80808'
                   stroke='#000000'
-                  stroke-width='20'
-                  stroke-linecap='round'
-                  stroke-linejoin='round'
-                  stroke-miterlimit='10'
-                  stroke-dasharray='none'
-                  stroke-opacity=''
+                  strokeWidth='20'
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeMiterlimit='10'
+                  strokeDasharray='none'
+                  strokeOpacity=''
                   data-original='#000000'
                ></path>
                <path
@@ -77,12 +77,12 @@ const Money = ({ className, width = '1rem', height = '1rem' }: IconProps) => {
                   transform='translate(256 264)'
                   fill='#e80808'
                   stroke='#000000'
-                  stroke-width='20'
-                  stroke-linecap='round'
-                  stroke-linejoin='round'
-                  stroke-miterlimit='10'
-                  stroke-dasharray='none'
-                  stroke-opacity=''
+                  strokeWidth='20'
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeMiterlimit='10'
+                  strokeDasharray='none'
+                  strokeOpacity=''
                   data-original='#000000'
                ></path>
                <path
@@ -90,12 +90,12 @@ const Money = ({ className, width = '1rem', height = '1rem' }: IconProps) => {
                   transform='translate(256 354)'
                   fill='#e80808'
                   stroke='#000000'
-                  stroke-width='20'
-                  stroke-linecap='round'
-                  stroke-linejoin='round'
-                  stroke-miterlimit='10'
-                  stroke-dasharray='none'
-                  stroke-opacity=''
+                  strokeWidth='20'
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeMiterlimit='10'
+                  strokeDasharray='none'
+                  strokeOpacity=''
                   data-original='#000000'
                ></path>
             </g>

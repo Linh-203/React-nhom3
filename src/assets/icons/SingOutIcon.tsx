@@ -16,7 +16,7 @@ const SignOutIcon = ({ className, width = '1rem', height = '1rem' }: IconProps) 
          className={className}
       >
          <g>
-            <g fill='none' stroke='#000' stroke-linecap='round' stroke-linejoin='round' stroke-width='2'>
+            <g fill='none' stroke='#000' strokeLinecap='round' strokeLinejoin='round' strokeWidth='2'>
                <path d='M15 5v10M10 8.5a9 9 0 1 0 10 0' fill=''></path>
             </g>
          </g>

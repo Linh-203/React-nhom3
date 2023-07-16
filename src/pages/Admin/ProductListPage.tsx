@@ -45,8 +45,8 @@ const ProductListPage = () => {
    };
 
    const getAllProducts = async () => {
-      const res = await productService.getAllProduct();
-      setItem(res.data);
+      const {data} = await productService.getAllProduct({});
+      setItem(data.data);
    };
 
    useEffect(() => {
