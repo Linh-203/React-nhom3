@@ -12,7 +12,7 @@ const UpArrow = ({ className, width = '1rem', height = '1rem' }: IconProps) => {
          height={height}
          fill='none'
          stroke='currentColor'
-         strokeWidth='0'
+         strokeWidth='1'
          strokeLinecap='round'
          strokeLinejoin='round'
          viewBox='0 0 6.35 6.35'
