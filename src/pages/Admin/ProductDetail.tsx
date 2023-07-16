@@ -1,14 +1,11 @@
 import { useState, useEffect } from 'react';
 import productService from '../../api/product';
-import Portal from '../../components/Portal/Portal';
 type IProps = {
    id: string;
-   setID(): void;
 };
 function ProductDetail(props: IProps) {
    const [item, setItem] = useState<any>({});
    const [loading, setLoading] = useState<boolean>(true);
-   const [toggle, setToggle] = useState<boolean>(false);
 
    const getItem = async () => {
       const res = await productService.getProductById(props.id);
@@ -17,28 +14,20 @@ function ProductDetail(props: IProps) {
       setLoading(false);
    };
 
-   const handleCloseTotal = () => {
-      props.setID();
-   };
-
    useEffect(() => {
+      console.log(props.id);
+
       if (props.id !== '') {
          setLoading(true);
-         setToggle(true);
          getItem().catch(() => {
             console.log('getItem failed');
          });
-      } else {
-         console.log('1', props.id);
-         setLoading(true);
-         setItem({});
-         setToggle(false);
       }
    }, [props.id]);
-   console.log(item, toggle, props.id);
+   //console.log(item, toggle, props.id);
 
    return (
-      <Portal toggle={toggle}>
+      <div>
          {loading && Object.keys(item).length == 0 ? (
             <div className='border border-blue-300 shadow rounded-md p-4 max-w-sm w-full mx-auto'>
                <div className='animate-pulse flex space-x-4'>
@@ -101,7 +90,7 @@ function ProductDetail(props: IProps) {
                </div>
             </div>
          )}
-      </Portal>
+      </div>
    );
 }
 
