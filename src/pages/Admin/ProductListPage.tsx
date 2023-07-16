@@ -69,7 +69,7 @@ const ProductListPage = () => {
                <input
                   type='search'
                   placeholder='search here...'
-                  className='border-[1px] border-gray-300 rounded-l-2xl p-2 hover:border-black outline-none'
+                  className='border-[1px] border-gray-300 rounded-l-2xl p-2 hover:border-black text-black outline-none'
                   onChange={e => handleSearch(e.target.value)}
                />
                <button className='border-[1px] bg-red-400 text-white hover:bg-red-500 px-3 border-gray-300 rounded-r-2xl'>

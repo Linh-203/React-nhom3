@@ -5,22 +5,23 @@ const DownArrow = ({ className, width = '1rem', height = '1rem' }: IconProps) =>
       <svg
          xmlns='http://www.w3.org/2000/svg'
          version='1.1'
-         width={width}
+         width={width} 
          height={height}
          fill='none'
          stroke='currentColor'
-         strokeWidth='2'
+         strokeWidth='3'
          strokeLinecap='round'
          strokeLinejoin='round'
-         viewBox='0 0 128 128'
+         viewBox='0 0 32 32'
          className={className}
       >
          <g>
             <path
-               d='M64 88a3.988 3.988 0 0 1-2.828-1.172l-40-40c-1.563-1.563-1.563-4.094 0-5.656s4.094-1.563 5.656 0L64 78.344l37.172-37.172c1.563-1.563 4.094-1.563 5.656 0s1.563 4.094 0 5.656l-40 40A3.988 3.988 0 0 1 64 88z'
-               fill='#000'
+               fill='#000000'
+               fill-rule='evenodd'
+               d='M4.94 10.94a1.5 1.5 0 0 1 2.12 0L16 19.878l8.94-8.94a1.5 1.5 0 0 1 2.12 2.122l-10 10a1.5 1.5 0 0 1-2.12 0l-10-10a1.5 1.5 0 0 1 0-2.122z'
+               clip-rule='evenodd'
                data-original='#000000'
-               opacity='1'
             ></path>
          </g>
       </svg>

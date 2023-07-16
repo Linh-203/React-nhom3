@@ -43,9 +43,9 @@ function Button(props: IProps) {
          {props.hadChildren && (
             <span>
                {props.isDropdown ? (
-                  <DownArrow className='w-5 absolute right-2 top-1/3' />
+                  <DownArrow className='w-5 absolute right-2 top-1/3 dark:text-white' />
                ) : (
-                  <UpArrow className='w-5 absolute right-2 top-1/3' />
+                  <UpArrow className='w-5 absolute right-2 top-1/3 dark:text-white' />
                )}
             </span>
          )}
