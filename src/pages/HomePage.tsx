@@ -26,7 +26,7 @@ const HomePage = () => {
    console.log(products);
 
    return (
-      <div className='container'>
+      <div className='w-full'>
          <hr />
          <CateSlide />
          <Banner />
