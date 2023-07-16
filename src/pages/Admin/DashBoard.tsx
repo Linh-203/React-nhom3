@@ -10,9 +10,9 @@ const analytics: IProps[] = [
 
 const DashBoard = () => {
   return (
-    <div>
+    <div >
       <h1 className="text-4xl font-bold">Welcome to DashBoard</h1>
-      <div className="flex justify-between items-center my-5">
+      <div className="flex justify-between items-center my-5 text-black">
         {analytics.map((item, index) => (
           <AnalyticOverview key={index} {...item}/>
         ))}

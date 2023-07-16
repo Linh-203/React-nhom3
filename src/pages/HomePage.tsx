@@ -12,12 +12,13 @@ import CateSlide from '../components/CateSlide/CateSlide';
 import Delivery from '../components/Delivery/Delivery';
 import BannerSales from '../components/BannerSales/BannerSales';
 import Blog from '../components/Blog/Blog';
+import { IProduct } from '../common/product';
 const HomePage = () => {
-   const [products, setProduct] = useState([]);
+   const [products, setProduct] = useState<IProduct[]>([]);
    useEffect(() => {
       productService
-         .getAllProduct()
-         .then(({ data }) => setProduct(data))
+         .getAllProduct({})
+         .then(({ data }) => setProduct(data.data))
          .catch(({ response }) => {
             alert(response.data.message);
          });

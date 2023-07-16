@@ -1,6 +1,4 @@
-import React from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
+import { SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -8,12 +6,13 @@ import 'swiper/css/scrollbar';
 import { useEffect, useState } from 'react';
 import productService from '../../api/product';
 import Slide from '../../components/Slide/Slide';
+import { IProduct } from '../../common/product';
 const CateSlide = () => {
-   const [products, setProduct] = useState([]);
+   const [products, setProduct] = useState<IProduct[]>([]);
    useEffect(() => {
       productService
-         .getAllProduct()
-         .then(({ data }) => setProduct(data))
+         .getAllProduct({})
+         .then(({ data }) => setProduct(data.data))
          .catch(({ response }) => {
             alert(response.data.message);
          });
