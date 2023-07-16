@@ -32,7 +32,7 @@ function Button(props: IProps) {
    
    return (
       <Comp
-         className={`relative w-full rounded-lg h-14 items-center justify-between  flex p-5 hover:bg-navBg text-black`}
+         className={`relative w-full mx-auto rounded-2xl h-14 items-center justify-between  flex p-5 hover:bg-navBg dark:hover:bg-navDarkBg text-black dark:text-white`}
          onClick={props.hadChildren?onHandleClick:()=>undefined}
          {...prps}
       >
@@ -43,9 +43,9 @@ function Button(props: IProps) {
          {props.hadChildren && (
             <span>
                {props.isDropdown ? (
-                  <DownArrow className='w-5 absolute right-2 top-1/3' />
+                  <DownArrow className='w-5 absolute right-2 top-1/3 dark:text-white' />
                ) : (
-                  <UpArrow className='w-5 absolute right-2 top-1/3' />
+                  <UpArrow className='w-5 absolute right-2 top-1/3 dark:text-white' />
                )}
             </span>
          )}

@@ -1,8 +1,9 @@
 import styles from './header.module.css';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import GlassIcon from '../../assets/icons/GlassIcon';
 import HeartIcon from '../../assets/icons/HeartIcon';
 import CartIcon from '../../assets/icons/CartIcon';
+import { useEffect, useRef, useState } from 'react';
 
 type NavLink = {
    path: string;
@@ -24,8 +25,19 @@ const navItems: NavLink[] = [
    }
 ];
 const Header = () => {
+   const location = useLocation();
+   const [path, setPath] = useState<string>('');
+   const headerRef = useRef(null);
+   useEffect(() => {
+      setPath(location.pathname);
+   }, [location.pathname]);
    return (
-      <header className={`${styles['header']}`}>
+      //get height of header
+      // listen window scroll
+      //set history of each time scroll
+      // smaller than history -> up -> fixed header
+      // contrary
+      <header className={`${styles['header']}`} ref={headerRef}>
          <div className='w-[20%]'>
             <img
                src='https://spacingtech.com/html/tm/freozy/freezy-ltr/image/logo/logo.png'
@@ -38,7 +50,7 @@ const Header = () => {
                {navItems.map((item, index) => (
                   <li
                      className={`font-semibold text-[1.3rem] text-colorText hover:text-hightLigh text-center ${
-                        window.location.pathname === item.path ? 'text-hightLigh' : 'text-colorText'
+                        path === item.path ? 'text-hightLigh' : 'text-colorText'
                      }`}
                      key={index}
                   >
