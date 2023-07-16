@@ -16,7 +16,7 @@ function AdminLayout() {
          <AdminSideBar isMenuActive={menuState} />
          <div className={`min-h-screen rounded-3xl transition-all ${menuState ? 'ml-[280px]' : 'ml-0'}`}>
             <AdminHeader toggleMenu={toggleMenu} />
-            <div className='min-h-screen px-4 py-5 drop-shadow-2xl bg-white rounded-3xl'>
+            <div className='min-h-screen px-4 py-5 bg-white rounded-3xl'>
                <Outlet />
             </div>
          </div>

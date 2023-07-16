@@ -6,10 +6,12 @@ export default {
          colors: {
             colorText: '#333333',
             hightLigh: '#d2401e',
-            greenCus: '#8db049'
+            greenCus: '#8db049',
+            grayLight200:'#7c7e7c',
+            grayLight100:'#b0b0b0'
          },
          backgroundColor: {
-            primaryBg: 'rgba(0,0,0,0.1)',
+            primaryBg: '#f8f8f8',
             sectionBg: '#f1f1f1',
             navBg: '#badaf6',
             dropBg: '#e1dede'

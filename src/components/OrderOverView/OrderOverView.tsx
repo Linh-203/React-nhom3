@@ -70,7 +70,7 @@ function OrderOverView() {
       <div className='rounded-2xl p-4 my-12 bg-dropBg'>
          <div>
             <h1 className='text-[20px]'>RECENTLY PLACED ORDERS</h1>
-            <table className='w-full my-5 rounded-2xl overflow-hidden'>
+            <table className='w-full my-5 rounded-t-2xl overflow-hidden'>
                <thead className='bg-navBg'>
                   <tr>
                      <th className='p-2' scope='col'>
