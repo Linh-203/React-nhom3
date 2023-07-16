@@ -1,10 +1,12 @@
-import { IProduct } from '../../common/product';
-import CardProduct from '../../components/CardProduct/CardProduct';
+import { useState, useEffect } from 'react';
+import { ICategory } from '../../common/category';
+
 import LabelRed from '../../components/Label/LabelRed';
-import styles from './ProductPage.module.css';
 import CheckBoxs, { CheckBox } from './components/CheckBoxs';
 import FilterAttribute from './components/FilterAttribute';
+import ListProduct from './components/ListProduct';
 import RangeInput from './components/RangeInput';
+import { getAllCategory } from '../../api/category';
 const fakeFilter: CheckBox[] = [
    {
       name: 'attribute',
@@ -20,69 +22,25 @@ const fakeFilter: CheckBox[] = [
    }
 ];
 
-const fakeProducts: IProduct[] = [
-   {
-      _id: '1',
-      name: 'Product',
-      desc: 'aaaaa',
-      categoryId: 'a',
-      price: 20,
-      solded: 5,
-      stock: 60,
-      images: [
-         {
-            url: 'https://spacingtech.com/html/tm/freozy/freezy-ltr/image/product/p-4.jpg'
-         }
-      ],
-      discount: 0
-   },
-   {
-      _id: '1',
-      name: 'Product',
-      desc: 'aaaaa',
-      categoryId: 'a',
-      price: 20,
-      solded: 5,
-      stock: 60,
-      images: [
-         {
-            url: 'https://spacingtech.com/html/tm/freozy/freezy-ltr/image/product/p-4.jpg'
-         }
-      ],
-      discount: 0
-   },
-   {
-      _id: '1',
-      name: 'Product',
-      desc: 'aaaaa',
-      categoryId: 'a',
-      price: 20,
-      solded: 5,
-      stock: 60,
-      images: [
-         {
-            url: 'https://spacingtech.com/html/tm/freozy/freezy-ltr/image/product/p-4.jpg'
-         }
-      ],
-      discount: 0
-   },
-   {
-      _id: '1',
-      name: 'Product',
-      desc: 'aaaaa',
-      categoryId: 'a',
-      price: 20,
-      solded: 5,
-      stock: 60,
-      images: [
-         {
-            url: 'https://spacingtech.com/html/tm/freozy/freezy-ltr/image/product/p-4.jpg'
-         }
-      ],
-      discount: 12
-   }
-];
 const ProductPage = () => {
+   const [categories, setCategories] = useState<CheckBox[]>([]);
+   useEffect(() => {
+      void (async () => {
+         try {
+            const res = await getAllCategory();
+            const cates = res.data.data;
+            const checkBoxCategory: CheckBox[] = cates.map((item) => ({
+               value: item._id,
+               title: item.name,
+               name: 'category',
+               quantity: item.products ? item.products.length : 0
+            }));
+            setCategories(checkBoxCategory);
+         } catch (error) {
+            console.log(error);
+         }
+      })();
+   }, []);
    return (
       <div className='min-h-[100vh] w-full bg-primaryBg'>
          <div>Breadcrumb</div>
@@ -101,10 +59,10 @@ const ProductPage = () => {
                </FilterAttribute>
 
                <FilterAttribute label='Product Type' type='checkbox'>
-                  <CheckBoxs checkboxs={fakeFilter} />
+                  <CheckBoxs checkboxs={categories} />
                </FilterAttribute>
             </article>
-            <main className='w-[50%]'>
+            <main className='sm:w-[60%] lg:w-[55%]'>
                <LabelRed>All Products</LabelRed>
                <img
                   src='https://spacingtech.com/html/tm/freozy/freezy-ltr/image/collection/collection-banner.jpg'
@@ -120,11 +78,7 @@ const ProductPage = () => {
                   </div>
                </article>
                <hr className='h-[1px] bg-grayLight100 mt-5' />
-               <section className='grid grid-cols-3 gap-5 mt-5'>
-                  {fakeProducts.map((item, index) => (
-                     <CardProduct product={item} link='/' key={index} />
-                  ))}
-               </section>
+               <ListProduct />
             </main>
          </section>
       </div>
