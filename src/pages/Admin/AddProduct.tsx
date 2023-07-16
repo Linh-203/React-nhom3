@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'
-import productService from '../../api/product';;
+import productService from '../../api/product';
 import categoryService from '../../api/category';
 
 const AddProduct = () => {
   const navigate = useNavigate()
-
   const [categories, setCategories] = useState([])
 
   const getAllCategory = async () => {

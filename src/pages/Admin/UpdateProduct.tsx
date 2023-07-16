@@ -1,3 +1,7 @@
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'
+import productService from '../../api/product';
+import categoryService from '../../api/category';
 
 
 const UpdateProduct = () => {
