@@ -12,9 +12,7 @@ type IProps = {
 function ProductTbaleItem({ prd, index, deleteAction }: IProps) {
    const [toggle, setToggle] = useState<boolean>(false);
 
-   const deleteItem = (id: string) => {
-      console.log(1);
-      
+   const deleteItem = (id: string) => {      
       deleteAction(id)
    }
 
