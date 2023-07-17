@@ -3,6 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 import productService from '../../api/product';
 import categoryService from '../../api/category';
 import { useState, useEffect } from 'react';
+import { uploadImage } from '../../api/upload';
+import { IProduct } from '../../common/product';
 
 const UpdateProduct = () => {
   const navigate = useNavigate()
@@ -10,7 +12,7 @@ const UpdateProduct = () => {
   console.log(id);
 
   const [categories, setCategories] = useState([])
-  const [product, setProduct] = useState({})
+  const [product, setProduct] = useState<IProduct>({})
 
 
   const getAllCategory4 = async () => {
@@ -49,27 +51,51 @@ const UpdateProduct = () => {
 
   const onhandleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    const product = {
+    let images = product.images.map(img => {
+      img._id = undefined
+      return img
+    })
+    console.log(images);
+    
+    console.log(e.target[0]);
+    if (e.target[7].files.length > 0) {
 
-      name: e.target[0].value,
-      price: e.target[1].value,
-      stock: e.target[2].value,
-      solded: e.target[3].value,
-      discount: e.target[4].value,
-      favorite: e.target[5].value,
-      categoryId: e.target[6].value,
-      images: [{ url: 'https://picsum.photos/300/200', public_id: '123' }],
-      desc: e.target[8].value
+      const fileList = e.target[7].files
+      const formData = new FormData()
+      for (const file of fileList) {
+        formData.append('images', file)
+      }
+
+      const { data } = await uploadImage(formData)
+      if (data.data.length > 0) {
+        
+        images = data.data
+        console.log( data.data)
+      } else {
+        alert('Fail to upload image')
+      }
     }
-    console.log(product);
+    
+    const item = {
+      name: product.name,
+      price: product.price,
+      stock: product.stock,
+      solded: product.solded,
+      discount: product.discount,
+      favorite: product.favorite,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      categoryId: product.categoryId._id? product.categoryId._id : product.categoryId,
+      images: images,
+      desc: product.desc,
+    }
+    console.log(item);
 
-    await onHandleUpdate(product)
-
+    onHandleUpdate(item)
   }
 
   return (
     <div>
-      <div><h2 className="text-4xl font-bold dark:text-white">Udate Product</h2></div>
+      <div><h2 className="text-4xl font-bold dark:text-white">Update Product</h2></div>
       {Object.keys(product).length > 0 && (
         <form onSubmit={onhandleSubmit} >
 
@@ -110,7 +136,7 @@ const UpdateProduct = () => {
           <div className="grid md:grid-cols-2 md:gap-6">
             <div className="relative z-0 w-full mb-6 group">
               <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an category</label>
-              <select id="category" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+              <select onChange={e => onHandleChange(e)} name='categoryId' id="categoryId" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 <option selected value={product?.categoryId._id}>{product?.categoryId.name}</option>
 
                 {
@@ -123,8 +149,7 @@ const UpdateProduct = () => {
 
             <div className="relative z-0 w-full mb-6 group">
               <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Upload file</label>
-              <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-describedby="file_input_help" id="file_input" type="file" />
-              <input className="" aria-describedby="file_input_help" id="file_input" type="text" hidden />
+              <input id="images" name="images" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-describedby="file_input_help" multiple type="file" />
             </div>
 
           </div>

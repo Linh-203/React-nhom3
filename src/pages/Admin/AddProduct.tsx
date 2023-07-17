@@ -2,9 +2,12 @@ import { useNavigate } from 'react-router-dom'
 import productService from '../../api/product';
 import categoryService from '../../api/category';
 import { useState, useEffect } from 'react';
+import { uploadImage } from '../../api/upload';
+import { IProduct } from '../../common/product';
 const AddProduct = () => {
    const navigate = useNavigate()
    const [categories, setCategories] = useState([])
+   const [product, setProduct] = useState<IProduct>({})
 
    const getAllCategory4 = async () => {
       const res = await categoryService.getAllCategory()
@@ -15,6 +18,11 @@ const AddProduct = () => {
    }, [])
    console.log(categories);
 
+   const onHandleChange = (e) => {
+      const { name, value } = e.target
+      setProduct({ ...product, [name]: value })
+  
+    }
 
    const onHandleAdd = async (product) => {
       await productService.addProduct(product)
@@ -28,21 +36,30 @@ const AddProduct = () => {
 
    const onhandleSubmit = async (e: React.FormEvent) => {
       e.preventDefault()
-      const product = {
-
-         name: e.target[0].value,
-         price: e.target[1].value,
-         stock: e.target[2].value,
-         solded: e.target[3].value,
-         discount: e.target[4].value,
-         favorite: e.target[5].value,
-         categoryId: e.target[6].value,
-         images: [{ url: 'https://picsum.photos/300/200', public_id: '123' }],
-         desc: e.target[8].value
+      console.log(e.target[7].files);
+      const fileList = e.target[7].files
+      const formData = new FormData()
+      for(const file of fileList) {
+        formData.append('images', file)
       }
-      console.log(product);
-
-      await onHandleAdd(product)
+      await uploadImage(formData).then(({data}) => {
+         
+         const item = {
+            name: product.name,
+            price: product.price,
+            stock: product.stock,
+            solded: product.solded,
+            discount: product.discount,
+            favorite: product.favorite,
+            categoryId: product.categoryId,
+            images: data.data,
+            desc: product.desc,
+         }
+         console.log(item);
+   
+          onHandleAdd(item)
+      }).catch(err => console.log(err));
+      
 
    }
    return (
@@ -52,33 +69,33 @@ const AddProduct = () => {
 
             <div className="grid md:grid-cols-2 md:gap-6">
                <div className="relative z-0 w-full mb-6 group">
-                  <input type="text" name="floating_first_name" id="floating_first_name" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                  <input onChange={(e) => onHandleChange(e)} type="text" name="name" id="name" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "  />
                   <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Product name</label>
                </div>
                <div className="relative z-0 w-full mb-6 group">
-                  <input type="number" name="floating_last_name" id="floating_last_name" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                  <input onChange={(e) => onHandleChange(e)} type="number" name="price" id="price" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "  />
                   <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Price</label>
                </div>
             </div>
 
             <div className="grid md:grid-cols-2 md:gap-6">
                <div className="relative z-0 w-full mb-6 group">
-                  <input type="number" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                  <input onChange={(e) => onHandleChange(e)} type="number"  name="stock" id="stock" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "  />
                   <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Stock</label>
                </div>
                <div className="relative z-0 w-full mb-6 group">
-                  <input min={0} type="number" name="floating_company" id="floating_company" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                  <input onChange={(e) => onHandleChange(e)} type="number" name="solded" id="solded" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "  />
                   <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Sold_out</label>
                </div>
             </div>
 
             <div className="grid md:grid-cols-2 md:gap-6">
                <div className="relative z-0 w-full mb-6 group">
-                  <input type="number" name="floating_company" id="floating_company" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                  <input onChange={(e) => onHandleChange(e)} type="number" name="discount" id="discount" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "  />
                   <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Discount</label>
                </div>
                <div className="relative z-0 w-full mb-6 group">
-                  <input type="number" name="floating_company" id="floating_company" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                  <input onChange={(e) => onHandleChange(e)} type="number" name="favorite" id="favorite" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "  />
                   <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Favorite</label>
                </div>
 
@@ -87,7 +104,7 @@ const AddProduct = () => {
             <div className="grid md:grid-cols-2 md:gap-6">
                <div className="relative z-0 w-full mb-6 group">
                   <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an Category</label>
-                  <select id="category" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                  <select onChange={(e) => onHandleChange(e)} name="categoryId" id="categoryId" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                      <option selected>Category</option>
                      {
                         categories.length > 0 && categories.map((cate, index) => (
@@ -100,7 +117,7 @@ const AddProduct = () => {
 
                <div className="relative z-0 w-full mb-6 group">
                   <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Upload file</label>
-                  <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-describedby="file_input_help" id="file_input" type="file" />
+                  <input onChange={(e) => onHandleChange(e)} name="images" id="images" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-describedby="file_input_help" id="file_input" type="file" multiple/>
                </div>
             </div>
 
@@ -110,10 +127,12 @@ const AddProduct = () => {
                   <div className='px-4 py-2 bg-white rounded-t-lg dark:bg-gray-800'>
                      <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Description</label>
                      <textarea
-                        id='comment'
+                        name="desc"
+                        id="desc"
+                        onChange={(e) => onHandleChange(e)} 
                         className='w-full px-0 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400'
                         placeholder='Write a desc...'
-                        required
+                        
                      ></textarea>
                   </div>
                </div>

@@ -52,7 +52,7 @@ function ProductTbaleItem({ prd, index, deleteAction }: IProps) {
                </div>
                <ProductDetail id={prd._id} />
             </Portal>
-            <Link className='p-2 rounded-xl bg-blue-400 hover:bg-blue-500 text-[15px] text-white' to='/admin/products'>
+            <Link className='p-2 rounded-xl bg-blue-400 hover:bg-blue-500 text-[15px] text-white' to={'/admin/product-update/' + prd._id }>
                Update
             </Link>
             <button
