@@ -1,18 +1,17 @@
 import { Link } from 'react-router-dom';
 import Portal from '../Portal/PortalOfDang';
-import ProductDetail from '../../pages/Admin/ProductDetail';
 import { useState } from 'react';
-import { IProduct } from '../../common/product';
+import { ICategory } from '../../common/category';
 type IProps = {
-   prd: IProduct;
+   cate: ICategory;
    index: number;
    deleteAction(id: string): Promise<void>;
 };
 
-function ProductTbaleItem({ prd, index, deleteAction }: IProps) {
+function CategoryTableItem({ cate, index, deleteAction }: IProps) {
    const [toggle, setToggle] = useState<boolean>(false);
 
-   const deleteItem = async (id: string):Promise<void> => {
+   const deleteItem = async (id: string) => {
       await deleteAction(id)
    }
 
@@ -21,17 +20,14 @@ function ProductTbaleItem({ prd, index, deleteAction }: IProps) {
          <th className='p-2' scope='col'>
             {index + 1}
          </th>
+         {/* <th className='p-2' scope='col'>
+            <img src={cate!.images[0]!.url} className='rounded-2xl w-52 h-36 mx-auto' alt='' />
+         </th> */}
          <th className='p-2' scope='col'>
-            <img src={prd.images[0]!.url} className='rounded-2xl w-52 h-36 mx-auto' alt='' />
+            {cate.name}
          </th>
          <th className='p-2' scope='col'>
-            {prd.name}
-         </th>
-         <th className='p-2' scope='col'>
-            {prd.price}
-         </th>
-         <th className='p-2' scope='col'>
-            {prd.stock}
+            {cate.products!.length}
          </th>
          <th className='p-2 flex gap-2 justify-center items-center h-[160px]' scope='col'>
             <button
@@ -42,7 +38,7 @@ function ProductTbaleItem({ prd, index, deleteAction }: IProps) {
             </button>
             <Portal title={'Product Detail'} toggle={toggle}>
                <div className='flex pb-4 justify-between items-center'>
-                  <h1 className='text-4xl font-bold'>ProductDetail</h1>
+                  <h1 className='text-4xl font-bold'>Category Detail</h1>
                   <button
                      onClick={() => setToggle(false)}
                      className='text-white p-2 rounded-lg bg-red-400 hover:bg-red-500'
@@ -50,14 +46,13 @@ function ProductTbaleItem({ prd, index, deleteAction }: IProps) {
                      Close
                   </button>
                </div>
-               <ProductDetail id={prd._id} />
             </Portal>
-            <Link className='p-2 rounded-xl bg-blue-400 hover:bg-blue-500 text-[15px] text-white' to={'/admin/product-update/' + prd._id }>
+            <Link className='p-2 rounded-xl bg-blue-400 hover:bg-blue-500 text-[15px] text-white' to='/admin/categories'>
                Update
             </Link>
             <button
                // eslint-disable-next-line @typescript-eslint/no-misused-promises
-               onClick={() => deleteItem(prd._id)}
+               onClick={() => deleteItem(cate._id)}
                className='p-2 rounded-xl bg-red-400 hover:bg-red-500 text-[15px] text-white'
             >
                Delete
@@ -67,4 +62,4 @@ function ProductTbaleItem({ prd, index, deleteAction }: IProps) {
    );
 }
 
-export default ProductTbaleItem;
+export default CategoryTableItem;

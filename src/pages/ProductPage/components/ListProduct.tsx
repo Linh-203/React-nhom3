@@ -33,6 +33,8 @@ const ListProduct = React.memo(() => {
          <Paginate pageRange={pageRange} nextPage={nextPage} prevPage={prevPage} curPage={page} goToPage={goToPage} />
       </div>
    );
+
+   
 });
 
 export default ListProduct;
