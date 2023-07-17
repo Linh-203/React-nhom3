@@ -51,7 +51,12 @@ const UpdateProduct = () => {
 
   const onhandleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    let images = product.images
+    let images = product.images.map(img => {
+      img._id = undefined
+      return img
+    })
+    console.log(images);
+    
     console.log(e.target[0]);
     if (e.target[7].files.length > 0) {
 
@@ -78,7 +83,8 @@ const UpdateProduct = () => {
       solded: product.solded,
       discount: product.discount,
       favorite: product.favorite,
-      categoryId: product.categoryId._id,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      categoryId: product.categoryId._id? product.categoryId._id : product.categoryId,
       images: images,
       desc: product.desc,
     }
@@ -89,7 +95,7 @@ const UpdateProduct = () => {
 
   return (
     <div>
-      <div><h2 className="text-4xl font-bold dark:text-white">Udate Product</h2></div>
+      <div><h2 className="text-4xl font-bold dark:text-white">Update Product</h2></div>
       {Object.keys(product).length > 0 && (
         <form onSubmit={onhandleSubmit} >
 

@@ -45,7 +45,6 @@ const AddProduct = () => {
       await uploadImage(formData).then(({data}) => {
          
          const item = {
-
             name: product.name,
             price: product.price,
             stock: product.stock,
