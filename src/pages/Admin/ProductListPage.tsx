@@ -9,7 +9,7 @@ const ProductListPage = () => {
    const [pages, setPages] = useState<number>(1);
    const [itemToRender, setItemToRender] = useState<IProduct[]>([]);
    const [totalPages, setTotalPage] = useState<number[]>([]);
-   const [itemPerpage, setItemPerpage] = useState(5);
+   const [itemPerpage] = useState(5);
    const [currentPage, setCurrentPage] = useState(1);
 
    const handleSearch = (value: string) => {
@@ -112,14 +112,16 @@ const ProductListPage = () => {
             </thead>
             <tbody>
                {itemToRender.length > 0 &&
-                  itemToRender?.map((prd, index) => <ProductTbaleItem deleteAction={() => handleDeleteItem} prd={prd} index={index} key={index} />)}
+                  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                  itemToRender?.map((prd, index) => <ProductTbaleItem deleteAction={handleDeleteItem} prd={prd} index={index} key={index} />)
+               }
             </tbody>
          </table>
          <div className='paginate flex gap-1 justify-end py-3'>
             <button className='rounded-2xl bg-navBg p-2 hover:bg-slate-400' onClick={() => prevPage()}>
                Prev
             </button>
-            {totalPages.map((page: number, index: number) => (
+            {totalPages.map((_: number, index: number) => (
                <button
                   key={index}
                   className={`rounded-2xl hover:bg-zinc-200 w-10 h-10 p-2 border-[1px] ${
