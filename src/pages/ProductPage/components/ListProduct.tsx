@@ -23,6 +23,8 @@ const ListProduct = React.memo(() => {
          ))}
       </section>
    );
+
+   
 });
 
 export default ListProduct;

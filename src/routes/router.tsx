@@ -9,6 +9,7 @@ import ProductListPage from '../pages/Admin/ProductListPage';
 import CategoryListPage from '../pages/Admin/CategoryListPage';
 import AddProduct from '../pages/Admin/AddProduct';
 import AddCategory from '../pages/Admin/AddCategory';
+import DetailProduct from '../pages/DetailProduct';
 
 export const router = createBrowserRouter([
    {
@@ -21,8 +22,13 @@ export const router = createBrowserRouter([
          },
          {
             path: '/products',
-            element: <ProductPage />
-         }
+            element: <ProductPage />,
+            
+         },
+         {
+            path: '/products/:id',
+            element: <DetailProduct/>
+          }
       ]
    },
    {
