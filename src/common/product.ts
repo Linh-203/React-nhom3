@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export type IProduct = {
    data: any;
    favorite: ReactNode;

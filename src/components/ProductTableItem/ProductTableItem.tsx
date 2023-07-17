@@ -69,7 +69,7 @@ function ProductTbaleItem({ prd, index }: IProps) {
                   </Portal>
                   <Link
                      className='p-2 rounded-xl bg-blue-400 hover:bg-blue-500 text-[15px] text-white'
-                     to='/admin/products'
+                     to={'/admin/product-update/'+ prd._id}
                   >
                      Update
                   </Link>

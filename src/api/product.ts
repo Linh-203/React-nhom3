@@ -35,7 +35,7 @@ const getProductById = async (id: string): Promise<AxiosResponse<any>> => {
 const deleteProduct = async (id: string) => {
    return await instanse.delete('/products/' + id);
 };
-const addProduct = (product: number) => {
+const addProduct = (product: IProduct) => {
    return instanse.post('/products', product);
 };
 const updateProduct = (id: string, product: IProduct) => {
