@@ -9,6 +9,7 @@ import ProductListPage from '../pages/Admin/ProductListPage';
 import CategoryListPage from '../pages/Admin/CategoryListPage';
 import AddProduct from '../pages/Admin/AddProduct';
 import AddCategory from '../pages/Admin/AddCategory';
+import UpdateProduct from '../pages/Admin/UpdateProduct';
 
 export const router = createBrowserRouter([
    {
@@ -44,6 +45,10 @@ export const router = createBrowserRouter([
          {
             path: 'product-add',
             element: <AddProduct />
+         },
+         {
+            path: 'product-update/:id',
+            element: <UpdateProduct />
          },
          {
             path: 'categories',
