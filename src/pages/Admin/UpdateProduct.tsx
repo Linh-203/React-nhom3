@@ -17,8 +17,8 @@ const UpdateProduct = () => {
    const [errors, setErrors] = useState({});
 
    const getAllCategory4 = async () => {
-      const {data} = await categoryService.getAllCategory();
-      setCategories(data);
+      const { data } = await categoryService.getAllCategory();
+      setCategories(data.data);
    };
    useEffect(() => {
       void (async () => {
@@ -121,7 +121,7 @@ const UpdateProduct = () => {
             <form onSubmit={onhandleSubmit}>
                <div>
                   <h4>Current Image</h4>
-                  <img src={product?.images[0]?.url} alt="Image" className='w-96'/>
+                  <img src={product?.images[0]?.url} alt='Image' className='w-96' />
                </div>
                <div className='grid md:grid-cols-2 md:gap-6'>
                   <div className='relative z-0 w-full mb-6 group'>
