@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { IProduct, ResponsePaginate } from '../common/product';
+import { IProduct, ResponsePaginate,InputProduct } from '../common/product';
 import instanse from './instance';
 
 export type IQuery = {
@@ -46,17 +46,17 @@ const getAllProduct = async ({
    });
    return res;
 };
-const getProductById = async (id: string): Promise<AxiosResponse<any>> => {
+const getProductById = async (id: string): Promise<AxiosResponse<ResponsePaginate<IProduct>,any>> => {
    const res = await instanse.get('/products/' + id);
    return res;
 };
 const deleteProduct = async (id: string) => {
    return await instanse.delete('/products/' + id);
 };
-const addProduct = (product: IProduct) => {
+const addProduct = (product: InputProduct) => {
    return instanse.post('/products', product);
 };
-const updateProduct = (id: string, product: IProduct) => {
+const updateProduct = (id: string, product: InputProduct) => {
    return instanse.patch('/products/' + id, product);
 };
 const productService = { getAllProduct, getProductById, deleteProduct, addProduct, updateProduct };
