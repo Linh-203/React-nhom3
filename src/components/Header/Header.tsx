@@ -4,6 +4,7 @@ import GlassIcon from '../../assets/icons/GlassIcon';
 import HeartIcon from '../../assets/icons/HeartIcon';
 import CartIcon from '../../assets/icons/CartIcon';
 import { useEffect, useRef, useState } from 'react';
+import { useDebounce } from '../../hooks/useDebounce';
 
 type NavLink = {
    path: string;
@@ -33,15 +34,15 @@ const Header = () => {
    useEffect(() => {
       setPath(location.pathname);
    }, [location.pathname]);
-
-   const handleSearchInputChange = (event: any) => {
+ 
+   const handleSearchInputChange = (event: Event) => {
       setSearchKeyword(event.target.value);
    };
 
-   const handleSearchSubmit = (event: any) => {
+   const handleSearchSubmit = (event: Event) => {
       event.preventDefault();
       const searchParams = new URLSearchParams();
-      searchParams.append('', searchKeyword);
+      searchParams.append('q', searchKeyword);
       navigate({
          pathname: 'search',
          search: searchParams.toString()
@@ -61,7 +62,7 @@ const Header = () => {
                className='aspect-[3/1] w-[50%]'
             />
          </Link>
-         <nav className='w-[60%]'>
+         <nav className='w-[30%]'>
             <ul className='w-full flex justify-stretch items-center gap-8'>
                {navItems.map((item, index) => (
                   <li
@@ -75,13 +76,13 @@ const Header = () => {
                ))}
             </ul>
          </nav>
-         <div className='w-[25%] flex justify-end items-center gap-8'>
-            <div className='flex items-center gap-1 text-colorText  cursor-pointer'>
-               <form onSubmit={handleSearchSubmit}>
+         <div className='w-[60%] flex justify-end items-center gap-8'>
+            <div className='flex justify-between items-center gap-1 text-colorText  cursor-pointer '>
+               <form onSubmit={handleSearchSubmit} className='flex justify-center items-center'>
                   {/* <GlassIcon width='1.3rem' height='1.3rem' /> */}
                   <input
                      type='text'
-                     className='hover:text-hightLigh'
+                     className='hover:text-hightLigh outline-none focus:border-b-[1px] focus:border-b-grayLight100 mr-4 text-hightLigh'
                      value={searchKeyword}
                      onChange={handleSearchInputChange}
                      placeholder='Tìm kiếm'

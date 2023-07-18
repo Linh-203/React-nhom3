@@ -1,7 +1,7 @@
 import HeadPhone from '../../assets/icons/HeadPhone';
 const Footer = () => {
    return (
-      <div className='w-full'>
+      <footer className='w-full bg-primaryBg'>
          <div className='grid grid-cols-4 gap-10 items-center px-24 pt-28 pb-10 bg-[#f8f8f8]'>
             <div>
                <img
@@ -79,7 +79,7 @@ const Footer = () => {
                <img src='https://spacingtech.com/html/tm/freozy/freezy-ltr/image/payment-icon/visa.svg' alt='' />
             </div>
          </div>
-      </div>
+      </footer>
    );
 };
 
