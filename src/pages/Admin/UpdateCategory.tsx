@@ -1,15 +1,20 @@
 import axios from "axios";
 import { useState, useEffect } from "react"
-import { createCate, getCategoryById, updateCategory } from "../../api/category";
-import { useNavigate, useParams } from "react-router-dom";
+import { getCategoryById, updateCategory } from "../../api/category";
+import { useParams } from "react-router-dom";
 import { ICategory } from "../../common/category";
+import { MessageProp } from "./AddProduct";
+import Message from "../../components/Message/Message";
+import Loading from "../../components/Loading/Loading";
+
+
 const UpdateCategory = () => {
     const [cateName, setCateName] = useState("")
     const [cateNameErr, setCateNameErr] = useState(false)
     const [cateImg, setCateImg] = useState()
-    const [cateImgErr, setCateImgErr] = useState(false)
+    const [loading, setLoading] = useState<boolean>(false);
+    const [msg, setMsg] = useState<MessageProp>();
     const [cate, setCate] = useState<ICategory>()
-    const navigate = useNavigate()
     console.log(cateImg);
 
     const { id } = useParams()
@@ -21,6 +26,7 @@ const UpdateCategory = () => {
             setCateImg(data.category.image)
         })
     }, [id])
+
     const onChangeName = (e: any) => {
         const value = e.target.value
         setCateName(value)
@@ -36,22 +42,18 @@ const UpdateCategory = () => {
         }
     }
 
-
-
-
-    const onSubmit = async (e: any) => {
+    const onSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
           let imgCate = cateImg
         if (cateName.length <= 0) {
             setCateNameErr(true)
             return
         }
-        console.log(e.target[1].files);
+
+            
         const fileList = e.target[1].files
-        
+        setLoading(true)
         if (fileList.length > 0) {
-
-
             const formData = new FormData()
             for (const file of fileList) {
                 formData.append('images', file)
@@ -59,12 +61,8 @@ const UpdateCategory = () => {
 
             await axios.post('http://localhost:8000/api/upload', formData)
                 .then((response) => {
-         
                     console.log(response.data.data[0].url);
-                      imgCate = response.data.data[0].url
-                 
-
-
+                    imgCate = response.data.data[0].url
                 })
                 .catch((error) => {
                     console.log(error);
@@ -78,17 +76,23 @@ const UpdateCategory = () => {
             }
             console.log(data);
 
-            updateCategory(id, data)
-            alert("oki")
+            await updateCategory(id, data).then(() => {
+                setLoading(false)
+                setMsg({ content: 'Update category successfully !', type: 'success' });
+            }).catch(() => {
+                setLoading(false)
+                setMsg({ content: 'Fail to update category !', type: 'error' });
+            })
         }
         // navigate("/admin/categories")
 
     }
 
-
+    if (loading) return <Loading />;
 
     return (
         <div>
+            {msg && <Message msg={msg.content} type={msg.type} duration={1000} navigateLink='/admin/categories' />}
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <img
@@ -110,13 +114,12 @@ const UpdateCategory = () => {
                             </label>
                             <div className="mt-2">
                                 <input
-                                    defaultValue={cate?.name}
+                                    value={cateName}
                                     id="email"
                                     name="name"
                                     type="text"
                                     onChange={onChangeName}
                                     onBlur={() => onBlurName(cateName)}
-
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>
@@ -132,11 +135,9 @@ const UpdateCategory = () => {
                             </div>
                             <div className="mt-2">
                                 <input
-                                    defaultValue={cate?.image}
                                     id="password"
                                     name="image"
                                     type="file"
-
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>

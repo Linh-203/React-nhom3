@@ -3,8 +3,6 @@ import SearchIcon from '../../assets/icons/SearchIcon';
 import { ICategory } from '../../common/category';
 import { getAllCategory, removeCategoryById } from '../../api/category';
 import CategoryTableItem from '../../components/CategoryTableItem/CategoryTableItem';
-import instance from '../../api/instance';
-import { AxiosResponse } from 'axios';
 
 const CategoryListPage = () => {
    const [item, setItem] = useState<ICategory[]>([]);
@@ -15,9 +13,8 @@ const CategoryListPage = () => {
    const [currentPage, setCurrentPage] = useState(1);
 
    const handleSearch = async (value: string) => {
-      // const filter = item.filter((item) => item.name.toLowerCase().match(value.toLowerCase()));
-      const searchResult: AxiosResponse<ICategory[], any> = await instance.get('/products?_q='+value)
-      renderItemPerpage(searchResult.data.data);
+      const filter = item.filter((item) => item.name.toLowerCase().match(value.toLowerCase()));
+      renderItemPerpage(filter);
    };
 
    const renderItemPerpage = (item: ICategory[]) => {
