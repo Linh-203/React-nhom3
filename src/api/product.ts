@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 import { IProduct, ResponsePaginate } from '../common/product';
-import instanse from './instanse';
+import instanse from './instance';
 
 export type IQuery = {
    sort: string;

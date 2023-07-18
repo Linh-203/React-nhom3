@@ -1,8 +1,8 @@
 import axios from 'axios';
-const instanse = axios.create({
+const instance = axios.create({
    baseURL: 'http://localhost:8000/api',
    headers: {
       // Authorization:'Bearer ${token}'
    }
 });
-export default instanse;
+export default instance;
