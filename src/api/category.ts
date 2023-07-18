@@ -1,11 +1,9 @@
-import { AxiosResponse } from 'axios';
 import instance from './instance';
-import { ResponsePaginate } from '../common/product';
+
 import { ICategory } from '../common/category';
 
-
 export const createCate =async(data:ICategory)=>{
-  return await instance.post("categories",data)
+  return await instance.post("/categories",data)
 }
 export const getAllCategory = async (): Promise<ICategory[]> => {
   const res = await instance.get('/categories?_expand');
@@ -13,6 +11,10 @@ export const getAllCategory = async (): Promise<ICategory[]> => {
 };
  export const getCategoryById = async (id: string)=> {
   return await instance.get('/categories/' + id)
+
+}
+export const removeCategoryById = async (id: string)=> {
+  return await instance.delete('/categories/' + id)
 
 }
 export const updateCategory = async (id: string,data:ICategory) => {
