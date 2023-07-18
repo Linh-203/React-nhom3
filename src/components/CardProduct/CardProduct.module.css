@@ -1,7 +1,8 @@
 .wrapper{
     overflow: hidden;
+    position: relative;
 }
-.wrapper:hover > .tail{
+.wrapper:hover > a .tail{
  left: -4rem;
  transition:left 0.5s ease-in-out;
 }
@@ -13,7 +14,6 @@
 .mark{
     display: none;
     width: 100%;
-    height: 100%;
     position: absolute;
     background: rgba(255, 255, 255, 0.747);
     z-index: 10;
@@ -21,14 +21,16 @@
     left: 0;
     transition: 0.5s ease-in-out;
 }
-.wrapper:hover > div .mark{
+.wrapper:hover > .mark{
     display: flex;
     justify-content: center;
     align-items: center;
 }
 .sub-btn{
     position: relative;
+    z-index: 100;
 }
+
 .tooltip-arrow{
     display: none;
     transition: 1s;
