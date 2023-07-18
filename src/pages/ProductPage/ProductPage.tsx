@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback} from 'react';
 
 import LabelRed from '../../components/Label/LabelRed';
 import Radios, { CheckBox } from './components/Radios';
