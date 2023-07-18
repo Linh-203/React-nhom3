@@ -17,8 +17,8 @@ const UpdateProduct = () => {
    const [errors, setErrors] = useState({});
 
    const getAllCategory4 = async () => {
-      const res = await categoryService.getAllCategory();
-      setCategories(res.data.data);
+      const {data} = await categoryService.getAllCategory();
+      setCategories(data);
    };
    useEffect(() => {
       void (async () => {
@@ -53,7 +53,7 @@ const UpdateProduct = () => {
       let isValid = true;
       const errs = {};
       for (const key in item) {
-         if (item[key] === '') {
+         if (item[key] === '' || item[key] == undefined) {
             errs[key] = 'Hãy nhập ' + key;
             isValid = false;
          } else {
@@ -119,6 +119,10 @@ const UpdateProduct = () => {
          </div>
          {Object.keys(product).length > 0 && (
             <form onSubmit={onhandleSubmit}>
+               <div>
+                  <h4>Current Image</h4>
+                  <img src={product?.images[0]?.url} alt="Image" className='w-96'/>
+               </div>
                <div className='grid md:grid-cols-2 md:gap-6'>
                   <div className='relative z-0 w-full mb-6 group'>
                      <input
@@ -234,7 +238,7 @@ const UpdateProduct = () => {
                            {product?.categoryId?.name}
                         </option>
 
-                        {categories.length > 0 &&
+                        {categories?.length > 0 &&
                            categories.map((cate, index) => (
                               <option key={index} value={cate._id}>
                                  {cate.name}
