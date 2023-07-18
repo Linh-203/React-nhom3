@@ -55,9 +55,9 @@ const CategoryListPage = () => {
      setCurrentPage(page);
   };
 
-  const getAllProducts = async () => {
+  const getAllCategories= async () => {
      const { data } = await getAllCategory();
-     setItem(data.data);
+     setItem(data);
   };
 
   useEffect(() => {
@@ -66,7 +66,7 @@ const CategoryListPage = () => {
   }, [item, currentPage]);
 
   useEffect(() => {
-     getAllProducts().catch(() => {
+   getAllCategories().catch(() => {
         console.log('getAllProducts failed');
      });
   }, []);
@@ -94,9 +94,9 @@ const CategoryListPage = () => {
                   <th className='p-2' scope='col'>
                      ID
                   </th>
-                  {/* <th className='p-2 text-center' scope='col'>
+                  <th className='p-2 text-center' scope='col'>
                      Image
-                  </th> */}
+                  </th>
                   <th className='p-2' scope='col'>
                      Category Name
                   </th>

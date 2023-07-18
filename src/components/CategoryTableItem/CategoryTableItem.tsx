@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import Portal from '../Portal/PortalOfDang';
 import { useState } from 'react';
 import { ICategory } from '../../common/category';
+import CategoryDetail from '../../pages/Admin/CategoryDetail';
 type IProps = {
    cate: ICategory;
    index: number;
@@ -20,14 +21,14 @@ function CategoryTableItem({ cate, index, deleteAction }: IProps) {
          <th className='p-2' scope='col'>
             {index + 1}
          </th>
-         {/* <th className='p-2' scope='col'>
-            <img src={cate!.images[0]!.url} className='rounded-2xl w-52 h-36 mx-auto' alt='' />
-         </th> */}
          <th className='p-2' scope='col'>
-            {cate.name}
+            <img src={cate?.image} className='rounded-2xl w-52 h-36 mx-auto' alt='' />
          </th>
          <th className='p-2' scope='col'>
-            {cate.products!.length}
+            {cate?.name}
+         </th>
+         <th className='p-2' scope='col'>
+            {cate?.products?.length}
          </th>
          <th className='p-2 flex gap-2 justify-center items-center h-[160px]' scope='col'>
             <button
@@ -46,13 +47,14 @@ function CategoryTableItem({ cate, index, deleteAction }: IProps) {
                      Close
                   </button>
                </div>
+               <CategoryDetail id={cate?._id}/>
             </Portal>
-            <Link className='p-2 rounded-xl bg-blue-400 hover:bg-blue-500 text-[15px] text-white' to='/admin/categories'>
+            <Link className='p-2 rounded-xl bg-blue-400 hover:bg-blue-500 text-[15px] text-white' to={`/admin/category-edit/${cate?._id}`}>
                Update
             </Link>
             <button
                // eslint-disable-next-line @typescript-eslint/no-misused-promises
-               onClick={() => deleteItem(cate._id)}
+               onClick={() => deleteItem(cate?._id)}
                className='p-2 rounded-xl bg-red-400 hover:bg-red-500 text-[15px] text-white'
             >
                Delete
