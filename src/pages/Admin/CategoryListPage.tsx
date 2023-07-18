@@ -6,70 +6,70 @@ import { getAllCategory, removeCategoryById } from '../../api/category';
 import CategoryTableItem from '../../components/CategoryTableItem/CategoryTableItem';
 
 const CategoryListPage = () => {
-  const [item, setItem] = useState<ICategory[]>([]);
-  const [pages, setPages] = useState<number>(1);
-  const [itemToRender, setItemToRender] = useState<ICategory[]>([]);
-  const [totalPages, setTotalPage] = useState<number[]>([]);
-  const [itemPerpage] = useState(5);
-  const [currentPage, setCurrentPage] = useState(1);
+   const [item, setItem] = useState<ICategory[]>([]);
+   const [pages, setPages] = useState<number>(1);
+   const [itemToRender, setItemToRender] = useState<ICategory[]>([]);
+   const [totalPages, setTotalPage] = useState<number[]>([]);
+   const [itemPerpage] = useState(5);
+   const [currentPage, setCurrentPage] = useState(1);
 
-  const handleSearch = (value: string) => {
-     const filter = item.filter((item) => item.name.toLowerCase().match(value.toLowerCase()));
-     renderItemPerpage(filter);
-  };
+   const handleSearch = (value: string) => {
+      const filter = item.filter((item) => item.name.toLowerCase().match(value.toLowerCase()));
+      renderItemPerpage(filter);
+   };
 
-  const renderItemPerpage = (item: ICategory[]) => {
-     setPages(Math.ceil(item.length / itemPerpage));
-     setTotalPage(Array.from(Array(Math.ceil(item.length / itemPerpage)).keys()).map((page) => page + 1));
-     const start = (currentPage - 1) * itemPerpage;
-     const end = start + itemPerpage;
-     setItemToRender(item.slice(start, end));
-  };
+   const renderItemPerpage = (item: ICategory[]) => {
+      setPages(Math.ceil(item.length / itemPerpage));
+      setTotalPage(Array.from(Array(Math.ceil(item.length / itemPerpage)).keys()).map((page) => page + 1));
+      const start = (currentPage - 1) * itemPerpage;
+      const end = start + itemPerpage;
+      setItemToRender(item.slice(start, end));
+   };
 
-  const nextPage = () => {
-     if (currentPage < pages) {
-        setCurrentPage((prev) => (prev += 1));
-     }
-  };
+   const nextPage = () => {
+      if (currentPage < pages) {
+         setCurrentPage((prev) => (prev += 1));
+      }
+   };
 
-  const handleDeleteItem = async (id: string): Promise<void> => {
-     await removeCategoryById(id)
-        .then(() => {
-           alert('Deleted product');
-           getAllCategories().catch(() => {
-              console.log('getAllCategories failed');
-           });
-        })
-        .catch(() => {
-           console.log('error deleting category');
-        });
-  };
+   const handleDeleteItem = async (id: string): Promise<void> => {
+      await removeCategoryById(id)
+         .then(() => {
+            alert('Deleted product');
+            getAllCategories().catch(() => {
+               console.log('getAllCategories failed');
+            });
+         })
+         .catch(() => {
+            console.log('error deleting category');
+         });
+   };
 
-  const prevPage = () => {
-     if (currentPage > 1) {
-        setCurrentPage((prev) => (prev -= 1));
-     }
-  };
-  const changePage = (page: number) => {
-     setCurrentPage(page);
-  };
+   const prevPage = () => {
+      if (currentPage > 1) {
+         setCurrentPage((prev) => (prev -= 1));
+      }
+   };
+   const changePage = (page: number) => {
+      setCurrentPage(page);
+   };
 
-  const getAllCategories= async () => {
-     const { data } = await getAllCategory();
-     setItem(data);
-  };
+   const getAllCategories = async () => {
+      const { data } = await getAllCategory();
+      setItem(data.data);
+   };
 
-  useEffect(() => {
-     renderItemPerpage(item);
-     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [item, currentPage]);
+   useEffect(() => {
+      renderItemPerpage(item);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [item, currentPage]);
 
-  useEffect(() => {
-   getAllCategories().catch(() => {
-        console.log('getAllProducts failed');
-     });
-  }, []);
-  console.log(itemToRender);
+   useEffect(() => {
+      getAllCategories().catch(() => {
+         console.log('getAllProducts failed');
+      });
+   }, []);
+   console.log(itemToRender);
 
    return (
       <div>

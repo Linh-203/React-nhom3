@@ -1,5 +1,5 @@
 import styles from './header.module.css';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import GlassIcon from '../../assets/icons/GlassIcon';
 import HeartIcon from '../../assets/icons/HeartIcon';
 import CartIcon from '../../assets/icons/CartIcon';
@@ -25,12 +25,28 @@ const navItems: NavLink[] = [
    }
 ];
 const Header = () => {
+   const [searchKeyword, setSearchKeyword] = useState('');
    const location = useLocation();
+   const navigate = useNavigate();
    const [path, setPath] = useState<string>('');
    const headerRef = useRef(null);
    useEffect(() => {
       setPath(location.pathname);
    }, [location.pathname]);
+
+   const handleSearchInputChange = (event: any) => {
+      setSearchKeyword(event.target.value);
+   };
+
+   const handleSearchSubmit = (event: any) => {
+      event.preventDefault();
+      const searchParams = new URLSearchParams();
+      searchParams.append('', searchKeyword);
+      navigate({
+         pathname: 'search',
+         search: searchParams.toString()
+      });
+   };
    return (
       //get height of header
       // listen window scroll
@@ -60,9 +76,20 @@ const Header = () => {
             </ul>
          </nav>
          <div className='w-[25%] flex justify-end items-center gap-8'>
-            <div className='flex items-center gap-1 text-colorText hover:text-hightLigh cursor-pointer'>
-               <GlassIcon width='1.3rem' height='1.3rem' />
-               <span className=''>Find our item</span>
+            <div className='flex items-center gap-1 text-colorText  cursor-pointer'>
+               <form onSubmit={handleSearchSubmit}>
+                  {/* <GlassIcon width='1.3rem' height='1.3rem' /> */}
+                  <input
+                     type='text'
+                     className='hover:text-hightLigh'
+                     value={searchKeyword}
+                     onChange={handleSearchInputChange}
+                     placeholder='Tìm kiếm'
+                  />
+                  <button type='submit'>
+                     <GlassIcon width='1.3rem' height='1.3rem' />
+                  </button>
+               </form>
             </div>
             <HeartIcon width='1.3rem' height='1.3rem' className='cursor-pointer hover:text-hightLigh' />
             <CartIcon width='1.3rem' height='1.3rem' className='cursor-pointer hover:text-hightLigh' />

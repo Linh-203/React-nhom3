@@ -22,8 +22,8 @@ const AddProduct = () => {
    });
    const [errors, setErrors] = useState({});
    const getAllCategory4 = async () => {
-      const {data} = await categoryService.getAllCategory();     
-      setCategories(data);
+      const { data } = await categoryService.getAllCategory();
+      setCategories(data.data);
    };
    useEffect(() => {
       void (async () => {
@@ -31,7 +31,7 @@ const AddProduct = () => {
       })();
    }, []);
 
-   const onHandleChange = (e:any) => {
+   const onHandleChange = (e: any) => {
       if (e) {
          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
          const { name, value } = e.target;
@@ -39,7 +39,7 @@ const AddProduct = () => {
       }
    };
 
-   function validateFields(item:InputProduct) {
+   function validateFields(item: InputProduct) {
       console.log(item);
 
       let isValid = true;
@@ -56,7 +56,7 @@ const AddProduct = () => {
       return [isValid, errs];
    }
 
-   const onHandleAdd = async (product:InputProduct) => {
+   const onHandleAdd = async (product: InputProduct) => {
       await productService
          .addProduct(product)
          .then(() => {
@@ -95,7 +95,7 @@ const AddProduct = () => {
                images: data.data,
                desc: product.desc
             };
-           await onHandleAdd(item);
+            await onHandleAdd(item);
             console.log(data.data);
          } else {
             alert('Fail to upload image');

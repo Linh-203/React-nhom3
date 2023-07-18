@@ -3,9 +3,9 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
+import Slide from '../components/Slide/Slide';
 import { useEffect, useState } from 'react';
 import productService from '../api/product';
-import Slide from '../components/Slide/Slide';
 import Banner from '../components/Banner/Banner';
 import CardProduct from '../components/CardProduct/CardProduct';
 import CateSlide from '../components/CateSlide/CateSlide';
@@ -41,7 +41,7 @@ const HomePage = () => {
             <Slide slidesPerView={4} navigation={true}>
                {products.map((prd, index) => (
                   <SwiperSlide key={index}>
-                     <CardProduct product={prd} link={'/products'} />{' '}
+                     <CardProduct product={prd} link={`/products/${prd._id}`} />{' '}
                   </SwiperSlide>
                ))}
             </Slide>

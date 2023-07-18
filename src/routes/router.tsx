@@ -9,6 +9,7 @@ import ProductListPage from '../pages/Admin/ProductListPage';
 import CategoryListPage from '../pages/Admin/CategoryListPage';
 import AddProduct from '../pages/Admin/AddProduct';
 import AddCategory from '../pages/Admin/AddCategory';
+import SearchContext from '../components/SearchContext/SearchContext';
 import DetailProduct from '../pages/DetailProduct';
 import UpdateProduct from '../pages/Admin/UpdateProduct';
 import UpdateCategory from '../pages/Admin/UpdateCategory';
@@ -24,13 +25,16 @@ export const router = createBrowserRouter([
          },
          {
             path: '/products',
-            element: <ProductPage />,
-            
+            element: <ProductPage />
+         },
+         {
+            path: 'search',
+            element: <SearchContext />
          },
          {
             path: '/products/:id',
-            element: <DetailProduct/>
-          }
+            element: <DetailProduct />
+         }
       ]
    },
    {
