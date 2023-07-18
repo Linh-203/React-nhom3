@@ -22,16 +22,16 @@ function ProductTbaleItem({ prd, index, deleteAction }: IProps) {
             {index + 1}
          </th>
          <th className='p-2' scope='col'>
-            <img src={prd.images[0]!.url} className='rounded-2xl w-52 h-36 mx-auto' alt='' />
+            <img src={prd.images[0]?.url} className='rounded-2xl w-52 h-36 mx-auto' alt='' />
          </th>
          <th className='p-2' scope='col'>
-            {prd.name}
+            {prd?.name}
          </th>
          <th className='p-2' scope='col'>
-            {prd.price}
+            {prd?.price}
          </th>
          <th className='p-2' scope='col'>
-            {prd.stock}
+            {prd?.stock}
          </th>
          <th className='p-2 flex gap-2 justify-center items-center h-[160px]' scope='col'>
             <button
@@ -50,14 +50,14 @@ function ProductTbaleItem({ prd, index, deleteAction }: IProps) {
                      Close
                   </button>
                </div>
-               <ProductDetail id={prd._id} />
+               <ProductDetail id={prd?._id} />
             </Portal>
-            <Link className='p-2 rounded-xl bg-blue-400 hover:bg-blue-500 text-[15px] text-white' to={'/admin/product-update/' + prd._id }>
+            <Link className='p-2 rounded-xl bg-blue-400 hover:bg-blue-500 text-[15px] text-white' to={'/admin/product-update/' + prd?._id }>
                Update
             </Link>
             <button
                // eslint-disable-next-line @typescript-eslint/no-misused-promises
-               onClick={() => deleteItem(prd._id)}
+               onClick={() => deleteItem(prd?._id)}
                className='p-2 rounded-xl bg-red-400 hover:bg-red-500 text-[15px] text-white'
             >
                Delete
