@@ -3,6 +3,8 @@ import SearchIcon from '../../assets/icons/SearchIcon';
 import productService from '../../api/product';
 import ProductTbaleItem from '../../components/ProductTableItem/ProductTableItem';
 import { IProduct } from '../../common/product';
+import { AxiosResponse } from 'axios';
+import instance from '../../api/instance';
 
 const ProductListPage = () => {
    const [item, setItem] = useState<IProduct[]>([]);
@@ -12,9 +14,10 @@ const ProductListPage = () => {
    const [itemPerpage] = useState(5);
    const [currentPage, setCurrentPage] = useState(1);
 
-   const handleSearch = (value: string) => {
-      const filter = item.filter((item) => item.name.toLowerCase().match(value.toLowerCase()));
-      renderItemPerpage(filter);
+   const handleSearch = async (value: string) => {
+      // const filter = item.filter((item) => item.name.toLowerCase().match(value.toLowerCase()));
+      const searchResult: AxiosResponse<IProduct[], any> = await instance.get('/products?_q='+value)
+      renderItemPerpage(searchResult.data);
    };
 
    const renderItemPerpage = (item: IProduct[]) => {
@@ -111,7 +114,7 @@ const ProductListPage = () => {
                </tr>
             </thead>
             <tbody>
-               {itemToRender.length > 0 &&
+               {itemToRender?.length > 0 &&
                   // eslint-disable-next-line @typescript-eslint/no-misused-promises
                   itemToRender?.map((prd, index) => <ProductTbaleItem deleteAction={handleDeleteItem} prd={prd} index={index} key={index} />)
                }

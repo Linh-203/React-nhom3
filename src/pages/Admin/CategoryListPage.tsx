@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import SearchIcon from '../../assets/icons/SearchIcon';
-import productService from '../../api/product';
 import { ICategory } from '../../common/category';
 import { getAllCategory, removeCategoryById } from '../../api/category';
 import CategoryTableItem from '../../components/CategoryTableItem/CategoryTableItem';
+import instance from '../../api/instance';
+import { AxiosResponse } from 'axios';
 
 const CategoryListPage = () => {
    const [item, setItem] = useState<ICategory[]>([]);
@@ -13,9 +14,10 @@ const CategoryListPage = () => {
    const [itemPerpage] = useState(5);
    const [currentPage, setCurrentPage] = useState(1);
 
-   const handleSearch = (value: string) => {
-      const filter = item.filter((item) => item.name.toLowerCase().match(value.toLowerCase()));
-      renderItemPerpage(filter);
+   const handleSearch = async (value: string) => {
+      // const filter = item.filter((item) => item.name.toLowerCase().match(value.toLowerCase()));
+      const searchResult: AxiosResponse<ICategory[], any> = await instance.get('/products?_q='+value)
+      renderItemPerpage(searchResult.data);
    };
 
    const renderItemPerpage = (item: ICategory[]) => {
