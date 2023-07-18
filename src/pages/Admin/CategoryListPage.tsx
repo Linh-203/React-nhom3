@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import SearchIcon from '../../assets/icons/SearchIcon';
 import productService from '../../api/product';
 import { ICategory } from '../../common/category';
-import { getAllCategory } from '../../api/category';
+import { getAllCategory, removeCategoryById } from '../../api/category';
 import CategoryTableItem from '../../components/CategoryTableItem/CategoryTableItem';
 
 const CategoryListPage = () => {
@@ -33,16 +33,15 @@ const CategoryListPage = () => {
   };
 
   const handleDeleteItem = async (id: string): Promise<void> => {
-     await productService
-        .deleteProduct(id)
+     await removeCategoryById(id)
         .then(() => {
            alert('Deleted product');
-           getAllProducts().catch(() => {
-              console.log('getAllProducts failed');
+           getAllCategories().catch(() => {
+              console.log('getAllCategories failed');
            });
         })
         .catch(() => {
-           console.log('error deleting product');
+           console.log('error deleting category');
         });
   };
 
