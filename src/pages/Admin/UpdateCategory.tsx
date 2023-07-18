@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react"
 import { createCate, getCategoryById, updateCategory } from "../../api/category";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ICategory } from "../../common/category";
 const UpdateCategory = () => {
     const [cateName, setCateName] = useState("")
@@ -9,7 +9,7 @@ const UpdateCategory = () => {
     const [cateImg, setCateImg] = useState()
     const [cateImgErr, setCateImgErr] = useState(false)
     const [cate, setCate] = useState<ICategory>()
-
+    const navigate = useNavigate()
 
     const { id } = useParams()
     console.log(id);
@@ -26,7 +26,7 @@ const UpdateCategory = () => {
         onBlurName(value)
     }
     console.log(cateImg);
-    
+
     const onBlurName = (value: string) => {
         if (value.length <= 0) {
             setCateNameErr(true)
@@ -64,8 +64,9 @@ const UpdateCategory = () => {
             }
             console.log(data);
 
-            updateCategory(id,data)
+            updateCategory(id, data)
             alert("oki")
+            navigate("/admin/categories")
         }
     }
 
@@ -76,7 +77,7 @@ const UpdateCategory = () => {
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <img
-                    style={{width:"90px", height:"90px",borderRadius:"50px"}}
+                        style={{ width: "90px", height: "90px", borderRadius: "50px" }}
                         className="mx-auto h-10 w-auto"
                         src={cateImg}
                         alt="Your Company"

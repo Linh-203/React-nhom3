@@ -1,12 +1,13 @@
 import axios from "axios";
 import {useState} from "react"
 import { createCate } from "../../api/category";
+import { useNavigate } from "react-router-dom";
 const AddCategory = () => {
   const [cateName, setCateName] = useState("")
   const [cateNameErr, setCateNameErr] = useState(false)
   const [cateImg, setCateImg] = useState()
   const [cateImgErr, setCateImgErr] = useState(false)
-
+  const navigate = useNavigate()
   const onChangeName = (e:any) => {
   const value = e.target.value
   setCateName(value)
@@ -51,6 +52,7 @@ const AddCategory = () => {
         
         createCate(data)
          alert("oki")
+         navigate("/admin/categories")
       }
   }
   
