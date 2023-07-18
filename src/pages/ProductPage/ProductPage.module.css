@@ -1,14 +1,14 @@
 .block-filter + .block-filter{
  margin-top: 3rem;
 }
-.block-filter input[type="checkbox"]{
+.block-filter input[type="radio"]{
      display: none;
 }
-.block-filter input[type="checkbox"] + label{
+.block-filter input[type="radio"] + label{
     cursor: pointer;
     position: relative;
 }
-.block-filter input[type="checkbox"] + label:before{
+.block-filter input[type="radio"] + label:before{
     content: "";
     width: 1.2rem;
     height: 1.2rem;
@@ -16,15 +16,15 @@
     display: block; 
     position: absolute;
     left: 0;
-    border-radius: 5px;
+    border-radius: 10000px;
 }
 
-.block-filter input[type="checkbox"]:hover + label:before{
+.block-filter input[type="radio"]:hover + label:before{
     background: #7c7e7c;
     box-shadow: inset 0px 0px 0px 2px #ffff;
     transition: 0.5s;
 }
-.block-filter input[type="checkbox"]:checked + label:before{
+.block-filter input[type="radio"]:checked + label:before{
     background: #7c7e7c;
     box-shadow: inset 0px 0px 0px 2px #ffff;
 }

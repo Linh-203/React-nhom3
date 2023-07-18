@@ -12,8 +12,6 @@ type Props = {
 };
 
 const CardProduct = React.memo(({ product, link }: Props) => {
-   console.log(product);
-
    return (
       <div className={`${styles['wrapper']}`}>
          <Link to={link} className={` block relative text-center`}>

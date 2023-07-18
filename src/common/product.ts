@@ -18,6 +18,8 @@ export type ResponsePaginate<T> = {
    message: string;
    data: T;
    pagination: IPaginate;
+   maxPrice:number;
+   inStock:number
 };
 
 export type IPaginate ={
