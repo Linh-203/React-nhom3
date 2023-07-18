@@ -14,7 +14,7 @@ const DetailProduct = () => {
     useEffect(() => {
         productService
             .getProductById(id)
-            .then(({ data }) => setProduct(data.data[0]))
+            .then(({ data }) => setProduct(data.data))
             .catch(({ response }) => {
                 alert(response.data.message);
             });
@@ -51,10 +51,10 @@ const DetailProduct = () => {
 
                         <div className=" w-full sm:w-96 md:w-8/12  lg:w-6/12  lg:flex-row flex-col lg:gap-8 sm:gap-6 gap-4">
                             <div className=" w-full border-[1px] border-gray-200 lg:w-10/12 bg-gray-100 flex justify-center items-center">
-                                <img src={products.images[0].url} alt="Wooden Chair Previw" />
+                                <img src={products?.images[0]?.url} alt="Wooden Chair Previw" />
                             </div>
                             <div className=" w-full lg:w-4/12 flex  lg:grid-cols-1 sm:grid-cols-4 grid-cols-2 gap-6">
-                                {products.images.map((image, index) => (
+                                {products?.images?.map((image, index) => (
 
                                     <div key={index} className=" mt-3 border-[1px] border-gray-200 flex justify-center items-center py-4">
                                         <img src={image.url} alt="Wooden chair - preview 1" />
@@ -66,13 +66,13 @@ const DetailProduct = () => {
                         {/* <!-- Description Div --> */}
 
                         <div className="  w-full sm:w-96 md:w-8/12 lg:w-6/12 items-center">
-                            <p className=" focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 font-normal text-base leading-4 text-gray-600">Home / {products.categoryId.name} / {products.name}</p>
-                            <h2 className="font-semibold lg:text-4xl text-3xl lg:leading-9 leading-7 text-gray-800 mt-4">{products.name}</h2>
+                            <p className=" focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 font-normal text-base leading-4 text-gray-600">Home / {products?.categoryId?.name} / {products?.name}</p>
+                            <h2 className="font-semibold lg:text-4xl text-3xl lg:leading-9 leading-7 text-gray-800 mt-4">{products?.name}</h2>
 
 
 
-                            <p className=" font-normal text-base leading-6 text-gray-600 mt-7">{products.desc}</p>
-                            <p className=" font-semibold lg:text-2xl text-xl lg:leading-6 leading-5 mt-6 ">${products.price}</p>
+                            <p className=" font-normal text-base leading-6 text-gray-600 mt-7">{products?.desc}</p>
+                            <p className=" font-semibold lg:text-2xl text-xl lg:leading-6 leading-5 mt-6 ">${products?.price}</p>
 
                             <div className="lg:mt-11 mt-10">
                                 <div className="flex flex-row justify-between">
@@ -90,7 +90,7 @@ const DetailProduct = () => {
                                 </div>
                                 <hr className=" bg-gray-200 w-full my-2" />
                                 <div className="flex flex-row justify-between items-center mt-4">
-                                    <p className=" font-medium text-base leading-4 text-gray-600">Availability: {products.stock > 0 ? 'In stock' : 'Out of stock'}</p>
+                                    <p className=" font-medium text-base leading-4 text-gray-600">Availability: {products?.stock > 0 ? 'In stock' : 'Out of stock'}</p>
                                 </div>
 
                                 <hr className=" bg-gray-200 w-full mt-4" />

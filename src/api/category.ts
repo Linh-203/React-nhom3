@@ -21,5 +21,6 @@ export const updateCategory = async (id: string,data:ICategory) => {
   return await instance.patch('/categories/' + id, data)
 
 }
+
 const categoryService = { getAllCategory };
 export default categoryService;
