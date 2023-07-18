@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
-import { IProduct, ResponsePaginate } from '../common/product';
-import instanse from './instanse';
+import { IProduct, ResponsePaginate,InputProduct } from '../common/product';
+import instanse from './instance';
 
 export type IQuery = {
    sort: string;
@@ -8,6 +8,12 @@ export type IQuery = {
    limit: number;
    expand: string;
    q: string;
+   page: number;
+   from: number;
+   to: number;
+   cate: string;
+   inStock: boolean;
+   outStock: boolean;
 };
 
 const getAllProduct = async ({
@@ -15,7 +21,13 @@ const getAllProduct = async ({
    order,
    limit,
    expand,
-   q
+   q,
+   page,
+   from,
+   to,
+   cate,
+   inStock,
+   outStock
 }: Partial<IQuery>): Promise<AxiosResponse<ResponsePaginate<IProduct[]>, any>> => {
    const res = await instanse.get(`/products`, {
       params: {
@@ -23,22 +35,28 @@ const getAllProduct = async ({
          _expand: expand,
          _limit: limit,
          _sort: sort,
-         _q: q
+         _q: q,
+         _page: page,
+         _from: from,
+         _to: to,
+         _cate: cate,
+         _inStock: inStock,
+         _outStock: outStock
       }
    });
    return res;
 };
-const getProductById = async (id: string): Promise<AxiosResponse<any>> => {
+const getProductById = async (id: string): Promise<AxiosResponse<ResponsePaginate<IProduct>,any>> => {
    const res = await instanse.get('/products/' + id);
    return res;
 };
 const deleteProduct = async (id: string) => {
    return await instanse.delete('/products/' + id);
 };
-const addProduct = (product: number) => {
+const addProduct = (product: InputProduct) => {
    return instanse.post('/products', product);
 };
-const updateProduct = (id: string, product: IProduct) => {
+const updateProduct = (id: string, product: InputProduct) => {
    return instanse.patch('/products/' + id, product);
 };
 const productService = { getAllProduct, getProductById, deleteProduct, addProduct, updateProduct };

@@ -1,8 +1,8 @@
+// dung de data:any o day xin day !!!!!
 export type IProduct = {
-   data: any;
-   favorite: ReactNode;
    _id: string;
    name: string;
+   favorite: number;
    price: number;
    desc: string;
    categoryId: string;
@@ -12,12 +12,17 @@ export type IProduct = {
    discount: number;
 };
 
+export type InputProduct = Omit<IProduct, '_id'>;
 export type ResponsePaginate<T> = {
    message: string;
    data: T;
-   pagination: {
-      currentPage: number;
-      totalPages: number;
-      totalItems: number;
-   };
+   pagination: IPaginate;
+   maxPrice: number;
+   inStock: number;
+};
+
+export type IPaginate = {
+   currentPage: number;
+   totalPages: number;
+   totalItems: number;
 };

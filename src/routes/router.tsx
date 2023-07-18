@@ -10,6 +10,9 @@ import CategoryListPage from '../pages/Admin/CategoryListPage';
 import AddProduct from '../pages/Admin/AddProduct';
 import AddCategory from '../pages/Admin/AddCategory';
 import SearchContext from '../components/SearchContext/SearchContext';
+import DetailProduct from '../pages/DetailProduct';
+import UpdateProduct from '../pages/Admin/UpdateProduct';
+import UpdateCategory from '../pages/Admin/UpdateCategory';
 
 export const router = createBrowserRouter([
    {
@@ -27,6 +30,10 @@ export const router = createBrowserRouter([
          {
             path: 'search',
             element: <SearchContext />
+         },
+         {
+            path: '/products/:id',
+            element: <DetailProduct />
          }
       ]
    },
@@ -51,12 +58,20 @@ export const router = createBrowserRouter([
             element: <AddProduct />
          },
          {
+            path: 'product-update/:id',
+            element: <UpdateProduct />
+         },
+         {
             path: 'categories',
             element: <CategoryListPage />
          },
          {
             path: 'category-add',
             element: <AddCategory />
+         },
+         {
+            path: 'category-edit/:id',
+            element: <UpdateCategory />
          }
       ]
    }
