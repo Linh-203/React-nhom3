@@ -17,7 +17,7 @@ const CategoryListPage = () => {
    const handleSearch = async (value: string) => {
       // const filter = item.filter((item) => item.name.toLowerCase().match(value.toLowerCase()));
       const searchResult: AxiosResponse<ICategory[], any> = await instance.get('/products?_q='+value)
-      renderItemPerpage(searchResult.data);
+      renderItemPerpage(searchResult.data.data);
    };
 
    const renderItemPerpage = (item: ICategory[]) => {
