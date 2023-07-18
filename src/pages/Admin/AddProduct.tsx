@@ -1,14 +1,21 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { useNavigate } from 'react-router-dom';
 import productService from '../../api/product';
 import categoryService from '../../api/category';
-import { useState, useEffect, ReactNode } from 'react';
+import { useState, useEffect } from 'react';
 import { uploadImage } from '../../api/upload';
 import { InputProduct } from '../../common/product';
 import { ICategory } from '../../common/category';
+import Message from '../../components/Message/Message';
+import Loading from '../../components/Loading/Loading';
+
+export type MessageProp = {
+   content: string;
+   type: 'error' | 'success' | 'warn';
+};
 const AddProduct = () => {
-   const navigate = useNavigate();
    const [categories, setCategories] = useState<ICategory[]>([]);
+   const [loading, setLoading] = useState<boolean>(false);
+   const [msg, setMsg] = useState<MessageProp>();
    const [product, setProduct] = useState<InputProduct>({
       name: '',
       price: 0,
@@ -40,8 +47,6 @@ const AddProduct = () => {
    };
 
    function validateFields(item: InputProduct) {
-      console.log(item);
-
       let isValid = true;
       const errs = {};
       for (const key in item) {
@@ -57,31 +62,25 @@ const AddProduct = () => {
    }
 
    const onHandleAdd = async (product: InputProduct) => {
-      await productService
-         .addProduct(product)
-         .then(() => {
-            navigate('/admin/products');
-         })
-         .catch(({ response }) => alert());
+      await productService.addProduct(product);
    };
 
    const onhandleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
       // eslint-disable-next-line prefer-const
       let [isValid, errs] = validateFields(product);
-
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       if (e.target[7].files.length == 0) {
          isValid = false;
          errs.images = 'Hãy chọn ảnh';
       }
       if (isValid) {
+         setLoading(true);
          const fileList = e.target[7].files;
          const formData = new FormData();
          for (const file of fileList) {
             formData.append('images', file);
          }
-
          const { data } = await uploadImage(formData);
          if (data.data?.length > 0) {
             const item = {
@@ -96,18 +95,21 @@ const AddProduct = () => {
                desc: product.desc
             };
             await onHandleAdd(item);
-            console.log(data.data);
+            setLoading(false);
+            setMsg({ content: 'Create product successfully !', type: 'success' });
          } else {
-            alert('Fail to upload image');
+            setLoading(false);
+            setMsg({ content: 'Fail to create product', type: 'error' });
          }
       } else {
+         setLoading(false);
          setErrors({ ...errs });
       }
    };
-   console.log(errors);
-
+   if (loading) return <Loading />;
    return (
-      <div>
+      <div className='relative'>
+         {msg && <Message msg={msg.content} type={msg.type} duration={1000} navigateLink='/admin/products' />}
          <div>
             <h2 className='text-4xl font-bold dark:text-white'>Add Product</h2>
          </div>
@@ -119,10 +121,10 @@ const AddProduct = () => {
                      type='text'
                      name='name'
                      id='name'
-                     className='block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer'
+                     className='mt-3 block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer'
                      placeholder=' '
                   />
-                  <label className='peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'>
+                  <label className=' peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'>
                      Product name
                   </label>
                   <p className='text-red-400'>{errors.name}</p>
@@ -254,7 +256,7 @@ const AddProduct = () => {
                      name='desc'
                      id='desc'
                      onChange={(e) => onHandleChange(e)}
-                     className='w-full px-0 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400'
+                     className='outline-none w-full px-0 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400 outl'
                      placeholder='Write a desc...'
                   ></textarea>
                </div>

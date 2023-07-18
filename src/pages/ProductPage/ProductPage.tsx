@@ -9,6 +9,7 @@ import { getAllCategory } from '../../api/category';
 import { useDispatch, useSelector } from 'react-redux';
 import { filterSlice } from '../../slices/FilterSlice';
 import { allInfoSelector } from '../../slices/ProductSlice';
+import DropFilter from './components/DropFilter';
 
 const ProductPage = () => {
    const [categories, setCategories] = useState<Partial<CheckBox>[]>([]);
@@ -112,11 +113,7 @@ const ProductPage = () => {
                />
                <article className='flex justify-between items-center w-full mt-10'>
                   <p>Type</p>
-                  <div>
-                     <p className='font-semibold'>
-                        Sort by: <span className='text-grayLight200 font-normal'>Drop down</span>
-                     </p>
-                  </div>
+                  <DropFilter />
                </article>
                <hr className='h-[1px] bg-grayLight100 mt-5' />
                <ListProduct setMaxPrice={newSetMaxPrice} />

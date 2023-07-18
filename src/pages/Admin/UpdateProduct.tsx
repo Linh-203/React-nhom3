@@ -6,12 +6,15 @@ import { useState, useEffect } from 'react';
 import { uploadImage } from '../../api/upload';
 import { IProduct, InputProduct } from '../../common/product';
 import { ICategory } from '../../common/category';
+import { MessageProp } from './AddProduct';
+import Loading from '../../components/Loading/Loading';
+import Message from '../../components/Message/Message';
 
 const UpdateProduct = () => {
-   const navigate = useNavigate();
    const { id } = useParams();
-   console.log(id);
 
+   const [msg, setMsg] = useState<MessageProp>();
+   const [loading, setLoading] = useState<boolean>(false);
    const [categories, setCategories] = useState<ICategory[]>([]);
    const [product, setProduct] = useState<IProduct>({} as IProduct);
    const [errors, setErrors] = useState({});
@@ -38,18 +41,10 @@ const UpdateProduct = () => {
    }, [id]);
 
    const onHandleUpdate = async (product: InputProduct) => {
-      await productService
-         .updateProduct(id!, product)
-         .then(() => {
-            //  productService.getAllProduct.then(({ data }) => setProduct(data));
-            navigate('/admin/products');
-         })
-         .catch(({ response }) => alert());
+      await productService.updateProduct(id!, product);
    };
 
    function validateFields(item) {
-      console.log(item);
-
       let isValid = true;
       const errs = {};
       for (const key in item) {
@@ -86,12 +81,12 @@ const UpdateProduct = () => {
          const { data } = await uploadImage(formData);
          if (data.data.length > 0) {
             images = data.data;
-            console.log(data.data);
          } else {
-            alert('Fail to upload image');
+            setMsg({ content: 'Fail to upload image', type: 'error' });
          }
       }
       if (isValid) {
+         setLoading(true);
          const item = {
             name: product.name,
             price: product.price,
@@ -105,15 +100,19 @@ const UpdateProduct = () => {
             desc: product.desc
          };
 
-         onHandleUpdate(item);
+         await onHandleUpdate(item);
+         setLoading(false);
+         setMsg({ content: 'Update product successfully !', type: 'success' });
       } else {
+         setLoading(false);
+         setMsg({ content: 'Fail to update product', type: 'error' });
          setErrors({ ...errs });
       }
    };
-   console.log(errors);
-
+   if (loading) return <Loading />;
    return (
       <div>
+         {msg && <Message msg={msg.content} type={msg.type} duration={1000} navigateLink='/admin/products' />}
          <div>
             <h2 className='text-4xl font-bold dark:text-white'>Update Product</h2>
          </div>
@@ -123,7 +122,7 @@ const UpdateProduct = () => {
                   <h4>Current Image</h4>
                   <img src={product?.images[0]?.url} alt='Image' className='w-96' />
                </div>
-               <div className='grid md:grid-cols-2 md:gap-6'>
+               <div className='grid md:grid-cols-2 md:gap-6 mt-10'>
                   <div className='relative z-0 w-full mb-6 group'>
                      <input
                         onChange={(e) => onHandleChange(e)}

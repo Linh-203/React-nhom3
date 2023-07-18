@@ -50,6 +50,9 @@ export const filterSlice = createSlice({
       },
       setOutStock: (state: InitialState, action: { type: string; payload: boolean }) => {
          state.outStock = action.payload;
+      },
+      setOrder: (state: InitialState, action: { type: string; payload: 'asc' | 'desc' }) => {
+         state.order = action.payload;
       }
    }
 });
