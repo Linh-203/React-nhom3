@@ -10,6 +10,7 @@ const UpdateCategory = () => {
     const [cateImgErr, setCateImgErr] = useState(false)
     const [cate, setCate] = useState<ICategory>()
     const navigate = useNavigate()
+    console.log(cateImg);
 
     const { id } = useParams()
     console.log(id);
@@ -25,7 +26,7 @@ const UpdateCategory = () => {
         setCateName(value)
         onBlurName(value)
     }
-    console.log(cateImg);
+
 
     const onBlurName = (value: string) => {
         if (value.length <= 0) {
@@ -36,42 +37,52 @@ const UpdateCategory = () => {
     }
 
 
-    console.log(cateNameErr);
+
 
     const onSubmit = async (e: any) => {
         e.preventDefault()
+          let imgCate = cateImg
         if (cateName.length <= 0) {
             setCateNameErr(true)
             return
         }
         console.log(e.target[1].files);
         const fileList = e.target[1].files
-        const formData = new FormData()
-        for (const file of fileList) {
-            formData.append('images', file)
+        
+        if (fileList.length > 0) {
+
+
+            const formData = new FormData()
+            for (const file of fileList) {
+                formData.append('images', file)
+            }
+
+            await axios.post('http://localhost:8000/api/upload', formData)
+                .then((response) => {
+         
+                    console.log(response.data.data[0].url);
+                      imgCate = response.data.data[0].url
+                 
+
+
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+
         }
-
-        await axios.post('http://localhost:8000/api/upload', formData)
-            .then((response) => {
-                console.log(response.data.data[0].url);
-                setCateImg(response.data.data[0].url);
-
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-
-        if (cateImg && cateName.length > 0) {
+        if (cateName.length > 0) {
             const data = {
                 name: cateName,
-                image: cateImg
+                image: imgCate
             }
             console.log(data);
 
             updateCategory(id, data)
             alert("oki")
-            navigate("/admin/categories")
         }
+        // navigate("/admin/categories")
+
     }
 
 
