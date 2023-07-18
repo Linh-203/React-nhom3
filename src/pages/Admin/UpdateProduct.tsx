@@ -71,6 +71,8 @@ const UpdateProduct = () => {
          img._id = undefined;
          return img;
       });
+      
+      setLoading(true);
       if (e.target[7].files.length > 0) {
          const fileList = e.target[7].files;
          const formData = new FormData();
@@ -86,7 +88,6 @@ const UpdateProduct = () => {
          }
       }
       if (isValid) {
-         setLoading(true);
          const item = {
             name: product.name,
             price: product.price,
