@@ -54,13 +54,13 @@ const Header = () => {
       // smaller than history -> up -> fixed header
       // contrary
       <header className={`${styles['header']}`} ref={headerRef}>
-         <div className='w-[20%]'>
+         <Link to={'/'} className='w-[20%]'>
             <img
                src='https://spacingtech.com/html/tm/freozy/freezy-ltr/image/logo/logo.png'
                alt='logo'
                className='aspect-[3/1] w-[50%]'
             />
-         </div>
+         </Link>
          <nav className='w-[60%]'>
             <ul className='w-full flex justify-stretch items-center gap-8'>
                {navItems.map((item, index) => (
