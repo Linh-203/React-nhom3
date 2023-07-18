@@ -40,6 +40,10 @@ const UpdateCategory = () => {
 
     const onSubmit = async (e: any) => {
         e.preventDefault()
+        if (cateName.length <= 0) {
+            setCateNameErr(true)
+            return
+        }
         console.log(e.target[1].files);
         const fileList = e.target[1].files
         const formData = new FormData()
@@ -57,7 +61,7 @@ const UpdateCategory = () => {
                 console.log(error);
             });
 
-        if (cateImg && cateName) {
+        if (cateImg && cateName.length > 0) {
             const data = {
                 name: cateName,
                 image: cateImg
@@ -101,7 +105,7 @@ const UpdateCategory = () => {
                                     type="text"
                                     onChange={onChangeName}
                                     onBlur={() => onBlurName(cateName)}
-                                    required
+
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>
@@ -121,7 +125,7 @@ const UpdateCategory = () => {
                                     id="password"
                                     name="image"
                                     type="file"
-                                    required
+
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>
