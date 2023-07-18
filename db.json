@@ -4,19 +4,19 @@
          "image": "https://spacingtech.com/html/tm/freozy/freezy-ltr/image/slider/slider1.png",
          "title": "Organic food’s",
          "subTitle": "Healthy food collection",
-         "interval": 1500
+         "interval": 500
       },
       {
          "image": "https://spacingtech.com/html/tm/freozy/freezy-ltr/image/slider/slider2.png",
-         "title": "Black Adam",
-         "subTitle": "Nearly 5,000 years after he",
+         "title": "Healthy food’s",
+         "subTitle": "Healthy food collection",
          "interval": 500
       },
       {
          "image": "https://spacingtech.com/html/tm/freozy/freezy-ltr/image/slider/slider3.png",
-         "title": "Black Panther: Wakanda Forever",
-         "subTitle": "Queen Ramonda, Shuri, M’Baku, Okoye an",
-         "interval": 2500
+         "title": "Organic food’s",
+         "subTitle": "Healthy food collection",
+         "interval": 500
       }
    ],
    "trending": [

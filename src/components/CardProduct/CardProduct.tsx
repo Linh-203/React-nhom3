@@ -60,7 +60,7 @@ const CardProduct = React.memo(({ product, link }: Props) => {
                </div>
             </div>
          </div>
-         <h3 className='mt-4 text-[1.1rem] font-semibold text-colorText '>{product.name}</h3>
+         <h3 className='mt-4 text-[1.1rem] font-semibold text-colorText hover:text-red-600'>{product.name}</h3>
          <div className='flex justify-center items-center w-full gap-3 mt-2'>
             <p className=' text-greenCus text-lg font-semibold'>
                ${product.discount > 0 ? product.price - (product.price * product.discount) / 100 : product.price}

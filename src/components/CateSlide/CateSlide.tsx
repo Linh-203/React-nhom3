@@ -21,14 +21,14 @@ const CateSlide = () => {
    return (
       <div className='product px-28 py-5'>
          {products.length > 0 && (
-            <Slide slidesPerView={4} navigation={true}>
+            <Slide slidesPerView={4} navigation={false} autoplay={true}>
                {products.map((slide, index) => (
                   <SwiperSlide key={index}>
                      <div className='flex justify-center items-center'>
                         <img src={slide.images[0].url} className='w-[90px] h-[80px]' />
                         <div className='ml-2 flex flex-col justify-center'>
-                           <h4 className='text-red-500'>Healthy food</h4>
-                           <p>15+ items</p>
+                           <h4 className=' text-[#7aa32a]'>Healthy food</h4>
+                           <p className='hover:text-red-600'>15+ items</p>
                         </div>
                      </div>
                   </SwiperSlide>
