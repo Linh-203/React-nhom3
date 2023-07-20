@@ -6,7 +6,6 @@ import { ICategory } from '../../common/category';
 import { MessageProp } from './AddProduct';
 import Message from '../../components/Message/Message';
 import Loading from '../../components/Loading/Loading';
-
 const UpdateCategory = () => {
    const [cateName, setCateName] = useState('');
    const [cateNameErr, setCateNameErr] = useState(false);
@@ -17,14 +16,14 @@ const UpdateCategory = () => {
 
    const { id } = useParams();
    useEffect(() => {
-      getCategoryById(id).then(({ data }) => {
+      void getCategoryById(id!).then(({ data }) => {
          setCate(data.category);
          setCateName(data.category.name);
          setCateImg(data.category.image);
       });
    }, [id]);
 
-   const onChangeName = (e: any) => {
+   const onChangeName = (e: InputEvent) => {
       const value = e.target.value;
       setCateName(value);
       onBlurName(value);
@@ -69,7 +68,7 @@ const UpdateCategory = () => {
             name: cateName,
             image: imgCate
          };
-         await updateCategory(id, data)
+         await updateCategory(id!, data)
             .then(() => {
                setLoading(false);
                setMsg({ content: 'Update category successfully !', type: 'success' });
@@ -114,7 +113,7 @@ const UpdateCategory = () => {
                            type='text'
                            onChange={onChangeName}
                            onBlur={() => onBlurName(cateName)}
-                           className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                           className='p-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                         />
                      </div>
                      <p style={{ color: '#f12' }}>{cateNameErr ? 'This is required' : ''}</p>
@@ -128,10 +127,9 @@ const UpdateCategory = () => {
                      </div>
                      <div className='mt-2'>
                         <input
-                           id='password'
                            name='image'
                            type='file'
-                           className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                           className='p-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                         />
                      </div>
                   </div>
@@ -139,7 +137,7 @@ const UpdateCategory = () => {
                   <div>
                      <button
                         type='submit'
-                        className='flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+                        className='flex w-full justify-center rounded-md bg-hightLigh hover:bg-hightLigh px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
                      >
                         Submit
                      </button>
@@ -150,5 +148,4 @@ const UpdateCategory = () => {
       </div>
    );
 };
-
 export default UpdateCategory;

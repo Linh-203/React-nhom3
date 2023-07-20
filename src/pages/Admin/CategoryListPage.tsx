@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import SearchIcon from '../../assets/icons/SearchIcon';
-import productService from '../../api/product';
 import { ICategory } from '../../common/category';
 import { getAllCategory, removeCategoryById } from '../../api/category';
 import CategoryTableItem from '../../components/CategoryTableItem/CategoryTableItem';
@@ -13,7 +12,7 @@ const CategoryListPage = () => {
    const [itemPerpage] = useState(5);
    const [currentPage, setCurrentPage] = useState(1);
 
-   const handleSearch = (value: string) => {
+   const handleSearch = async (value: string) => {
       const filter = item.filter((item) => item.name.toLowerCase().match(value.toLowerCase()));
       renderItemPerpage(filter);
    };
@@ -69,8 +68,6 @@ const CategoryListPage = () => {
          console.log('getAllProducts failed');
       });
    }, []);
-   console.log(itemToRender);
-
    return (
       <div>
          <div className='flex pb-4 justify-between items-center'>

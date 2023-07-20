@@ -3,8 +3,6 @@ import SearchIcon from '../../assets/icons/SearchIcon';
 import productService from '../../api/product';
 import ProductTbaleItem from '../../components/ProductTableItem/ProductTableItem';
 import { IProduct } from '../../common/product';
-import { AxiosResponse } from 'axios';
-import instance from '../../api/instance';
 import { useDebounce } from '../../hooks/useDebounce';
 
 const ProductListPage = () => {

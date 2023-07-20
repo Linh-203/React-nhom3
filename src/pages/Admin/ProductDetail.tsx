@@ -76,7 +76,7 @@ function ProductDetail(props: IProps) {
                         </tbody>
                      </table>
                      <h1 className='py-3 font-bold text-[20px]'>Product Description</h1>
-                     <p>{item?.desc}</p>
+                     <p className='w-full'>{item?.desc}</p>
                   </div>
                   <div className='w-full'>
                      <div className='w-[400px]'>
