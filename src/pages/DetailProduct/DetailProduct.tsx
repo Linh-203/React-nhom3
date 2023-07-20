@@ -1,12 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import productService from '../api/product';
-import CateSlide from '../components/CateSlide/CateSlide';
-import { IProduct } from '../common/product';
-
+import productService from '../../api/product';
+import CateSlide from '../../components/CateSlide/CateSlide';
+import { IProduct } from '../../common/product';
+import { tabItem } from './constants/TabData';
+import TabContent from '../../components/TabContent/TabContent';
+import CardProduct from '../../components/CardProduct/CardProduct';
+import { SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
+import Slide from '../../components/Slide/Slide';
 const DetailProduct = () => {
    const { id } = useParams();
    const [product, setProduct] = useState<IProduct>({} as IProduct);
+   const [products, setProducts] = useState<IProduct[]>([]);
+   const tabs = useMemo(() => tabItem(product.desc), [product]);
    useEffect(() => {
       productService
          .getProductById(id)
@@ -15,6 +25,14 @@ const DetailProduct = () => {
             alert(response.data.message);
          });
    }, [id]);
+   useEffect(() => {
+      productService
+         .getAllProduct({})
+         .then(({ data }) => setProducts(data.data))
+         .catch(({ response }) => {
+            alert(response.data.message);
+         });
+   }, []);
    const [count, setCount] = useState(0);
    const addCount = () => {
       setCount((prev) => prev + 1);
@@ -27,20 +45,21 @@ const DetailProduct = () => {
 
    return (
       <div>
-         <CateSlide />
-
+         <div className='px-32'>
+            <CateSlide />
+         </div>
          {Object.keys(product)?.length > 0 && (
-            <div className='2xl:container 2xl:mx-auto lg:py-16 lg:px-20 md:py-12 md:px-6 py-9 px-4 '>
-               <div className='flex justify-center items-center lg:flex-row flex-col gap-8'>
+            <div className='py-9 md:px-10 lg:px-60'>
+               <div className='flex justify-center items-center md:flex-row flex-col gap-8'>
                   <div className=' w-full sm:w-96 md:w-8/12  lg:w-6/12  lg:flex-row flex-col lg:gap-8 sm:gap-6 gap-4'>
-                     <div className=' w-full border-[1px] border-gray-200 lg:w-10/12 bg-gray-100 flex justify-center items-center'>
-                        <img src={product?.images[0]?.url} alt='Wooden Chair Previw' />
+                     <div className=' w-full border-[1px] border-gray-200 lg:w-10/12 bg-gray-100 flex justify-center items-center rounded-lg'>
+                        <img src={product?.images[0]?.url} alt='Wooden Chair Previw]' />
                      </div>
-                     <div className=' w-full lg:w-4/12 flex  lg:grid-cols-1 sm:grid-cols-4 grid-cols-2 gap-6'>
+                     <div className=' w-full flex justify-start gap-2'>
                         {product?.images.map((image, index) => (
                            <div
                               key={index}
-                              className=' mt-3 border-[1px] border-gray-200 flex justify-center items-center py-4'
+                              className='w-[30%] mt-3 border-[1px] border-gray-200 flex justify-center items-center py-4'
                            >
                               <img src={image.url} alt='Wooden chair - preview 1' />
                            </div>
@@ -58,9 +77,9 @@ const DetailProduct = () => {
                      <p className=' font-semibold lg:text-2xl text-xl lg:leading-6 leading-5 mt-6 text-grayLight200'>
                         ${product.price}
                      </p>
-                     <p className='text-greenCus400 font-semibold mt-5'>
-                        Hurry up ! only <span className='p-2 bg-greenCus400 text-white'>{product.stock}</span> products
-                        left in stock
+                     <p className='text-greenCus400 font-semibold mt-5 text-lg'>
+                        Hurry up ! only <span className='px-2 py-1  bg-greenCus400 text-white'>{product.stock}</span>{' '}
+                        products left in stock
                      </p>
                      <div className='lg:mt-11 mt-10'>
                         <div className='flex flex-row justify-between'>
@@ -104,9 +123,26 @@ const DetailProduct = () => {
                   </div>
                   {/* <!-- Preview Images Div For larger Screen--> */}
                </div>
-               
             </div>
          )}
+         <div className='lg:px-60 px-10 border-t-[0.5px] border-[rgba(0,0,0,0.1)] pt-20 pb-20'>
+            {' '}
+            <TabContent tabs={tabs} />
+         </div>
+         <div className='bg-primaryBg  border-b-[1px] border-[rgba(0,0,0,0.1)] md:px-10 lg:px-60 py-10'>
+            <p className='text-[2.5rem] font-bold text-colorText text-center'>New product</p>
+            <div className='w-full mt-10'>
+               {products.length > 0 && (
+                  <Slide slidesPerView={4} navigation={false} autoplay={true} >
+                     {products.map((prd, index) => (
+                        <SwiperSlide key={index}>
+                           <CardProduct product={prd} link={`/products/${prd._id}`} />
+                        </SwiperSlide>
+                     ))}
+                  </Slide>
+               )}
+            </div>
+         </div>
       </div>
    );
 };

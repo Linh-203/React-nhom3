@@ -23,8 +23,6 @@ const HomePage = () => {
             alert(response.data.message);
          });
    }, []);
-   console.log(products);
-
    return (
       <div className='w-full'>
          <hr />
