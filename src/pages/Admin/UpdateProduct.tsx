@@ -48,14 +48,18 @@ const UpdateProduct = () => {
       let isValid = true;
       const errs = {};
       for (const key in item) {
-         if (item[key] === '' || item[key] == undefined) {
-            errs[key] = 'Hãy nhập ' + key;
-            isValid = false;
+         if (item[key] === '' || item[key] == undefined || item[key] === 0) {
+            if (key === 'price' && item[key] === 0) {
+               errs[key] = 'Hãy nhập ' + key;
+               isValid = false;
+            } else {
+               errs[key] = 'Hãy nhập ' + key;
+               isValid = false;
+            }
          } else {
             errs[key] = undefined;
          }
       }
-
       return [isValid, errs];
    }
 
@@ -120,7 +124,7 @@ const UpdateProduct = () => {
             <form onSubmit={onhandleSubmit}>
                <div>
                   <h4>Current Image</h4>
-                  <img src={product?.images[0]?.url} alt='Image' className='w-96' />
+                  <img src={product?.images[0]?.url} alt='Image' className='w-[30%] aspect-square object-cover' />
                </div>
                <div className='grid md:grid-cols-2 md:gap-6 mt-10'>
                   <div className='relative z-0 w-full mb-6 group'>

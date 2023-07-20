@@ -50,9 +50,14 @@ const AddProduct = () => {
       let isValid = true;
       const errs = {};
       for (const key in item) {
-         if (item[key] === '' || item[key] == undefined) {
-            errs[key] = 'Hãy nhập ' + key;
-            isValid = false;
+         if (item[key] === '' || item[key] == undefined || item[key] === 0) {
+            if (key === 'price' && item[key] === 0) {
+               errs[key] = 'Hãy nhập ' + key;
+               isValid = false;
+            } else {
+               errs[key] = 'Hãy nhập ' + key;
+               isValid = false;
+            }
          } else {
             errs[key] = undefined;
          }

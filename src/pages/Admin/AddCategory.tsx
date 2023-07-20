@@ -1,11 +1,16 @@
 import { useState } from 'react';
 import { createCate } from '../../api/category';
-import { useNavigate } from 'react-router-dom';
 import { uploadImage } from '../../api/upload';
+import { MessageProp } from './AddProduct';
+import Message from '../../components/Message/Message';
+import Loading from '../../components/Loading/Loading';
+
 const AddCategory = () => {
    const [cateName, setCateName] = useState('');
    const [cateNameErr, setCateNameErr] = useState(false);
-   const navigate = useNavigate();
+   const [loading, setLoading] = useState<boolean>(false);
+   const [msg, setMsg] = useState<MessageProp>();
+
    const onChangeName = (e: any) => {
       const value = e.target.value;
       setCateName(e.target.value);
@@ -19,29 +24,38 @@ const AddCategory = () => {
       }
    };
 
-   const onSubmit = async (e: any) => {
+   const onSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
       if (cateName.length === 0) {
          setCateNameErr(true);
          return;
       }
+
       const fileList = e.target[1].files;
       const formData = new FormData();
       for (const file of fileList) {
          formData.append('images', file);
       }
+      setLoading(true);
       const res = await uploadImage(formData);
       const data = {
          name: cateName,
          image: res.data.data[0].url
       };
-      await createCate(data);
-      alert('success');
-      navigate('/admin/categories');
+      await createCate(data)
+         .then(() => {
+            setLoading(false);
+            setMsg({ content: 'Create category successfully !', type: 'success' });
+         })
+         .catch(() => {
+            setLoading(false);
+            setMsg({ content: 'Fail to create category !', type: 'error' });
+         });
    };
-
+   if (loading) return <Loading />;
    return (
       <div>
+         {msg && <Message msg={msg.content} type={msg.type} duration={1000} navigateLink='/admin/categories' />}
          <div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8'>
             <div className='sm:mx-auto sm:w-full sm:max-w-sm'>
                <img
