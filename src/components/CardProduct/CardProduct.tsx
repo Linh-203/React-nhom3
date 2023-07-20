@@ -14,7 +14,7 @@ type Props = {
 const CardProduct = React.memo(({ product, link }: Props) => {
    return (
       <div className={`${styles['wrapper']}`}>
-         <Link to={link} className={` block relative text-center`}>
+         <Link to={link} className={` block relative text-center`} onClick={() => window.scroll(0, 0)}>
             {product.discount > 0 && (
                <p className={`${styles['tail']} absolute top-5 left-5 px-2 py-1 text-[0.8rem] text-white bg-hightLigh`}>
                   -{product.discount}%

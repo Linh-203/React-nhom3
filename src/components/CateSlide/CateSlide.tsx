@@ -19,7 +19,7 @@ const CateSlide = () => {
    }, []);
    console.log(products);
    return (
-      <div className='product px-28 py-5'>
+      <div className='product py-9'>
          {products.length > 0 && (
             <Slide slidesPerView={4} navigation={false} autoplay={true}>
                {products.map((slide, index) => (

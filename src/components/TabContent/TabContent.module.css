@@ -1,0 +1,17 @@
+.head-tab{
+    display: flex;
+    justify-content: space-start;
+    align-items: center;
+    width: 50%;
+    gap:2rem;
+    margin-bottom: 2rem;
+    
+}
+.btn-tab{
+    padding: 0.3rem 2rem;
+    font-weight: 500;
+    font-size: 1rem;
+}
+.btn-tab +.btn-tab{
+    border-left: 1px solid rgba(0,0,0,0.2);
+}

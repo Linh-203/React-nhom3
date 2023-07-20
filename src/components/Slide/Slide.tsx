@@ -16,12 +16,13 @@ const Slide = (props: IProps) => {
       <Swiper
          modules={[Navigation, Pagination, Scrollbar, A11y, Autoplay]}
          spaceBetween={50}
-         autoplay={props.autoplay ? { delay: 3000 } : false}
+         autoplay={props.autoplay ? { delay: 2000 } : false}
          slidesPerView={props.slidesPerView}
          navigation={props.navigation || false}
          onSwiper={(swiper) => console.log(swiper)}
          onSlideChange={() => console.log('slide change')}
          loop={true}
+         
       >
          {props.children}
       </Swiper>
