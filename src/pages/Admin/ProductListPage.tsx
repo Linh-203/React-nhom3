@@ -3,8 +3,7 @@ import SearchIcon from '../../assets/icons/SearchIcon';
 import productService from '../../api/product';
 import ProductTbaleItem from '../../components/ProductTableItem/ProductTableItem';
 import { IProduct } from '../../common/product';
-import { AxiosResponse } from 'axios';
-import instance from '../../api/instance';
+import { useDebounce } from '../../hooks/useDebounce';
 
 const ProductListPage = () => {
    const [item, setItem] = useState<IProduct[]>([]);
@@ -13,13 +12,9 @@ const ProductListPage = () => {
    const [totalPages, setTotalPage] = useState<number[]>([]);
    const [itemPerpage] = useState(5);
    const [currentPage, setCurrentPage] = useState(1);
+   const [key, setKey] = useState<string>('');
 
-   const handleSearch = async (value: string) => {
-      // const filter = item.filter((item) => item.name.toLowerCase().match(value.toLowerCase()));
-      const searchResult: AxiosResponse<IProduct[], any> = await instance.get('/products?_q='+value)
-      renderItemPerpage(searchResult.data.data);
-   };
-
+   const finalKey = useDebounce<string>(key, 500);
    const renderItemPerpage = (item: IProduct[]) => {
       setPages(Math.ceil(item.length / itemPerpage));
       setTotalPage(Array.from(Array(Math.ceil(item.length / itemPerpage)).keys()).map((page) => page + 1));
@@ -57,23 +52,17 @@ const ProductListPage = () => {
       setCurrentPage(page);
    };
 
-   const getAllProducts = async () => {
-      const { data } = await productService.getAllProduct({});
-      setItem(data.data);
-   };
-
    useEffect(() => {
       renderItemPerpage(item);
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [item, currentPage]);
 
    useEffect(() => {
-      getAllProducts().catch(() => {
-         console.log('getAllProducts failed');
-      });
-   }, []);
-   console.log(itemToRender);
-
+      void (async () => {
+         const { data } = await productService.getAllProduct({ q: finalKey });
+         setItem(data.data);
+      })();
+   }, [finalKey]);
    return (
       <div>
          <div className='flex pb-4 justify-between items-center'>
@@ -83,7 +72,7 @@ const ProductListPage = () => {
                   type='search'
                   placeholder='search here...'
                   className='border-[1px] border-gray-300 rounded-l-2xl p-2 hover:border-black text-black outline-none'
-                  onChange={(e) => handleSearch(e.target.value)}
+                  onChange={(e) => setKey(e.target.value)}
                />
                <button className='border-[1px] bg-red-400 text-white hover:bg-red-500 px-3 border-gray-300 rounded-r-2xl'>
                   <SearchIcon />
@@ -116,8 +105,9 @@ const ProductListPage = () => {
             <tbody>
                {itemToRender?.length > 0 &&
                   // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                  itemToRender?.map((prd, index) => <ProductTbaleItem deleteAction={handleDeleteItem} prd={prd} index={index} key={index} />)
-               }
+                  itemToRender?.map((prd, index) => (
+                     <ProductTbaleItem deleteAction={handleDeleteItem} prd={prd} index={index} key={index} />
+                  ))}
             </tbody>
          </table>
          <div className='paginate flex gap-1 justify-end py-3'>

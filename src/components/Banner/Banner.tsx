@@ -19,7 +19,7 @@ const Banner = () => {
                      <h2 className='absolute text-[73px] font-bold top-72 left-24 transform -translate-y-1/2'>
                         {slide.title}
                      </h2>
-                     <button className='absolute top-[60%] left-24 text-white transform -translate-y-1/2 bg-red-600 w-40 h-14 rounded-3xl'>
+                     <button className='absolute top-[70%] left-24 text-white transform -translate-y-1/2 bg-red-600 w-40 h-14 rounded-3xl'>
                         SHOP NOW
                      </button>
                   </SwiperSlide>

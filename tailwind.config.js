@@ -8,21 +8,22 @@ export default {
             colorText: '#333333',
             hightLigh: '#d2401e',
             greenCus: '#8db049',
-            grayLight200:'#7c7e7c',
-            grayLight100:'#b0b0b0',
+            grayLight200: '#7c7e7c',
+            grayLight100: '#b0b0b0',
+            greenCus400: '#198754',
          },
          backgroundColor: {
             primaryBg: '#f8f8f8',
             sectionBg: '#f1f1f1',
             navBg: '#badaf6',
             dropBg: '#e1dede',
-            dropDarkBg: "#ffffff1a",
+            dropDarkBg: '#ffffff1a',
             primaryDarkBg: '#0B2447',
             sectionDarkBg: '#19376D',
-            navDarkBg: 'rgba(165, 215, 232,0.30)',
+            navDarkBg: 'rgba(165, 215, 232,0.30)'
          },
-         screens:{
-            'lg':'1300px'
+         screens: {
+            lg: '1300px'
          }
       }
    },

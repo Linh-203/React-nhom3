@@ -48,14 +48,18 @@ const UpdateProduct = () => {
       let isValid = true;
       const errs = {};
       for (const key in item) {
-         if (item[key] === '' || item[key] == undefined) {
-            errs[key] = 'Hãy nhập ' + key;
-            isValid = false;
+         if (item[key] === '' || item[key] == undefined || item[key] === 0) {
+            if (key === 'price' && item[key] === 0) {
+               errs[key] = 'Hãy nhập ' + key;
+               isValid = false;
+            } else {
+               errs[key] = 'Hãy nhập ' + key;
+               isValid = false;
+            }
          } else {
             errs[key] = undefined;
          }
       }
-
       return [isValid, errs];
    }
 
@@ -121,7 +125,7 @@ const UpdateProduct = () => {
             <form onSubmit={onhandleSubmit}>
                <div>
                   <h4>Current Image</h4>
-                  <img src={product?.images[0]?.url} alt='Image' className='w-96' />
+                  <img src={product?.images[0]?.url} alt='Image' className='w-[30%] aspect-square object-cover' />
                </div>
                <div className='grid md:grid-cols-2 md:gap-6 mt-10'>
                   <div className='relative z-0 w-full mb-6 group'>
@@ -278,7 +282,7 @@ const UpdateProduct = () => {
 
                <button
                   type='submit'
-                  className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
+                  className='text-white bg-hightLigh hover:bg-hightLigh focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
                >
                   Submit
                </button>

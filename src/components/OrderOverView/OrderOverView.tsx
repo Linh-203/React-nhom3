@@ -67,7 +67,7 @@ const order: IOrder[] = [
 
 function OrderOverView() {
    return (
-      <div className='rounded-2xl p-4 my-12 bg-dropBg text-black'>
+      <div className=' p-4 my-12  text-black'>
          <div>
             <h1 className='text-[20px]'>RECENTLY PLACED ORDERS</h1>
             <table className='w-full my-5 rounded-t-2xl overflow-hidden'>

@@ -36,20 +36,21 @@ const AddCategory = () => {
       for (const file of fileList) {
          formData.append('images', file);
       }
-      setLoading(true)
+      setLoading(true);
       const res = await uploadImage(formData);
       const data = {
          name: cateName,
          image: res.data.data[0].url
       };
-      await createCate(data).then(() => {
-         setLoading(false)
-         setMsg({ content: 'Create category successfully !', type: 'success' });
-      })
-      .catch(() => {
-         setLoading(false)
-         setMsg({ content: 'Fail to create category !', type: 'error' });
-      });
+      await createCate(data)
+         .then(() => {
+            setLoading(false);
+            setMsg({ content: 'Create category successfully !', type: 'success' });
+         })
+         .catch(() => {
+            setLoading(false);
+            setMsg({ content: 'Fail to create category !', type: 'error' });
+         });
    };
    if (loading) return <Loading />;
    return (
@@ -105,7 +106,7 @@ const AddCategory = () => {
                   <div>
                      <button
                         type='submit'
-                        className='flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+                        className='flex w-full justify-center rounded-md bg-hightLigh hover:bg-hightLigh px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
                      >
                         Submit
                      </button>

@@ -68,8 +68,6 @@ const CategoryListPage = () => {
          console.log('getAllProducts failed');
       });
    }, []);
-   console.log(itemToRender);
-
    return (
       <div>
          <div className='flex pb-4 justify-between items-center'>
