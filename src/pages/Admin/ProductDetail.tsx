@@ -24,6 +24,7 @@ function ProductDetail(props: IProps) {
             console.log('getItem failed');
          });
       }
+   // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [props.id]);
    //console.log(item, toggle, props.id);
 
