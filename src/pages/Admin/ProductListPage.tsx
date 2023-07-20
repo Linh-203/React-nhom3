@@ -34,9 +34,7 @@ const ProductListPage = () => {
          .deleteProduct(id)
          .then(() => {
             alert('Deleted product');
-            getAllProducts().catch(() => {
-               console.log('getAllProducts failed');
-            });
+            handleGetAllItem().catch((err) => console.log(err))
          })
          .catch(() => {
             console.log('error deleting product');
@@ -57,11 +55,16 @@ const ProductListPage = () => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [item, currentPage]);
 
+
+   //Vì tôi còn dùng lại hàm này nữa
+   const handleGetAllItem = async () => {
+      const { data } = await productService.getAllProduct({ q: finalKey });
+      setItem(data.data);
+   }
+
    useEffect(() => {
-      void (async () => {
-         const { data } = await productService.getAllProduct({ q: finalKey });
-         setItem(data.data);
-      })();
+      handleGetAllItem().catch((err) => console.log(err))
+   // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [finalKey]);
    return (
       <div>

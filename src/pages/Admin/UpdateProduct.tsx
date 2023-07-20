@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import productService from '../../api/product';
 import categoryService from '../../api/category';
 import { useState, useEffect } from 'react';
@@ -10,6 +10,14 @@ import { MessageProp } from './AddProduct';
 import Loading from '../../components/Loading/Loading';
 import Message from '../../components/Message/Message';
 
+export type ProductFormCheck = Omit<InputProduct, 'images'> & {
+   categoryId: string;
+};
+
+export type FileFormTarget = React.FormEvent<HTMLFormElement> & {
+   target: { files: string[] }[];
+};
+
 const UpdateProduct = () => {
    const { id } = useParams();
 
@@ -17,7 +25,7 @@ const UpdateProduct = () => {
    const [loading, setLoading] = useState<boolean>(false);
    const [categories, setCategories] = useState<ICategory[]>([]);
    const [product, setProduct] = useState<IProduct>({} as IProduct);
-   const [errors, setErrors] = useState({});
+   const [errors, setErrors] = useState<Record<string, string | undefined> | ProductFormCheck | null>();
 
    const getAllCategory4 = async () => {
       const { data } = await categoryService.getAllCategory();
@@ -28,7 +36,6 @@ const UpdateProduct = () => {
          await getAllCategory4();
       })();
    }, []);
-   console.log(categories, product);
 
    useEffect(() => {
       productService
@@ -44,18 +51,15 @@ const UpdateProduct = () => {
       await productService.updateProduct(id!, product);
    };
 
-   function validateFields(item) {
+   function validateFields(
+      item: Record<string, string | number>
+   ): [boolean, ProductFormCheck | Record<string, string | undefined>] {
       let isValid = true;
-      const errs = {};
+      const errs: ProductFormCheck | Record<string, string | undefined> = {};
       for (const key in item) {
-         if (item[key] === '' || item[key] == undefined || item[key] === 0) {
-            if (key === 'price' && item[key] === 0) {
-               errs[key] = 'Hãy nhập ' + key;
-               isValid = false;
-            } else {
-               errs[key] = 'Hãy nhập ' + key;
-               isValid = false;
-            }
+         if (item[key].toString().trim() === '' || item[key] == undefined || (item[key] == 0 && key == 'price')) {
+            errs[key] = 'Hãy nhập ' + key;
+            isValid = false;
          } else {
             errs[key] = undefined;
          }
@@ -63,56 +67,55 @@ const UpdateProduct = () => {
       return [isValid, errs];
    }
 
-   const onHandleChange = (e) => {
+   const onHandleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
       const { name, value } = e.target;
       setProduct({ ...product, [name]: value });
    };
 
-   const onhandleSubmit = async (e: React.FormEvent) => {
+   const onhandleSubmit = (e: FileFormTarget): void => {
       e.preventDefault();
-      let [isValid, errs] = validateFields(product);
+      const [isValid, errs] = validateFields(product as ProductFormCheck);
       let images = product.images.map((img) => {
          img._id = undefined;
          return img;
       });
-      
-      setLoading(true);
-      if (e.target[7].files.length > 0) {
-         const fileList = e.target[7].files;
-         const formData = new FormData();
-         for (const file of fileList) {
-            formData.append('images', file);
-         }
 
-         const { data } = await uploadImage(formData);
-         if (data.data.length > 0) {
-            images = data.data;
+      void (async () => {
+         if (isValid) {
+            setLoading(true);
+            if (e.target[7].files.length > 0) {
+               const fileList = e.target[7].files;
+               const formData = new FormData();
+               for (const file of fileList) {
+                  formData.append('images', file);
+               }
+               const { data } = await uploadImage(formData);
+               if (data.data.length > 0) {
+                  images = data.data;
+               } else {
+                  setMsg({ content: 'Fail to upload image', type: 'error' });
+               }
+            }
+            const item: InputProduct = {
+               name: product.name,
+               price: product.price,
+               stock: product.stock,
+               solded: product.solded,
+               discount: product.discount,
+               favorite: product.favorite,
+               categoryId: (product.categoryId?._id ?? product.categoryId) as string,
+               images: images,
+               desc: product.desc
+            };
+
+            await onHandleUpdate(item);
+            setLoading(false);
+            setMsg({ content: 'Update product successfully !', type: 'success' });
          } else {
-            setMsg({ content: 'Fail to upload image', type: 'error' });
+            setLoading(false);
+            setErrors(errs);
          }
-      }
-      if (isValid) {
-         const item = {
-            name: product.name,
-            price: product.price,
-            stock: product.stock,
-            solded: product.solded,
-            discount: product.discount,
-            favorite: product.favorite,
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            categoryId: product.categoryId._id ? product.categoryId._id : product.categoryId,
-            images: images,
-            desc: product.desc
-         };
-
-         await onHandleUpdate(item);
-         setLoading(false);
-         setMsg({ content: 'Update product successfully !', type: 'success' });
-      } else {
-         setLoading(false);
-         setMsg({ content: 'Fail to update product', type: 'error' });
-         setErrors({ ...errs });
-      }
+      })();
    };
    if (loading) return <Loading />;
    return (
@@ -141,7 +144,7 @@ const UpdateProduct = () => {
                      <label className='peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'>
                         Product name
                      </label>
-                     <p className='text-red-400'>{errors.name}</p>
+                     <p className='text-red-400'>{errors?.name}</p>
                   </div>
                   <div className='relative z-0 w-full mb-6 group'>
                      <input
@@ -156,7 +159,7 @@ const UpdateProduct = () => {
                      <label className='peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'>
                         Price
                      </label>
-                     <p className='text-red-400'>{errors.price}</p>
+                     <p className='text-red-400'>{errors?.price}</p>
                   </div>
                </div>
 
@@ -174,7 +177,7 @@ const UpdateProduct = () => {
                      <label className='peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'>
                         Stock
                      </label>
-                     <p className='text-red-400'>{errors.stock}</p>
+                     <p className='text-red-400'>{errors?.stock}</p>
                   </div>
                   <div className='relative z-0 w-full mb-6 group'>
                      <input
@@ -190,7 +193,7 @@ const UpdateProduct = () => {
                      <label className='peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'>
                         Sold_out
                      </label>
-                     <p className='text-red-400'>{errors.solded}</p>
+                     <p className='text-red-400'>{errors?.solded}</p>
                   </div>
                </div>
 
@@ -208,7 +211,7 @@ const UpdateProduct = () => {
                      <label className='peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'>
                         Discount
                      </label>
-                     <p className='text-red-400'>{errors.discount}</p>
+                     <p className='text-red-400'>{errors?.discount}</p>
                   </div>
                   <div className='relative z-0 w-full mb-6 group'>
                      <input
@@ -223,7 +226,7 @@ const UpdateProduct = () => {
                      <label className='peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'>
                         Favorite
                      </label>
-                     <p className='text-red-400'>{errors.favorite}</p>
+                     <p className='text-red-400'>{errors?.favorite}</p>
                   </div>
                </div>
 
@@ -238,7 +241,7 @@ const UpdateProduct = () => {
                         id='categoryId'
                         className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                      >
-                        <option selected value={product?.categoryId?._id}>
+                        <option selected value={product?.categoryId?._id as string}>
                            {product?.categoryId?.name}
                         </option>
 
@@ -249,7 +252,7 @@ const UpdateProduct = () => {
                               </option>
                            ))}
                      </select>
-                     <p className='text-red-400'>{errors.categoryId}</p>
+                     <p className='text-red-400'>{errors?.categoryId}</p>
                   </div>
 
                   <div className='relative z-0 w-full mb-6 group'>
@@ -277,7 +280,7 @@ const UpdateProduct = () => {
                         placeholder='Write a desc...'
                      ></textarea>
                   </div>
-                  <p className='text-red-400'>{errors.desc}</p>
+                  <p className='text-red-400'>{errors?.desc}</p>
                </div>
 
                <button

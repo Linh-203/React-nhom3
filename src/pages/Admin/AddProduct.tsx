@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import productService from '../../api/product';
 import categoryService from '../../api/category';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ChangeEvent } from 'react';
 import { uploadImage } from '../../api/upload';
 import { InputProduct } from '../../common/product';
 import { ICategory } from '../../common/category';
 import Message from '../../components/Message/Message';
 import Loading from '../../components/Loading/Loading';
+import { FileFormTarget, ProductFormCheck } from './UpdateProduct';
 
 export type MessageProp = {
    content: string;
@@ -27,7 +28,7 @@ const AddProduct = () => {
       desc: '',
       images: []
    });
-   const [errors, setErrors] = useState({});
+   const [errors, setErrors] = useState<Record<string, string | undefined> | InputProduct | null>();
    const getAllCategory4 = async () => {
       const { data } = await categoryService.getAllCategory();
       setCategories(data.data);
@@ -38,31 +39,26 @@ const AddProduct = () => {
       })();
    }, []);
 
-   const onHandleChange = (e: any) => {
+   const onHandleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
       if (e) {
-         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
          const { name, value } = e.target;
          setProduct({ ...product, [name]: value });
       }
    };
 
-   function validateFields(item: InputProduct) {
+   function validateFields(
+      item: Record<string, string | number>
+   ): [boolean, InputProduct | Record<string, string | undefined>] {
       let isValid = true;
-      const errs = {};
+      const errs: InputProduct | Record<string, string | undefined> = {};
       for (const key in item) {
-         if (item[key] === '' || item[key] == undefined || item[key] === 0) {
-            if (key === 'price' && item[key] === 0) {
-               errs[key] = 'Hãy nhập ' + key;
-               isValid = false;
-            } else {
-               errs[key] = 'Hãy nhập ' + key;
-               isValid = false;
-            }
+         if (item[key].toString().trim() === '' || item[key] == undefined || (item[key] == 0 && key == 'price')) {
+            errs[key] = 'Hãy nhập ' + key;
+            isValid = false;
          } else {
             errs[key] = undefined;
          }
       }
-
       return [isValid, errs];
    }
 
@@ -70,42 +66,45 @@ const AddProduct = () => {
       await productService.addProduct(product);
    };
 
-   const onhandleSubmit = async (e: React.FormEvent) => {
+   const onhandleSubmit = (e: FileFormTarget): void => {
       e.preventDefault();
-      // eslint-disable-next-line prefer-const
-      let [isValid, errs] = validateFields(product);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      const [isValid, errs] = validateFields(product as ProductFormCheck);
+      let formValid = isValid;
       if (e.target[7].files.length == 0) {
-         isValid = false;
+         formValid = false;
          errs.images = 'Hãy chọn ảnh';
       }
-      if (isValid) {
+      console.log(formValid);
+
+      if (formValid) {
          setLoading(true);
-         const fileList = e.target[7].files;
-         const formData = new FormData();
-         for (const file of fileList) {
-            formData.append('images', file);
-         }
-         const { data } = await uploadImage(formData);
-         if (data.data?.length > 0) {
-            const item = {
-               name: product.name,
-               price: product.price,
-               stock: product.stock,
-               solded: product.solded,
-               discount: product.discount,
-               favorite: product.favorite,
-               categoryId: product.categoryId,
-               images: data.data,
-               desc: product.desc
-            };
-            await onHandleAdd(item);
-            setLoading(false);
-            setMsg({ content: 'Create product successfully !', type: 'success' });
-         } else {
-            setLoading(false);
-            setMsg({ content: 'Fail to create product', type: 'error' });
-         }
+         void (async () => {
+            const fileList = e.target[7].files;
+            const formData = new FormData();
+            for (const file of fileList) {
+               formData.append('images', file);
+            }
+            const { data } = await uploadImage(formData);
+            if (data.data?.length > 0) {
+               const item = {
+                  name: product.name,
+                  price: product.price,
+                  stock: product.stock,
+                  solded: product.solded,
+                  discount: product.discount,
+                  favorite: product.favorite,
+                  categoryId: product.categoryId,
+                  images: data.data,
+                  desc: product.desc
+               };
+               await onHandleAdd(item);
+               setLoading(false);
+               setMsg({ content: 'Create product successfully !', type: 'success' });
+            } else {
+               setLoading(false);
+               setMsg({ content: 'Fail to create product', type: 'error' });
+            }
+         })();
       } else {
          setLoading(false);
          setErrors({ ...errs });
@@ -132,7 +131,7 @@ const AddProduct = () => {
                   <label className=' peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'>
                      Product name
                   </label>
-                  <p className='text-red-400'>{errors.name}</p>
+                  <p className='text-red-400'>{errors?.name}</p>
                </div>
                <div className='relative z-0 w-full mb-6 group'>
                   <input
@@ -147,7 +146,7 @@ const AddProduct = () => {
                   <label className='peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'>
                      Price
                   </label>
-                  <p className='text-red-400'>{errors.price}</p>
+                  <p className='text-red-400'>{errors?.price}</p>
                </div>
             </div>
 
@@ -165,7 +164,7 @@ const AddProduct = () => {
                   <label className='peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'>
                      Stock
                   </label>
-                  <p className='text-red-400'>{errors.stock}</p>
+                  <p className='text-red-400'>{errors?.stock}</p>
                </div>
                <div className='relative z-0 w-full mb-6 group'>
                   <input
@@ -180,7 +179,7 @@ const AddProduct = () => {
                   <label className='peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'>
                      Sold_out
                   </label>
-                  <p className='text-red-400'>{errors.solded}</p>
+                  <p className='text-red-400'>{errors?.solded}</p>
                </div>
             </div>
 
@@ -198,7 +197,7 @@ const AddProduct = () => {
                   <label className='peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'>
                      Discount
                   </label>
-                  <p className='text-red-400'>{errors.discount}</p>
+                  <p className='text-red-400'>{errors?.discount}</p>
                </div>
                <div className='relative z-0 w-full mb-6 group'>
                   <input
@@ -213,7 +212,7 @@ const AddProduct = () => {
                   <label className='peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'>
                      Favorite
                   </label>
-                  <p className='text-red-400'>{errors.favorite}</p>
+                  <p className='text-red-400'>{errors?.favorite}</p>
                </div>
             </div>
 
@@ -236,7 +235,7 @@ const AddProduct = () => {
                            </option>
                         ))}
                   </select>
-                  <p className='text-red-400'>{errors.categoryId}</p>
+                  <p className='text-red-400'>{errors?.categoryId?.toString()}</p>
                </div>
 
                <div className='relative z-0 w-full mb-6 group'>
@@ -250,7 +249,7 @@ const AddProduct = () => {
                      type='file'
                      multiple
                   />
-                  <p className='text-red-400'>{errors.images}</p>
+                  <p className='text-red-400'>{errors?.images as string}</p>
                </div>
             </div>
 
@@ -265,7 +264,7 @@ const AddProduct = () => {
                      placeholder='Write a desc...'
                   ></textarea>
                </div>
-               <p className='text-red-400'>{errors.desc}</p>
+               <p className='text-red-400'>{errors?.desc}</p>
             </div>
 
             <button
