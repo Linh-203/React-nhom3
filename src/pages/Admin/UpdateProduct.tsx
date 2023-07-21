@@ -12,7 +12,6 @@ import Loading from '../../components/Loading/Loading';
 import Message from '../../components/Message/Message';
 import FormSubmit from './components/FormSubmit';
 import { Image } from '../../common/image';
-import images from '../../assets/images';
 
 const { InputFeild, SelectFeild, SelectOption, TextareaFeild } = FormInputFeild;
 
@@ -52,10 +51,6 @@ const UpdateProduct = () => {
          })
          .catch((err) => console.log(err));
    }, [id]);
-
-   const onHandleUpdate = async (product: InputProduct) => {
-      await productService.updateProduct(id!, product);
-   };
 
    // const onHandleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
    //    const { name, value } = e.target;
