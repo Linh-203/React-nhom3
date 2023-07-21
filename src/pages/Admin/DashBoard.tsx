@@ -1,5 +1,8 @@
+import images from "../../assets/images"
 import AnalyticOverview, { IProps } from "../../components/AnalyticOverview/AnalyticOverview"
+import DoughnutChart from "../../components/DoughnutChart/DoughnutChart"
 import OrderOverView from "../../components/OrderOverView/OrderOverView"
+import AdminSection from "./components/AdminSection"
 
 const analytics: IProps[] = [
   { className: "bg-green-300", title: 'Website Visits', total: 212, resultPercent: 12, state: 'Decrease'},
@@ -17,7 +20,12 @@ const DashBoard = () => {
           <AnalyticOverview key={index} {...item}/>
         ))}
       </div>
-        <OrderOverView/>
+        <div className="flex justify-between items-center gap-4">
+          <AdminSection className="w-3/5" title="RECENTLY PLACED ORDERS"><OrderOverView/></AdminSection>
+          <AdminSection className="w-2/5" title="Customer Satisfaction">
+            <DoughnutChart/>
+          </AdminSection>
+        </div>
     </div>
   )
 }
