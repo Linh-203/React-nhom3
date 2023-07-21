@@ -42,7 +42,7 @@ function MenuDropDown(props: IProps) {
          />
          {props.children && props.children.length > 0 && (
             <div
-               className={` h-0 transition-all overflow-hidden duration-100 rounded-2xl`}
+               className={` h-0 transition-all overflow-hidden duration-100 rounded-xl`}
                ref={menuRef}
             >
                {props.children.map((child, index) => (

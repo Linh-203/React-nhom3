@@ -8,7 +8,7 @@ export type IProduct = {
    categoryId: string;
    stock: number;
    solded: number;
-   images: { url: string, public_id?: string, _id?: string }[];
+   images: { url: string, public_id?: string, _id?: string }[] | string[];
    discount: number;
 };
 export type InputProduct = Omit<IProduct, '_id'>;
