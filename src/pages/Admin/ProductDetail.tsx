@@ -6,7 +6,6 @@ type IProps = {
 };
 function ProductDetail(props: IProps) {
    const [item, setItem] = useState<IProduct>({} as IProduct);
-   console.log(item);
    const [loading, setLoading] = useState<boolean>(true);
 
    const getItem = async () => {
@@ -16,8 +15,6 @@ function ProductDetail(props: IProps) {
    };
 
    useEffect(() => {
-      console.log(props.id);
-
       if (props.id !== '') {
          setLoading(true);
          getItem().catch(() => {
@@ -26,7 +23,6 @@ function ProductDetail(props: IProps) {
       }
    // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [props.id]);
-   //console.log(item, toggle, props.id);
 
    return (
       <div className='text-black'>

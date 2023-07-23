@@ -50,7 +50,7 @@ const getProductById = async (id: string): Promise<AxiosResponse<ResponsePaginat
    const res = await instanse.get('/products/' + id);
    return res;
 };
-const deleteProduct = async (id: string) => {
+export const deleteProduct = async (id: string) => {
    return await instanse.delete('/products/' + id);
 };
 const addProduct = (product: InputProduct) => {
