@@ -4,7 +4,6 @@ import { allQuerySelector, filterSlice } from '../slices/FilterSlice';
 
 type Props = {
    totalPages: number;
-   curPage: number;
 };
 
 export const usePaginate = ({ totalPages }: Props) => {

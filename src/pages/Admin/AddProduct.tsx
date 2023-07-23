@@ -74,8 +74,6 @@ const AddProduct = () => {
          formValid = false;
          errs.images = 'Hãy chọn ảnh';
       }
-      console.log(formValid);
-
       if (formValid) {
          setLoading(true);
          void (async () => {
@@ -97,16 +95,20 @@ const AddProduct = () => {
                   images: data.data,
                   desc: product.desc
                };
-               await onHandleAdd(item);
-               setLoading(false);
-               setMsg({ content: 'Create product successfully !', type: 'success' });
+               try {
+                  await onHandleAdd(item);
+                  setLoading(false);
+                  setMsg({ content: 'Create product successfully !', type: 'success' });
+               } catch (error) {
+                  setLoading(false);
+                  setMsg({ content: 'Fail to create product', type: 'error' });
+               }
             } else {
                setLoading(false);
                setMsg({ content: 'Fail to create product', type: 'error' });
             }
          })();
       } else {
-         setLoading(false);
          setErrors({ ...errs });
       }
    };

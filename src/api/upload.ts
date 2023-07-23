@@ -4,6 +4,8 @@ import { Image } from '../common/image';
 import { ResponsePaginate } from '../common/product';
 
 export const uploadImage = async (files: FormData): Promise<AxiosResponse<ResponsePaginate<Image[]>, any>> => {
-   console.log('bo m da submit');
-   return await instanse.post('/upload', files);
+   return await instanse.post('/images', files);
+};
+export const deleteImages = (publicId: string) => {
+   return instanse.delete('/images/' + publicId);
 };
