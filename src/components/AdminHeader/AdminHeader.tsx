@@ -32,7 +32,7 @@ function AdminHeader(props: IProps) {
    }, [theme])
 
    return (
-      <div className='transition-all flex px-2 rounded-3xl w-full h-16 bg-white dark:bg-sectionDarkBg items-center mb-[24px] justify-between drop-shadow-lg'>
+      <div className='transition-all flex px-2 rounded-xl w-full h-16 bg-white dark:bg-sectionDarkBg items-center mb-[24px] justify-between drop-shadow-lg'>
          <button onClick={() => handleToggleMenu()} className='dark:hover:bg-navDarkBg dark:text-white p-2 rounded-full hover:bg-[rgba(0,0,0,0.2)]'>
             <MenuIcon height='20' width='20' />
          </button>
