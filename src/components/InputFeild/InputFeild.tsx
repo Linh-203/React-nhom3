@@ -68,7 +68,7 @@ const SelectFeild = memo((props: ISelectFeild) => {
                props.className || ''
             }`}
          >
-            <option value={props.value || ''}>{props.firstValue}</option>
+            <option value={props.value || ''}>{props.firstValue || 'Slected Option'}</option>
             {props.children}
          </select>
       </div>

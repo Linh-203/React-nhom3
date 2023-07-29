@@ -1,4 +1,3 @@
-import { uploadImage } from '../../../api/upload';
 import { Image } from '../../../common/image';
 import { InputProduct } from '../../../common/product';
 import useValidate from '../../../hooks/useValidate';
@@ -39,7 +38,14 @@ function FormSubmit(props: IProps) {
       }
       console.log(fileExist);
 
-      const [isValid, errs] = validate(formResult);
+      const [isValid, errs] = validate(formResult, {
+         name: { required: true, minLength: 3 },
+         price: { required: true , type: 'number' , min: 0},
+         stock: { required: true , type: 'number' , min: 0},
+         discount: { required: true , type: 'number' , min: 0},
+         categoryId: { required: true },
+         desc: { required: true }
+      });
 
       let valid = isValid;
       if (fileExist) {

@@ -51,7 +51,7 @@ const ProductTableItem = memo(({ prd, index, resetProducts }: IProps) => {
                handleCheckConfirm={getConfirmResult}
             />
          )}
-         <tr className='active:bg-primaryBg border-b-[1px] border-gray-400 h-[160px]'>
+         <tr className='border-b-[1px] border-gray-400 h-[160px]'>
             <th className='p-2' scope='col'>
                {index + 1}
             </th>

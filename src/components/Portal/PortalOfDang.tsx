@@ -15,7 +15,7 @@ function Portal(props: IProps) {
 
    return (
       <div
-         className={`fixed left-0 min-w-[100vw] min-h-[100vh] bg-[rgba(0,0,0,0.2)] flex items-center overflow-hidden transition-all justify-center z-[100] ${
+         className={`fixed left-0 min-w-[100vw] min-h-[100vh] bg-[rgba(0,0,0,0.5)] flex items-center overflow-hidden transition-all justify-center z-[100] ${
             toggle ? 'top-0' : '-top-[100%]'
          }`}
       >
