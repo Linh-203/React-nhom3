@@ -12,6 +12,7 @@ import Loading from '../../components/Loading/Loading';
 import Message from '../../components/Message/Message';
 import FormSubmit from './components/FormSubmit';
 import { Image } from '../../common/image';
+import { AxiosResponse } from 'axios';
 
 const { InputFeild, SelectFeild, SelectOption, TextareaFeild } = FormInputFeild;
 
@@ -22,6 +23,11 @@ export type ProductFormCheck = Omit<InputProduct, 'images'> & {
 export type FileFormTarget = React.FormEvent<HTMLFormElement> & {
    target: { files?: string | string[] | undefined; value: string | number; name?: string }[];
 };
+
+export type formErrorsRespones = {
+   errors?: string[];
+   message?: string
+} 
 
 const UpdateProduct = () => {
    const { id } = useParams();
@@ -61,8 +67,6 @@ const UpdateProduct = () => {
       isValid: boolean,
       errs: Record<string, string | number | undefined> | InputProduct
    ): void => {
-      console.log(isValid, errs);
-
       let imagesUpload = product.images.map((img) => {
          img._id = undefined;
          return img;
@@ -85,7 +89,7 @@ const UpdateProduct = () => {
             result.images = imagesUpload as Image[];
             await productService
                .updateProduct(id!, result as InputProduct)
-               .then(({data}: any) => {
+               .then(({data}: AxiosResponse<formErrorsRespones>) => {
                   setLoading(false);
                   if (data?.errors && data?.errors?.length > 0) {
                      alert('faild in Backend')

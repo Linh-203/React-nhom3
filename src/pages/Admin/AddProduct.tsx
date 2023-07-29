@@ -12,6 +12,8 @@ import FormSubmit from './components/FormSubmit';
 import FormInputFeild from '../../components/InputFeild/InputFeild';
 import { Image } from '../../common/image';
 import { uploadImage } from '../../api/upload';
+import { AxiosResponse } from 'axios';
+import { formErrorsRespones } from './UpdateProduct';
 
 const { InputFeild, SelectFeild, SelectOption, TextareaFeild } = FormInputFeild;
 
@@ -61,9 +63,9 @@ const AddProduct = () => {
             if (data.data.length > 0) {
                result.images = data.data as string;
                await productService.addProduct(result as InputProduct)
-            .then((res: any) => {
+            .then(({data}: AxiosResponse<formErrorsRespones>) => {
                setLoading(false);
-               if(res?.errors && res?.errors?.length > 0) {
+               if(data?.errors && data?.errors?.length > 0) {
                   alert('faild in Backend')
                   return
                }
