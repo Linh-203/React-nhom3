@@ -8,10 +8,18 @@ export type IProduct = {
    categoryId: string;
    stock: number;
    solded: number;
-   images: { url: string, public_id?: string, _id?: string }[] | string[];
+   images: { url: string; public_id?: string; _id?: string }[];
    discount: number;
 };
-export type InputProduct = Omit<IProduct, '_id'>;
+export type InputProduct = {
+   name: string;
+   price: number;
+   desc: string;
+   categoryId: string;
+   stock: number;
+   images: { url: string; public_id?: string; _id?: string }[];
+   discount: number;
+};
 export type ResponsePaginate<T> = {
    message: string;
    data: T;
