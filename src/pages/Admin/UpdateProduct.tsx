@@ -46,7 +46,6 @@ const UpdateProduct = () => {
       productService
          .getProductById(id!)
          .then(({ data }) => {
-            console.log(data);
             setProduct(data.data);
          })
          .catch((err) => console.log(err));
@@ -58,7 +57,7 @@ const UpdateProduct = () => {
    // };
 
    const onhandleSubmit = (
-      result: Record<string, string | number | Image[]| string[]> | InputProduct,
+      result: Record<string, string | number | Image[] | string[]> | InputProduct,
       isValid: boolean,
       errs: Record<string, string | number | undefined> | InputProduct
    ): void => {
@@ -69,7 +68,6 @@ const UpdateProduct = () => {
          return img;
       });
       if (isValid) {
-         console.log(result.images);
          setLoading(true);
          void (async () => {
             if (result.images !== undefined) {
@@ -87,8 +85,12 @@ const UpdateProduct = () => {
             result.images = imagesUpload as Image[];
             await productService
                .updateProduct(id!, result as InputProduct)
-               .then(() => {
+               .then(({data}: any) => {
                   setLoading(false);
+                  if (data?.errors && data?.errors?.length > 0) {
+                     alert('faild in Backend')
+                     return;
+                  }
                   setMsg({ content: 'Upadte product successfully !', type: 'success' });
                })
                .catch(() => {
@@ -99,8 +101,6 @@ const UpdateProduct = () => {
       } else {
          setErrors(errs as InputProduct);
       }
-
-      
    };
    if (loading) return <Loading />;
    return (
