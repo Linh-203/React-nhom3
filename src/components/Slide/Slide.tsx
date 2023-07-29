@@ -19,7 +19,6 @@ const Slide = (props: IProps) => {
          autoplay={props.autoplay ? { delay: 2000 } : false}
          slidesPerView={props.slidesPerView}
          navigation={props.navigation || false}
-         onSwiper={(swiper) => console.log(swiper)}
          onSlideChange={() => console.log('slide change')}
          loop={true}
          

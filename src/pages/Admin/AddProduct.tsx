@@ -19,11 +19,9 @@ const AddProduct = () => {
    const [msg, setMsg] = useState<MessageProp>();
    const [product, setProduct] = useState<InputProduct>({
       name: '',
-      price: 0,
+      price: 1,
       stock: 0,
-      solded: 0,
       discount: 0,
-      favorite: 0,
       categoryId: '',
       desc: '',
       images: []
@@ -52,7 +50,7 @@ const AddProduct = () => {
       let isValid = true;
       const errs: InputProduct | Record<string, string | undefined> = {};
       for (const key in item) {
-         if (item[key].toString().trim() === '' || item[key] == undefined || (item[key] == 0 && key == 'price')) {
+         if (item[key].toString().trim() === '' || item[key] == undefined) {
             errs[key] = 'Hãy nhập ' + key;
             isValid = false;
          } else {
@@ -88,9 +86,7 @@ const AddProduct = () => {
                   name: product.name,
                   price: product.price,
                   stock: product.stock,
-                  solded: product.solded,
                   discount: product.discount,
-                  favorite: product.favorite,
                   categoryId: product.categoryId,
                   images: data.data,
                   desc: product.desc
@@ -168,21 +164,6 @@ const AddProduct = () => {
                   </label>
                   <p className='text-red-400'>{errors?.stock}</p>
                </div>
-               <div className='relative z-0 w-full mb-6 group'>
-                  <input
-                     onChange={(e) => onHandleChange(e)}
-                     value={product.solded}
-                     type='number'
-                     name='solded'
-                     id='solded'
-                     className='block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer'
-                     placeholder=' '
-                  />
-                  <label className='peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'>
-                     Sold_out
-                  </label>
-                  <p className='text-red-400'>{errors?.solded}</p>
-               </div>
             </div>
 
             <div className='grid md:grid-cols-2 md:gap-6'>
@@ -200,21 +181,6 @@ const AddProduct = () => {
                      Discount
                   </label>
                   <p className='text-red-400'>{errors?.discount}</p>
-               </div>
-               <div className='relative z-0 w-full mb-6 group'>
-                  <input
-                     onChange={(e) => onHandleChange(e)}
-                     value={product.favorite}
-                     type='number'
-                     name='favorite'
-                     id='favorite'
-                     className='block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer'
-                     placeholder=' '
-                  />
-                  <label className='peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'>
-                     Favorite
-                  </label>
-                  <p className='text-red-400'>{errors?.favorite}</p>
                </div>
             </div>
 

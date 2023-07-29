@@ -74,18 +74,20 @@ const ProductTableItem = memo(({ prd, index, resetProducts }: IProps) => {
                >
                   Detail
                </button>
-               <Portal title={'Product Detail'} toggle={toggle}>
-                  <div className='flex pb-4 justify-between items-center'>
-                     <h1 className='text-4xl font-bold'>ProductDetail</h1>
-                     <button
-                        onClick={() => setToggle(false)}
-                        className='text-white p-2 rounded-lg bg-red-400 hover:bg-red-500'
-                     >
-                        Close
-                     </button>
-                  </div>
-                  <ProductDetail id={prd?._id} />
-               </Portal>
+               {toggle && (
+                  <Portal title={'Product Detail'} toggle={toggle}>
+                     <div className='flex pb-4 justify-between items-center'>
+                        <h1 className='text-4xl font-bold'>ProductDetail</h1>
+                        <button
+                           onClick={() => setToggle(false)}
+                           className='text-white p-2 rounded-lg bg-red-400 hover:bg-red-500'
+                        >
+                           Close
+                        </button>
+                     </div>
+                     <ProductDetail id={prd?._id} />
+                  </Portal>
+               )}
                <Link
                   className='p-2 rounded-xl bg-blue-400 hover:bg-blue-500 text-[15px] text-white'
                   to={'/admin/product-update/' + prd?._id}

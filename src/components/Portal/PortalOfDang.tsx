@@ -15,11 +15,14 @@ function Portal(props: IProps) {
 
    return (
       <div
-         className={`fixed left-0 w-full h-full bg-[rgba(0,0,0,0.2)] flex items-center overflow-hidden transition-all justify-center ${
+         className={`fixed left-0 min-w-[100vw] min-h-[100vh] bg-[rgba(0,0,0,0.2)] flex items-center overflow-hidden transition-all justify-center z-[100] ${
             toggle ? 'top-0' : '-top-[100%]'
          }`}
       >
-         <div onClick={(event) => event.stopPropagation()} className='w-[80%] min-h-[90%] overscroll-contain overflow-x-hidden overflow-y-auto rounded-2xl bg-white p-5'>
+         <div
+            onClick={(event) => event.stopPropagation()}
+            className='w-[80%] min-h-[90%] overscroll-contain overflow-x-hidden overflow-y-auto rounded-2xl bg-white p-5'
+         >
             {props.children}
          </div>
       </div>
