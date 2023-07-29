@@ -8,4 +8,5 @@ export const uploadImage = async (files: FormData): Promise<AxiosResponse<Respon
 };
 export const deleteImages = (publicId: string) => {
    return instanse.delete('/images/' + publicId);
+
 };

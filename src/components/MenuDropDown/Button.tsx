@@ -32,7 +32,7 @@ function Button(props: IProps) {
    
    return (
       <Comp
-         className={`relative w-full mx-auto rounded-2xl h-14 items-center justify-between  flex p-5  text-black dark:text-white`}
+         className={`relative w-full mx-auto rounded-xl h-14 items-center justify-between  flex p-5  text-black dark:text-white`}
          onClick={props.hadChildren?onHandleClick:()=>undefined}
          {...prps}
       >
