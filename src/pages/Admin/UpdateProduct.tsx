@@ -12,6 +12,7 @@ import Loading from '../../components/Loading/Loading';
 import Message from '../../components/Message/Message';
 import FormSubmit from './components/FormSubmit';
 import { Image } from '../../common/image';
+import { AxiosResponse } from 'axios';
 
 const { InputFeild, SelectFeild, SelectOption, TextareaFeild } = FormInputFeild;
 
@@ -22,6 +23,11 @@ export type ProductFormCheck = Omit<InputProduct, 'images'> & {
 export type FileFormTarget = React.FormEvent<HTMLFormElement> & {
    target: { files?: string | string[] | undefined; value: string | number; name?: string }[];
 };
+
+export type formErrorsRespones = {
+   errors?: string[];
+   message?: string
+} 
 
 const UpdateProduct = () => {
    const { id } = useParams();
@@ -46,7 +52,6 @@ const UpdateProduct = () => {
       productService
          .getProductById(id!)
          .then(({ data }) => {
-            console.log(data);
             setProduct(data.data);
          })
          .catch((err) => console.log(err));
@@ -58,18 +63,15 @@ const UpdateProduct = () => {
    // };
 
    const onhandleSubmit = (
-      result: Record<string, string | number | Image[]> | InputProduct,
+      result: Record<string, string | number | Image[] | string[]> | InputProduct,
       isValid: boolean,
       errs: Record<string, string | number | undefined> | InputProduct
    ): void => {
-      console.log(isValid, errs);
-
       let imagesUpload = product.images.map((img) => {
          img._id = undefined;
          return img;
       });
       if (isValid) {
-         console.log(result.images);
          setLoading(true);
          void (async () => {
             if (result.images !== undefined) {
@@ -84,11 +86,15 @@ const UpdateProduct = () => {
                   setMsg({ content: 'Fail to upload image', type: 'error' });
                }
             }
-            result.images = imagesUpload as string[];
+            result.images = imagesUpload as Image[];
             await productService
                .updateProduct(id!, result as InputProduct)
-               .then(() => {
+               .then(({data}: AxiosResponse<formErrorsRespones>) => {
                   setLoading(false);
+                  if (data?.errors && data?.errors?.length > 0) {
+                     alert('faild in Backend')
+                     return;
+                  }
                   setMsg({ content: 'Upadte product successfully !', type: 'success' });
                })
                .catch(() => {
@@ -99,47 +105,6 @@ const UpdateProduct = () => {
       } else {
          setErrors(errs as InputProduct);
       }
-
-      // e.preventDefault();
-      // const [isValid, errs] = validateFields(product as ProductFormCheck);
-      //
-
-      // void (async () => {
-      //    if (isValid) {
-      //       setLoading(true);
-      //       if (e.target[7].files.length > 0) {
-      //          const fileList = e.target[7].files;
-      //          const formData = new FormData();
-      //          for (const file of fileList) {
-      //             formData.append('images', file);
-      //          }
-      //          const { data } = await uploadImage(formData);
-      //          if (data.data.length > 0) {
-      //             images = data.data;
-      //          } else {
-      //             setMsg({ content: 'Fail to upload image', type: 'error' });
-      //          }
-      //       }
-      //       const item: InputProduct = {
-      //          name: product.name,
-      //          price: product.price,
-      //          stock: product.stock,
-      //          solded: product.solded,
-      //          discount: product.discount,
-      //          favorite: product.favorite,
-      //          categoryId: (product.categoryId?._id ?? product.categoryId) as string,
-      //          images: images,
-      //          desc: product.desc
-      //       };
-
-      //       await onHandleUpdate(item);
-      //       setLoading(false);
-      //       setMsg({ content: 'Update product successfully !', type: 'success' });
-      //    } else {
-      //       setLoading(false);
-      //       setErrors(errs);
-      //    }
-      // })();
    };
    if (loading) return <Loading />;
    return (
@@ -151,7 +116,7 @@ const UpdateProduct = () => {
          {Object.keys(product).length > 0 && (
             <FormSubmit onSubmit={onhandleSubmit} className='my-10'>
                <h1>Current Image</h1>
-               <img className='w-1/5 h-1/3' src={product?.images[0]?.url as string} alt='' />
+               <img className='w-1/5 h-1/3' src={product?.images[0]?.url} alt='' />
                <div className='grid md:grid-cols-2 md:gap-6'>
                   <div>
                      <InputFeild value={product.name} type='text' name='name' title='Product Name' />
@@ -166,16 +131,8 @@ const UpdateProduct = () => {
                      <p className='text-sm text-red-400'>{errors?.stock}</p>
                   </div>
                   <div>
-                     <InputFeild value={product.solded} type='number' name='solded' title='Solded' />
-                     <p className='text-sm text-red-400'>{errors?.solded}</p>
-                  </div>
-                  <div>
                      <InputFeild value={product.discount} type='number' name='discount' title='Discount' />
                      <p className='text-sm text-red-400'>{errors?.discount}</p>
-                  </div>
-                  <div>
-                     <InputFeild value={product.favorite} type='number' name='favorite' title='Favorite' />
-                     <p className='text-sm text-red-400'>{errors?.favorite}</p>
                   </div>
                   <div>
                      <SelectFeild

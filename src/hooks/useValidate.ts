@@ -6,6 +6,9 @@ function useValidate() {
          if (item[key].toString().trim() === '' || (item[key] == undefined) || (item[key] == 0 && key == 'price')) {
             errs[key] = 'Hãy nhập ' + key;
             isValid = false;
+         } else if (item[key] as number < 0) {
+            errs[key] = key + " phải lớn hơn 0";
+            isValid = false;
          } else {
             errs[key] = undefined;
          }
