@@ -17,7 +17,7 @@ export type InputProduct = {
    desc: string;
    categoryId: string;
    stock: number;
-   images: { url: string; public_id?: string; _id?: string }[];
+   images: string | { url: string; public_id?: string; _id?: string }[];
    discount: number;
 };
 export type ResponsePaginate<T> = {

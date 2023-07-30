@@ -8,9 +8,8 @@ import { ICategory } from '../../common/category';
 import Message from '../../components/Message/Message';
 import Loading from '../../components/Loading/Loading';
 //import { FileFormTarget, ProductFormCheck } from './UpdateProduct';
-import FormSubmit from './components/FormSubmit';
+import FormSubmit, { FormResponse } from './components/FormSubmit';
 import FormInputFeild from '../../components/InputFeild/InputFeild';
-import { Image } from '../../common/image';
 import { uploadImage } from '../../api/upload';
 import { AxiosResponse } from 'axios';
 import { formErrorsRespones } from './UpdateProduct';
@@ -47,44 +46,39 @@ const AddProduct = () => {
       })();
    }, []);
 
-   const onhandleSubmit = (
-      result: Record<string, string | number | Image[] | string[]> | InputProduct,
-      isValid: boolean,
-      errs: Record<string, string | number | undefined> | InputProduct
-   ): void => {
+   const onhandleSubmit = ({ result, isValid, errs }: FormResponse<InputProduct>): void => {
       if (isValid) {
          setLoading(true);
          const formData = new FormData();
-         for (const file of result.images as string[]) {
-            formData.append('images', file);
+         for (const file of result.images) {
+            formData.append('images', file as string);
          }
          void (async () => {
             const { data } = await uploadImage(formData);
             if (data.data.length > 0) {
                result.images = data.data as string;
-               await productService.addProduct(result as InputProduct)
-            .then(({data}: AxiosResponse<formErrorsRespones>) => {
-               setLoading(false);
-               if(data?.errors && data?.errors?.length > 0) {
-                  alert('faild in Backend')
-                  return
-               }
-               setMsg({ content: 'Create product successfully !', type: 'success' });
-            })
-            .catch(() => {
-               setLoading(false);
-               setMsg({ content: 'Create product fail !', type: 'error' });
-            });
+               await productService
+                  .addProduct(result)
+                  .then(({ data }: AxiosResponse<formErrorsRespones>) => {
+                     setLoading(false);
+                     if (data?.errors && data?.errors?.length > 0) {
+                        alert('faild in Backend');
+                        return;
+                     }
+                     setMsg({ content: 'Create product successfully !', type: 'success' });
+                  })
+                  .catch(() => {
+                     setLoading(false);
+                     setMsg({ content: 'Create product fail !', type: 'error' });
+                  });
             } else {
-               errs.images = 'Ảnh lỗi'
-               setErrors(errs as InputProduct)
+               errs.images = 'Ảnh lỗi';
+               setErrors(errs);
             }
          })();
-         
       } else {
-         setErrors(errs as InputProduct);
+         setErrors(errs);
       }
-
    };
    if (loading) return <Loading />;
    return (
@@ -93,12 +87,24 @@ const AddProduct = () => {
          <div>
             <h2 className='text-4xl font-bold dark:text-white'>Add Product</h2>
          </div>
-         <FormSubmit onSubmit={onhandleSubmit} haveFiles className='my-10'>
+         <FormSubmit
+            onSubmit={onhandleSubmit}
+            haveFiles //If you have files submitted
+            className='my-10'
+            pattern={{
+               name: { required: true, min: 3 },
+               price: { required: true, min: 1, type: 'number' },
+               stock: { required: true, type: 'number', min: 0 },
+               discount: { required: true, type: 'number', min: 0 },
+               categoryId: { required: true },
+               desc: { required: true }
+            }}
+         >
             <div className='grid md:grid-cols-2 md:gap-6'>
-              <div>
-                  <InputFeild type='text' name='name' title='Product Name'  />
+               <div>
+                  <InputFeild type='text' name='name' title='Product Name' />
                   <p className='text-sm text-red-400'>{errors?.name}</p>
-              </div>
+               </div>
                <div>
                   <InputFeild type='number' name='price' title='Product Price' />
                   <p className='text-sm text-red-400'>{errors?.price}</p>
@@ -111,15 +117,17 @@ const AddProduct = () => {
                   <InputFeild type='number' name='discount' title='Discount' />
                   <p className='text-sm text-red-400'>{errors?.discount}</p>
                </div>
-              <div>
+               <div>
                   <SelectFeild name='categoryId' title='Selected Category'>
                      {categories &&
-                        categories?.map((cate, index) => <SelectOption value={cate._id} label={cate.name} key={index} />)}
+                        categories?.map((cate, index) => (
+                           <SelectOption value={cate._id} label={cate.name} key={index} />
+                        ))}
                   </SelectFeild>
                   <p className='text-sm text-red-400'>{errors?.categoryId}</p>
-              </div>
+               </div>
                <div>
-                  <InputFeild type='file' name='images' title='Images' multiple={true}  />
+                  <InputFeild type='file' name='images' title='Images' multiple={true} />
                   <p className='text-sm text-red-400'>{errors?.images?.toString()}</p>
                </div>
             </div>
