@@ -10,7 +10,7 @@ import FormInputFeild from '../../components/InputFeild/InputFeild';
 import { MessageProp } from './AddProduct';
 import Loading from '../../components/Loading/Loading';
 import Message from '../../components/Message/Message';
-import FormSubmit from './components/FormSubmit';
+import FormSubmit, { FormResponse } from './components/FormSubmit';
 import { Image } from '../../common/image';
 import { AxiosResponse } from 'axios';
 
@@ -21,13 +21,13 @@ export type ProductFormCheck = Omit<InputProduct, 'images'> & {
 };
 
 export type FileFormTarget = React.FormEvent<HTMLFormElement> & {
-   target: { files?: string | string[] | undefined; value: string | number; name?: string }[];
+   target: { files?: string | string[] | Image[] | undefined; value: string | number; name?: string }[];
 };
 
 export type formErrorsRespones = {
    errors?: string[];
-   message?: string
-} 
+   message?: string;
+};
 
 const UpdateProduct = () => {
    const { id } = useParams();
@@ -62,11 +62,7 @@ const UpdateProduct = () => {
    //    setProduct({ ...product, [name]: value });
    // };
 
-   const onhandleSubmit = (
-      result: Record<string, string | number | Image[] | string[]> | InputProduct,
-      isValid: boolean,
-      errs: Record<string, string | number | undefined> | InputProduct
-   ): void => {
+   const onhandleSubmit = ({ result, isValid, errs }: FormResponse<InputProduct>): void => {
       let imagesUpload = product.images.map((img) => {
          img._id = undefined;
          return img;
@@ -76,8 +72,8 @@ const UpdateProduct = () => {
          void (async () => {
             if (result.images !== undefined) {
                const formData = new FormData();
-               for (const file of result.images as string[]) {
-                  formData.append('images', file);
+               for (const file of result.images) {
+                  formData.append('images', file as string);
                }
                const { data } = await uploadImage(formData);
                if (data.data.length > 0) {
@@ -88,11 +84,11 @@ const UpdateProduct = () => {
             }
             result.images = imagesUpload as Image[];
             await productService
-               .updateProduct(id!, result as InputProduct)
-               .then(({data}: AxiosResponse<formErrorsRespones>) => {
+               .updateProduct(id!, result)
+               .then(({ data }: AxiosResponse<formErrorsRespones>) => {
                   setLoading(false);
                   if (data?.errors && data?.errors?.length > 0) {
-                     alert('faild in Backend')
+                     alert('faild in Backend');
                      return;
                   }
                   setMsg({ content: 'Upadte product successfully !', type: 'success' });
@@ -103,7 +99,7 @@ const UpdateProduct = () => {
                });
          })();
       } else {
-         setErrors(errs as InputProduct);
+         setErrors(errs);
       }
    };
    if (loading) return <Loading />;
@@ -114,7 +110,18 @@ const UpdateProduct = () => {
             <h2 className='text-4xl font-bold dark:text-white'>Update Product</h2>
          </div>
          {Object.keys(product).length > 0 && (
-            <FormSubmit onSubmit={onhandleSubmit} className='my-10'>
+            <FormSubmit
+               onSubmit={onhandleSubmit}
+               className='my-10'
+               pattern={{
+                  name: { required: true, min: 3 },
+                  price: { required: true, min: 1, type: 'number' },
+                  stock: { required: true, type: 'number', min: 0 },
+                  discount: { required: true, type: 'number', min: 0 },
+                  categoryId: { required: true },
+                  desc: { required: true }
+               }}
+            >
                <h1>Current Image</h1>
                <img className='w-1/5 h-1/3' src={product?.images[0]?.url} alt='' />
                <div className='grid md:grid-cols-2 md:gap-6'>

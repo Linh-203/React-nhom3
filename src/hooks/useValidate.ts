@@ -8,11 +8,11 @@ interface IValidateRules {
    type?: 'object' | 'array' | 'number';
 }
 
-type ValidationPattern = Record<string, IValidateRules>;
+export type ValidationPattern = Record<string, IValidateRules>;
 
 function useValidate() {
    function handleValidate(
-      item: Record<string, string | number>,
+      item: Record<string, string | number | string[] | number[]>,
       pattern: ValidationPattern
    ): [boolean, Record<string, string | undefined>] {
       const errs: Record<string, string | undefined> = {};
