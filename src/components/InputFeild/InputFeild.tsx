@@ -16,7 +16,7 @@ type IInputFeild = IFeild & {
 
 type ISelectFeild = IFeild & {
    children?: React.ReactNode;
-   firstValue: string;
+   firstValue?: string;
 };
 
 type ISelectOption = {
@@ -33,7 +33,7 @@ const InputFeild = memo((props: IInputFeild) =>{
    const [value, setValue] = useState<string | number>(props.value || '');
 
    useEffect(() => {
-      setValue(props.value || '');
+      setValue(props.value?.toString() || '');
    }, [props]);
 
    return (
@@ -68,7 +68,7 @@ const SelectFeild = memo((props: ISelectFeild) => {
                props.className || ''
             }`}
          >
-            <option selected value={props.value || ''}>{props.firstValue}</option>
+            <option value={props.value || ''}>{props.firstValue || 'Slected Option'}</option>
             {props.children}
          </select>
       </div>
