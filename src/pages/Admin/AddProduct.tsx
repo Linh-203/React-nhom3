@@ -68,7 +68,7 @@ const AddProduct = () => {
       e.preventDefault();
       const [isValid, errs] = validateFields(product as ProductFormCheck);
       let formValid = isValid;
-      if (e.target[7].files.length == 0) {
+      if (e.target[7]?.files.length == 0) {
          formValid = false;
          errs.images = 'Hãy chọn ảnh';
       }
