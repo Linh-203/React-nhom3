@@ -1,13 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import productService from '../../api/product';
 import categoryService from '../../api/category';
 import { useState, useEffect } from 'react';
-//import { uploadImage } from '../../api/upload';
+
 import { InputProduct } from '../../common/product';
 import { ICategory } from '../../common/category';
 import Message from '../../components/Message/Message';
 import Loading from '../../components/Loading/Loading';
-//import { FileFormTarget, ProductFormCheck } from './UpdateProduct';
 import FormSubmit, { FormResponse } from './components/FormSubmit';
 import FormInputFeild from '../../components/InputFeild/InputFeild';
 import { uploadImage } from '../../api/upload';

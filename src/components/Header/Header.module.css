@@ -4,4 +4,7 @@
     justify-content: start;
     align-items: center;
     padding: 2rem 3rem;
+    position: fixed;
+    transition: all 500ms;
+    z-index: 1000;
 }

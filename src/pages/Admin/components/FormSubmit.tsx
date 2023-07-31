@@ -48,8 +48,6 @@ function FormSubmit<T>(props: IProps<T>) {
 
     let valid = isValid;
     if (fileExist) {
-      console.log(files);
-      
       if (files && files.length > 0) { 
         errs.images = undefined;
         formResult.images = files;
