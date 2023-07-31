@@ -13,6 +13,8 @@ import SearchContext from '../components/SearchContext/SearchContext';
 import DetailProduct from '../pages/DetailProduct/DetailProduct';
 import UpdateProduct from '../pages/Admin/UpdateProduct';
 import UpdateCategory from '../pages/Admin/UpdateCategory';
+import SignUp from '../pages/SignUp';
+import Login from '../pages/Login';
 
 export const router = createBrowserRouter([
    {
@@ -30,6 +32,14 @@ export const router = createBrowserRouter([
          {
             path: 'search',
             element: <SearchContext />
+         },
+         {
+            path: 'signup',
+            element: <SignUp />
+         },
+         {
+            path: 'login',
+            element: <Login />
          },
          {
             path: '/products/:id',
