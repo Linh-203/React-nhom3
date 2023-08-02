@@ -12,7 +12,6 @@ type Props = {
 const Message = ({ msg, type, duration = 500, navigateLink }: Props) => {
    const [isOpen, setIsOpen] = useState<boolean>(false);
    const navigate = useNavigate();
-   console.log(isOpen);
    useEffect(() => {
       setIsOpen(true);
       const timeId = setTimeout(() => {

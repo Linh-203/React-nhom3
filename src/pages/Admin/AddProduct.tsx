@@ -1,18 +1,19 @@
 import productService from '../../api/product';
 import categoryService from '../../api/category';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
-import { InputProduct } from '../../common/product';
+import { IVariation, InputProduct } from '../../common/product';
 import { ICategory } from '../../common/category';
 import Message from '../../components/Message/Message';
 import Loading from '../../components/Loading/Loading';
 import FormSubmit, { FormResponse } from './components/FormSubmit';
-import FormInputFeild from '../../components/InputFeild/InputFeild';
+import FormInputField from '../../components/InputField/InputFeild';
 import { uploadImage } from '../../api/upload';
 import { AxiosResponse } from 'axios';
 import { formErrorsRespones } from './UpdateProduct';
+import MultiField from './components/MultiField';
 
-const { InputFeild, SelectFeild, SelectOption, TextareaFeild } = FormInputFeild;
+const { InputField, SelectField, SelectOption, TextareaField } = FormInputField;
 
 export type MessageProp = {
    content: string;
@@ -22,18 +23,8 @@ const AddProduct = () => {
    const [categories, setCategories] = useState<ICategory[] | null>();
    const [loading, setLoading] = useState<boolean>(false);
    const [msg, setMsg] = useState<MessageProp>();
-   // const [product, setProduct] = useState<InputProduct>({
-   //    name: '',
-   //    price: 0,
-   //    stock: 0,
-   //    solded: 0,
-   //    discount: 0,
-   //    favorite: 0,
-   //    categoryId: '',
-   //    desc: '',
-   //    images: []
-   // });
    const [errors, setErrors] = useState<Record<string, string | undefined> | InputProduct | null>();
+   const [variations, setVariations] = useState<IVariation[]>([]);
    const getAllCategory4 = async () => {
       const { data } = await categoryService.getAllCategory();
       setCategories(data.data);
@@ -45,6 +36,10 @@ const AddProduct = () => {
    }, []);
 
    const onhandleSubmit = ({ result, isValid, errs }: FormResponse<InputProduct>): void => {
+      if (variations.length === 0) {
+         setErrors({ ...errs, variations: 'Create at least 1 variation please !' });
+         return;
+      }
       if (isValid) {
          setLoading(true);
          const formData = new FormData();
@@ -55,12 +50,19 @@ const AddProduct = () => {
             const { data } = await uploadImage(formData);
             if (data.data.length > 0) {
                result.images = data.data as string;
+               const transformResult = {
+                  ...result,
+                  variations,
+                  quantity: undefined,
+                  vendorId: undefined,
+                  weight: undefined
+               };
                await productService
-                  .addProduct(result)
+                  .addProduct(transformResult)
                   .then(({ data }: AxiosResponse<formErrorsRespones>) => {
                      setLoading(false);
                      if (data?.errors && data?.errors?.length > 0) {
-                        alert('faild in Backend');
+                        setMsg({ content: 'Create product fail !', type: 'error' });
                         return;
                      }
                      setMsg({ content: 'Create product successfully !', type: 'success' });
@@ -70,7 +72,7 @@ const AddProduct = () => {
                      setMsg({ content: 'Create product fail !', type: 'error' });
                   });
             } else {
-               errs.images = 'Ảnh lỗi';
+               errs.images = 'Cannot upload images';
                setErrors(errs);
             }
          })();
@@ -78,10 +80,13 @@ const AddProduct = () => {
          setErrors(errs);
       }
    };
+   const handleGetVariations = useCallback((value: IVariation[]) => {
+      setVariations(value);
+   }, []);
    if (loading) return <Loading />;
    return (
       <div className='relative'>
-         {msg && <Message msg={msg.content} type={msg.type} duration={1000} navigateLink='/admin/products' />}
+         {msg && <Message msg={msg.content} type={msg.type} duration={2000} navigateLink='/admin/products' />}
          <div>
             <h2 className='text-4xl font-bold dark:text-white'>Add Product</h2>
          </div>
@@ -90,47 +95,49 @@ const AddProduct = () => {
             haveFiles //If you have files submitted
             className='my-10'
             pattern={{
-               name: { required: true, min: 3 },
+               name: { required: true },
                price: { required: true, min: 1, type: 'number' },
                stock: { required: true, type: 'number', min: 0 },
                discount: { required: true, type: 'number', min: 0 },
                categoryId: { required: true },
-               desc: { required: true }
+               desc: { required: true },
+               variations: { required: true }
             }}
          >
             <div className='grid md:grid-cols-2 md:gap-6'>
                <div>
-                  <InputFeild type='text' name='name' title='Product Name' />
+                  <InputField type='text' name='name' title='Product Name' />
                   <p className='text-sm text-red-400'>{errors?.name}</p>
                </div>
                <div>
-                  <InputFeild type='number' name='price' title='Product Price' />
+                  <InputField type='number' name='price' title='Product Price' />
                   <p className='text-sm text-red-400'>{errors?.price}</p>
                </div>
                <div>
-                  <InputFeild type='number' name='stock' title='Stock' />
-                  <p className='text-sm text-red-400'>{errors?.stock}</p>
-               </div>
-               <div>
-                  <InputFeild type='number' name='discount' title='Discount' />
+                  <InputField type='number' name='discount' title='Discount' />
                   <p className='text-sm text-red-400'>{errors?.discount}</p>
                </div>
                <div>
-                  <SelectFeild name='categoryId' title='Selected Category'>
+                  <SelectField name='categoryId' title='Selected Category'>
                      {categories &&
                         categories?.map((cate, index) => (
                            <SelectOption value={cate._id} label={cate.name} key={index} />
                         ))}
-                  </SelectFeild>
+                  </SelectField>
                   <p className='text-sm text-red-400'>{errors?.categoryId}</p>
                </div>
                <div>
-                  <InputFeild type='file' name='images' title='Images' multiple={true} />
+                  <InputField type='file' name='images' title='Images' multiple={true} />
                   <p className='text-sm text-red-400'>{errors?.images?.toString()}</p>
                </div>
             </div>
+            <div className='mt-5'>
+               <p className='font-semibold text-sm'>Create Variation:</p>
+               <MultiField<IVariation> getValues={handleGetVariations} />
+               <p className='text-sm text-red-400'>{errors?.variations as string}</p>
+            </div>
             <div>
-               <TextareaFeild name='desc' title='desc' />
+               <TextareaField name='desc' title='desc' />
                <p className='text-sm text-red-400'>{errors?.desc}</p>
             </div>
             <button
