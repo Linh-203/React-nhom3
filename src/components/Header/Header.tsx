@@ -3,9 +3,12 @@ import styles from './header.module.css';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import GlassIcon from '../../assets/icons/GlassIcon';
 import HeartIcon from '../../assets/icons/HeartIcon';
+import User from '../../assets/icons/User';
 import CartIcon from '../../assets/icons/CartIcon';
 import { useEffect, useRef, useState } from 'react';
-
+import { useLogout } from '../../hooks/useLogout';
+import { useAuthContext } from '../../hooks/useAuthContext';
+import { useSelector } from 'react-redux';
 type NavLink = {
    path: string;
    title: string;
@@ -26,6 +29,10 @@ const navItems: NavLink[] = [
    }
 ];
 const Header = () => {
+   const logout = useLogout();
+   const user = useSelector((state: any) => {
+      return state.authReducer.user;
+   });
    const [searchKeyword, setSearchKeyword] = useState('');
    const [historyPosition, setHistoryPosition] = useState<number>(0);
    const location = useLocation();
@@ -67,6 +74,9 @@ const Header = () => {
          pathname: 'search',
          search: searchParams.toString()
       });
+   };
+   const handleClick = () => {
+      logout();
    };
 
    return (
@@ -115,6 +125,17 @@ const Header = () => {
             </div>
             <HeartIcon width='1.3rem' height='1.3rem' className='cursor-pointer hover:text-hightLigh' />
             <CartIcon width='1.3rem' height='1.3rem' className='cursor-pointer hover:text-hightLigh' />
+
+            {user !== '' ? (
+               <div className=''>
+                  <span>{user.email}</span>
+                  <button onClick={handleClick}>Logout</button>
+               </div>
+            ) : (
+               <Link to={'/login'}>
+                  <User width='1.3rem' height='1.3rem' className='cursor-pointer hover:text-hightLigh' />
+               </Link>
+            )}
          </div>
       </header>
    );

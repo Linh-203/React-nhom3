@@ -1,24 +1,30 @@
 import { createSlice } from '@reduxjs/toolkit';
+// import { IUser } from '../common/user';
 
 type ProductSideInfo = {
    token: string;
+   user: string;
 };
 const initState: ProductSideInfo = {
-   token: ''
+   token: '',
+   user: ''
 };
 
 export const authToken = createSlice({
    name: 'auth',
    initialState: initState,
    reducers: {
-      saveToken: (state, action) => {
-         console.log(action.payload);
-         state.token = action.payload;
+      saveTokenAndUser: (state, action) => {
+         localStorage.setItem('auth', JSON.stringify(action.payload));
+         state.token = action.payload.token;
+         state.user = action.payload.email;
       },
-      deleteToken: (state) => {
+      deleteTokenAndUser: (state) => {
+         localStorage.removeItem('auth');
          state.token = '';
+         state.user = '';
       }
    }
 });
-export const { saveToken, deleteToken } = authToken.actions;
+export const { saveTokenAndUser, deleteTokenAndUser } = authToken.actions;
 export default authToken.reducer;

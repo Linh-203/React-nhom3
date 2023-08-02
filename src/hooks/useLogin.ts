@@ -1,13 +1,13 @@
 import { useState } from 'react';
-// import { useAuthContext } from './useAuthContext';
 import { useDispatch } from 'react-redux';
-import { saveToken } from '../slices/Auth';
+import { saveTokenAndUser } from '../slices/Auth';
+import { useNavigate } from 'react-router-dom';
 // import Cookies from 'js-cookie';
 export const useLogin = () => {
+   const navigate = useNavigate();
    const dispatch = useDispatch();
    const [error, setError] = useState(null);
-   const [isLoading, setIsLoading] = useState(null);
-   // const { dispatch } = useAuthContext();
+   const [isLoading, setIsLoading] = useState<boolean>(false);
    const login = async (email, password) => {
       setIsLoading(true);
       setError(null);
@@ -23,13 +23,10 @@ export const useLogin = () => {
          setError(json.error);
       }
       if (response.ok) {
-         //luu user vao local
-         localStorage.setItem('user', JSON.stringify(json));
-
          // update lai cai authContext
-         dispatch(saveToken(json.token));
-         // dispatch({ type: 'LOGIN', payload: json });
+         dispatch(saveTokenAndUser(json));
          setIsLoading(false);
+         navigate('/');
       }
    };
    return { login, isLoading, error };

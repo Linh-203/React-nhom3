@@ -17,9 +17,8 @@ import { allInfoSelector, fetchProduct, productsSelector } from '../slices/Produ
 import Message from '../components/Message/Message';
 import { AppDispatch } from '../store/store';
 import Loading from '../components/Loading/Loading';
-import { useLogout } from '../hooks/useLogout';
+
 const HomePage = () => {
-   const logout = useLogout();
    const products = useSelector(productsSelector);
    const dispatch = useDispatch<AppDispatch>();
    const { error, loading } = useSelector(allInfoSelector);
@@ -29,13 +28,10 @@ const HomePage = () => {
       })();
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, []);
-   const handleClick = () => {
-      logout();
-   };
+
    if (loading) return <Loading />;
    return (
       <div className='w-full'>
-         <button onClick={handleClick}>Logout</button>
          {error?.content !== '' && <Message msg={error?.content} type={error?.type} duration={2000} />}
          <hr />
          <CateSlide />
