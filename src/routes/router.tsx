@@ -13,7 +13,7 @@ import SearchContext from '../components/SearchContext/SearchContext';
 import DetailProduct from '../pages/DetailProduct/DetailProduct';
 import UpdateProduct from '../pages/Admin/UpdateProduct';
 import UpdateCategory from '../pages/Admin/UpdateCategory';
-
+import AccountPage from '../pages/AccountPage/Account';
 export const router = createBrowserRouter([
    {
       path: '/',
@@ -34,7 +34,11 @@ export const router = createBrowserRouter([
          {
             path: '/products/:id',
             element: <DetailProduct />
-         }
+         },
+         {
+            path: '/account/:id',
+            element: <AccountPage />
+         },
       ]
    },
    {
