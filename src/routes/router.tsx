@@ -72,6 +72,10 @@ export const router = createBrowserRouter([
          {
             path: 'category-edit/:id',
             element: <UpdateCategory />
+         },
+         {
+            path: 'orders',
+            element: <DashBoard />
          }
       ]
    }

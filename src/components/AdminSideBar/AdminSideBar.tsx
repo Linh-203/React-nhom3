@@ -4,6 +4,7 @@ import DashBoardIcon from '../../assets/icons/DashBoardIcon';
 import ProductIcon from '../../assets/icons/ProductIcon';
 import CategoryIcon from '../../assets/icons/CategoryIcon';
 import { Link } from 'react-router-dom';
+import BillIcon from '../../assets/icons/BillIcon';
 
 type IProps = {
     isMenuActive: boolean,
@@ -27,6 +28,7 @@ const menu: IMenu[] = [
         {title: 'Categories', to: '/admin/categories'},
         {title: 'Add Category', to: '/admin/category-add'},
     ]},
+    {title: 'Orders', icon: <BillIcon/>, to:"/admin/orders"},
 ]
 
 function AdminSideBar(props: IProps) {
