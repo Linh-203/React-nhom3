@@ -1,20 +1,21 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import productService from '../../api/product';
 import categoryService from '../../api/category';
 import { useState, useEffect } from 'react';
 import { uploadImage } from '../../api/upload';
-import { IProduct, InputProduct } from '../../common/product';
+import { IProduct, IVariation, InputProduct } from '../../common/product';
 import { ICategory } from '../../common/category';
-import FormInputFeild from '../../components/InputFeild/InputFeild';
+import FormInputField from '../../components/InputField/InputFeild';
 import { MessageProp } from './AddProduct';
 import Loading from '../../components/Loading/Loading';
 import Message from '../../components/Message/Message';
 import FormSubmit, { FormResponse } from './components/FormSubmit';
 import { Image } from '../../common/image';
 import { AxiosResponse } from 'axios';
+import MultiField from './components/MultiField';
 
-const { InputFeild, SelectFeild, SelectOption, TextareaFeild } = FormInputFeild;
+const { InputField, SelectField, SelectOption, TextareaField } = FormInputField;
 
 export type ProductFormCheck = Omit<InputProduct, 'images'> & {
    categoryId: string;
@@ -37,7 +38,7 @@ const UpdateProduct = () => {
    const [categories, setCategories] = useState<ICategory[]>([]);
    const [product, setProduct] = useState<IProduct>({} as IProduct);
    const [errors, setErrors] = useState<Record<string, string | undefined> | ProductFormCheck | null>();
-
+   const [variations, setVariations] = useState<IVariation[]>([]);
    const getAllCategory4 = async () => {
       const { data } = await categoryService.getAllCategory();
       setCategories(data.data);
@@ -53,16 +54,17 @@ const UpdateProduct = () => {
          .getProductById(id!)
          .then(({ data }) => {
             setProduct(data.data);
+            setVariations(data.data.variations.map((item) => ({ ...item, vendorId: item.vendorId?._id })));
          })
          .catch((err) => console.log(err));
    }, [id]);
-
-   // const onHandleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-   //    const { name, value } = e.target;
-   //    setProduct({ ...product, [name]: value });
-   // };
-
    const onhandleSubmit = ({ result, isValid, errs }: FormResponse<InputProduct>): void => {
+      //need to re-design useValidate
+      if (variations.length === 0) {
+         setErrors({ ...errs, variations: 'Create at least 1 variation please !' });
+         return;
+      }
+      //get images in db
       let imagesUpload = product.images.map((img) => {
          img._id = undefined;
          return img;
@@ -70,6 +72,7 @@ const UpdateProduct = () => {
       if (isValid) {
          setLoading(true);
          void (async () => {
+            //append file to form data
             if (result.images !== undefined) {
                const formData = new FormData();
                for (const file of result.images) {
@@ -83,8 +86,16 @@ const UpdateProduct = () => {
                }
             }
             result.images = imagesUpload as Image[];
+            //transform data for submit update because FormSubmit need to re-design
+            const transformResult = {
+               ...result,
+               variations,
+               quantity: undefined,
+               vendorId: undefined,
+               weight: undefined
+            };
             await productService
-               .updateProduct(id!, result)
+               .updateProduct(id!, transformResult)
                .then(({ data }: AxiosResponse<formErrorsRespones>) => {
                   setLoading(false);
                   if (data?.errors && data?.errors?.length > 0) {
@@ -102,10 +113,13 @@ const UpdateProduct = () => {
          setErrors(errs);
       }
    };
+   const handleGetVariations = useCallback((value: IVariation[]) => {
+      setVariations(value);
+   }, []);
    if (loading) return <Loading />;
    return (
       <div>
-         {msg && <Message msg={msg.content} type={msg.type} duration={1000} navigateLink='/admin/products' />}
+         {msg && <Message msg={msg.content} type={msg.type} duration={2000} navigateLink='/admin/products' />}
          <div>
             <h2 className='text-4xl font-bold dark:text-white'>Update Product</h2>
          </div>
@@ -114,35 +128,32 @@ const UpdateProduct = () => {
                onSubmit={onhandleSubmit}
                className='my-10'
                pattern={{
-                  name: { required: true, min: 3 },
+                  name: { required: true },
                   price: { required: true, min: 1, type: 'number' },
                   stock: { required: true, type: 'number', min: 0 },
                   discount: { required: true, type: 'number', min: 0 },
                   categoryId: { required: true },
-                  desc: { required: true }
+                  desc: { required: true },
+                  variations: { required: true }
                }}
             >
                <h1>Current Image</h1>
                <img className='w-1/5 h-1/3' src={product?.images[0]?.url} alt='' />
-               <div className='grid md:grid-cols-2 md:gap-6'>
+               <div className='grid md:grid-cols-2 md:gap-6 mt-5'>
                   <div>
-                     <InputFeild value={product.name} type='text' name='name' title='Product Name' />
+                     <InputField value={product.name} type='text' name='name' title='Product Name' />
                      <p className='text-sm text-red-400'>{errors?.name}</p>
                   </div>
                   <div>
-                     <InputFeild value={product.price} type='number' name='price' title='Product Price' />
+                     <InputField value={product.price} type='number' name='price' title='Product Price' />
                      <p className='text-sm text-red-400'>{errors?.price}</p>
                   </div>
                   <div>
-                     <InputFeild value={product.stock} type='number' name='stock' title='Stock' />
-                     <p className='text-sm text-red-400'>{errors?.stock}</p>
-                  </div>
-                  <div>
-                     <InputFeild value={product.discount} type='number' name='discount' title='Discount' />
+                     <InputField value={product.discount} type='number' name='discount' title='Discount' />
                      <p className='text-sm text-red-400'>{errors?.discount}</p>
                   </div>
                   <div>
-                     <SelectFeild
+                     <SelectField
                         value={product?.categoryId?._id as string}
                         firstValue={product?.categoryId?.name as string}
                         name='categoryId'
@@ -152,15 +163,20 @@ const UpdateProduct = () => {
                            categories?.map((cate, index) => (
                               <SelectOption value={cate._id} label={cate.name} key={index} />
                            ))}
-                     </SelectFeild>
+                     </SelectField>
                      <p className='text-sm text-red-400'>{errors?.categoryId}</p>
                   </div>
                   <div>
-                     <InputFeild type='file' name='images' title='Images' multiple={true} />
+                     <InputField type='file' name='images' title='Images' multiple={true} />
                   </div>
+               </div>{' '}
+               <div className='mt-5'>
+                  <p className='font-semibold text-sm'>Create Variation:</p>
+                  <MultiField<IVariation> getValues={handleGetVariations} defaultValue={variations} />
+                  <p className='text-sm text-red-400'>{errors?.variations as string}</p>
                </div>
                <div>
-                  <TextareaFeild name='desc' value={product?.desc} title='desc' />
+                  <TextareaField name='desc' value={product?.desc} title='desc' />
                   <p className='text-sm text-red-400'>{errors?.desc}</p>
                </div>
                <button
