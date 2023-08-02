@@ -14,12 +14,12 @@ export default {
          },
          backgroundColor: {
             primaryBg: '#f8f8f8',
-            sectionBg: '#f1f1f1',
+            sectionBg: '#162c54',
             navBg: '#badaf6',
             dropBg: '#e1dede',
             dropDarkBg: '#ffffff1a',
             primaryDarkBg: '#0B2447',
-            sectionDarkBg: '#19376D',
+            sectionDarkBg: '#0B2447',
             navDarkBg: 'rgba(165, 215, 232,0.30)'
          },
          screens: {

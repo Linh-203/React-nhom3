@@ -6,7 +6,7 @@ type Props = {
    msg: string;
    type: 'error' | 'warn' | 'success';
    duration?: number;
-   navigateLink: string;
+   navigateLink?: string;
 };
 
 const Message = ({ msg, type, duration = 500, navigateLink }: Props) => {
@@ -17,13 +17,13 @@ const Message = ({ msg, type, duration = 500, navigateLink }: Props) => {
       setIsOpen(true);
       const timeId = setTimeout(() => {
          setIsOpen(false);
-         navigate(navigateLink);
+         if (navigateLink) navigate(navigateLink);
       }, duration);
 
       return () => {
          clearTimeout(timeId);
       };
-   // eslint-disable-next-line react-hooks/exhaustive-deps
+      // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [duration, msg, navigateLink]);
    if (!isOpen) return null;
    return (

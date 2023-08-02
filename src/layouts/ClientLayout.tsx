@@ -7,8 +7,10 @@ const ClientLayout = () => {
    return (
       <>
          <Header />
-         <Outlet />
-         <Footer />
+         <div className='relative top-[120px]'>
+            {' '}
+            <Outlet /> <Footer />
+         </div>
       </>
    );
 };

@@ -17,7 +17,6 @@ const CateSlide = () => {
             alert(response.data.message);
          });
    }, []);
-   console.log(products);
    return (
       <div className='product py-9'>
          {products.length > 0 && (

@@ -1,10 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import styles from './header.module.css';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import GlassIcon from '../../assets/icons/GlassIcon';
 import HeartIcon from '../../assets/icons/HeartIcon';
 import CartIcon from '../../assets/icons/CartIcon';
 import { useEffect, useRef, useState } from 'react';
-import { useDebounce } from '../../hooks/useDebounce';
 
 type NavLink = {
    path: string;
@@ -27,14 +27,34 @@ const navItems: NavLink[] = [
 ];
 const Header = () => {
    const [searchKeyword, setSearchKeyword] = useState('');
+   const [historyPosition, setHistoryPosition] = useState<number>(0);
    const location = useLocation();
    const navigate = useNavigate();
    const [path, setPath] = useState<string>('');
-   const headerRef = useRef(null);
+   const headerRef = useRef<HTMLElement>(null);
    useEffect(() => {
       setPath(location.pathname);
    }, [location.pathname]);
- 
+   useEffect(() => {
+      function handleScroll() {
+         const pos = window.pageYOffset || document.documentElement.scrollTop;
+         if (headerRef.current) {
+            if (pos > historyPosition) {
+               headerRef.current.classList.add('-top-[120px]');
+               headerRef.current.classList.remove('top-0');
+            } else {
+               headerRef.current.classList.add('top-0');
+               headerRef.current.classList.remove('-top-[120px]');
+            }
+            pos === 0 && headerRef.current.classList.remove('shadow-md', 'shadow-black');
+         }
+         setHistoryPosition(pos);
+      }
+      window.addEventListener('scroll', handleScroll);
+      return () => {
+         window.removeEventListener('scroll', handleScroll);
+      };
+   });
    const handleSearchInputChange = (event: Event) => {
       setSearchKeyword(event.target.value);
    };
@@ -48,13 +68,14 @@ const Header = () => {
          search: searchParams.toString()
       });
    };
+
    return (
       //get height of header
       // listen window scroll
       //set history of each time scroll
       // smaller than history -> up -> fixed header
       // contrary
-      <header className={`${styles['header']}`} ref={headerRef}>
+      <header className={`${styles['header']} bg-white`} ref={headerRef}>
          <Link to={'/'} className='w-[20%]'>
             <img
                src='https://spacingtech.com/html/tm/freozy/freezy-ltr/image/logo/logo.png'
