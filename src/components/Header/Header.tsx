@@ -49,9 +49,14 @@ const Header = () => {
             if (pos > historyPosition) {
                headerRef.current.classList.add('-top-[120px]');
                headerRef.current.classList.remove('top-0');
+               headerRef.current.classList.remove('shadow-lg');
             } else {
                headerRef.current.classList.add('top-0');
+               headerRef.current.classList.add('shadow-lg');
                headerRef.current.classList.remove('-top-[120px]');
+            }
+            if (pos === 0) {
+               headerRef.current.classList.remove('shadow-lg');
             }
             pos === 0 && headerRef.current.classList.remove('shadow-md', 'shadow-black');
          }
@@ -63,7 +68,7 @@ const Header = () => {
       };
    });
    const handleSearchInputChange = (event: Event) => {
-      setSearchKeyword(event.target.value);
+      if (event.target) setSearchKeyword(event.target.value);
    };
 
    const handleSearchSubmit = (event: Event) => {

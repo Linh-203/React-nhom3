@@ -28,8 +28,7 @@ const HomePage = () => {
       })();
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, []);
-
-   if (loading) return <Loading />;
+   if (loading) return <Loading screen='large' />;
    return (
       <div className='w-full'>
          {error?.content !== '' && <Message msg={error?.content} type={error?.type} duration={2000} />}

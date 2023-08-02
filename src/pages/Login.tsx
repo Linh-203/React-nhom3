@@ -1,9 +1,9 @@
 import FormSubmit, { FormResponse } from './Admin/components/FormSubmit';
-import FormInputFeild from '../components/InputFeild/InputFeild';
+import FormInputFeild from '../components/InputField/InputFeild';
 import { useLogin } from '../hooks/useLogin';
 import { Link } from 'react-router-dom';
 // import Message from '../components/Message/Message';
-const { InputFeild } = FormInputFeild;
+const { InputField } = FormInputFeild;
 
 const Login = () => {
    const { login, isLoading, error } = useLogin();
@@ -28,11 +28,11 @@ const Login = () => {
                      <h2 className='text-4xl pt-4 pb-4 font-bold dark:text-white'>Login</h2>
                   </div>
                   <div className='pt-4'>
-                     <InputFeild type='text' name='email' placeholder='Your Email' />
+                     <InputField type='text' name='email' placeholder='Your Email' />
                      {/* <p className='text-sm text-red-400'>{errors?.name}</p> */}
                   </div>
                   <div className='py-8'>
-                     <InputFeild type='text' name='password' placeholder='Your Password' />
+                     <InputField type='text' name='password' placeholder='Your Password' />
                      {/* <p className='text-sm text-red-400'>{errors?.price}</p> */}
                   </div>
                   <button

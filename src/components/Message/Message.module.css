@@ -1,6 +1,6 @@
 .wrap-msg{
     max-width: 300px;
-    position: absolute;
+    position: fixed;
     top:1rem;
     right:1rem;
     padding: 1rem 2rem;

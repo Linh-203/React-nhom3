@@ -12,7 +12,7 @@ export type ValidationPattern = Record<string, IValidateRules>;
 
 function useValidate() {
    function handleValidate(
-      item: Record<string, string | number | string[] | number[]>,
+      item: Record<string, string | number | string[]>,
       pattern: ValidationPattern
    ): [boolean, Record<string, string | undefined>] {
       const errs: Record<string, string | undefined> = {};
@@ -31,10 +31,9 @@ function useValidate() {
       for (const key in item) {
          const value = item[key];
          const validationRules: IValidateRules = pattern[key];
-
          if (validationRules) {
             if (validationRules.required && (value === undefined || value.toString().trim() === '')) {
-               errs[key] = 'Hãy nhập ' + key;
+               errs[key] = 'Vui lòng không để trống trường này!';
                isValid = false;
             } else if (validationRules.email && typeof value === 'string' && !isValidEmail(value)) {
                errs[key] = 'Email không hợp lệ';
@@ -43,14 +42,14 @@ function useValidate() {
                // Convert the value to a number for comparison
                const numericValue = parseFloat(value);
                if (isNaN(numericValue) || numericValue < validationRules?.min) {
-                  errs[key] = key + ' phải lớn hơn hoặc bằng ' + validationRules.min.toString();
+                  errs[key] = 'Giá trị phải lớn hơn hoặc bằng ' + validationRules.min.toString();
                   isValid = false;
                }
             } else if (validationRules.max !== undefined && typeof value === 'string') {
                // Convert the value to a number for comparison
                const numericValue = parseFloat(value);
                if (isNaN(numericValue) || numericValue > validationRules?.max) {
-                  errs[key] = key + ' phải lớn hơn hoặc bằng ' + validationRules.max?.toString();
+                  errs[key] = 'Giá trị phải lớn hơn hoặc bằng ' + validationRules.max?.toString();
                   isValid = false;
                }
             } else if (validationRules.type === 'number' && typeof value === 'string') {
@@ -62,19 +61,20 @@ function useValidate() {
                }
             } else if (validationRules.minLength !== undefined && typeof value === 'string') {
                if (value.length < validationRules.minLength) {
-                  errs[key] = key + ' phải có độ dài tối thiểu ' + validationRules.minLength.toString();
+                  errs[key] = 'Giá trị phải có độ dài tối thiểu ' + validationRules.minLength.toString();
                   isValid = false;
                }
             } else if (validationRules.maxLength !== undefined && typeof value === 'string') {
                if (value.length > validationRules.maxLength) {
-                  errs[key] = key + ' phải có độ dài tối đa ' + validationRules.maxLength.toString();
+                  errs[key] = 'Giá trị phải có độ dài tối đa ' + validationRules.maxLength.toString();
                   isValid = false;
                }
-            } else if (validationRules.type === 'object' && typeof value !== 'object') {
-               errs[key] = key + ' phải là một object';
-               isValid = false;
-            } else if (validationRules.type === 'array' && !Array.isArray(value)) {
-               errs[key] = key + ' phải là một array';
+            }
+            //  else if (validationRules.type === 'object' && typeof value !== 'object') {
+            //    errs[key] = 'Giá trị phải là một object';
+            //    isValid = false;
+            else if (validationRules.type === 'array' && Array.isArray(value) && value.length === 0) {
+               errs[key] = 'Vui lòng không để trống trường này!';
                isValid = false;
             } else {
                errs[key] = undefined;

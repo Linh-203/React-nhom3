@@ -1,9 +1,9 @@
 import FormSubmit, { FormResponse } from './Admin/components/FormSubmit';
-import FormInputFeild from '../components/InputFeild/InputFeild';
+import FormInputFeild from '../components/InputField/InputFeild';
 import { useSignUp } from '../hooks/useSignUp';
 import { Link } from 'react-router-dom';
 // import Message from '../components/Message/Message';
-const { InputFeild } = FormInputFeild;
+const { InputField } = FormInputFeild;
 
 const SignUp = () => {
    const { signup, isLoading, error } = useSignUp();
@@ -31,19 +31,19 @@ const SignUp = () => {
             <div className='flex justify-center gap-28 '>
                <div className='w-80'>
                   <div className='pt-4'>
-                     <InputFeild type='text' name='name' placeholder='Your Name' />
+                     <InputField type='text' name='name' placeholder='Your Name' />
                      {/* <p className='text-sm text-red-400'>{errors?.name}</p> */}
                   </div>
                   <div className='py-8'>
-                     <InputFeild type='text' name='email' placeholder='Your Email' />
+                     <InputField type='text' name='email' placeholder='Your Email' />
                      {/* <p className='text-sm text-red-400'>{errors?.price}</p> */}
                   </div>
                   <div className='pb-24'>
-                     <InputFeild type='text' name='password' placeholder='Your Password' />
+                     <InputField type='text' name='password' placeholder='Your Password' />
                      {/* <p className='text-sm text-red-400'>{errors?.price}</p> */}
                   </div>
                   <div className='pb-24'>
-                     <InputFeild type='text' name='phone' placeholder='Your Phone' />
+                     <InputField type='text' name='phone' placeholder='Your Phone' />
                      {/* <p className='text-sm text-red-400'>{errors?.price}</p> */}
                   </div>
                </div>
