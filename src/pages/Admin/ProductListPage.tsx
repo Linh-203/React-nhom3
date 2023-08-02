@@ -59,6 +59,8 @@ const ProductListPage = () => {
    //Vì tôi còn dùng lại hàm này nữa
    const handleGetAllItem = async () => {
       const { data } = await productService.getAllProduct({ q: finalKey });
+      console.log('search',data);
+      
       setItem(data.data);
    }
 
