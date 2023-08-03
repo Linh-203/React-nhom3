@@ -119,7 +119,8 @@ const Header = () => {
                </form>
             </div>
             <HeartIcon width='1.3rem' height='1.3rem' className='cursor-pointer hover:text-hightLigh' />
-            <CartIcon width='1.3rem' height='1.3rem' className='cursor-pointer hover:text-hightLigh' />
+          <Link to="/cart"> <CartIcon width='1.3rem' height='1.3rem' className='cursor-pointer hover:text-hightLigh' /></Link> 
+        <Link to="/orders"> <i className="fa-solid fa-pager"></i></Link> 
          </div>
       </header>
    );
