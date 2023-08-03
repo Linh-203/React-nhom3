@@ -1,9 +1,9 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import productService from '../../api/product';
 import CateSlide from '../../components/CateSlide/CateSlide';
-import { IProduct } from '../../common/product';
-import { tabItem } from './constants/TabData';
+import { IProduct, VariationPopulate } from '../../common/product';
+import { tabItem } from './constants/tabData';
 import TabContent from '../../components/TabContent/TabContent';
 import CardProduct from '../../components/CardProduct/CardProduct';
 import { SwiperSlide } from 'swiper/react';
@@ -16,21 +16,21 @@ const DetailProduct = () => {
    const { id } = useParams();
    const [product, setProduct] = useState<IProduct>({} as IProduct);
    const [products, setProducts] = useState<IProduct[]>([]);
-   const tabs = useMemo(() => tabItem(product.desc), [product]);
+   const tabs = useMemo(() => tabItem(product.desc, product.variations as VariationPopulate[]), [product]);
    useEffect(() => {
       productService
-         .getProductById(id)
+         .getProductById(id!)
          .then(({ data }) => setProduct(data.data))
-         .catch(({ response }) => {
-            alert(response.data.message);
+         .catch((error) => {
+            alert(error);
          });
    }, [id]);
    useEffect(() => {
       productService
          .getAllProduct({})
          .then(({ data }) => setProducts(data.data))
-         .catch(({ response }) => {
-            alert(response.data.message);
+         .catch((error) => {
+            alert(error);
          });
    }, []);
    const [count, setCount] = useState(0);
@@ -133,7 +133,7 @@ const DetailProduct = () => {
             <p className='text-[2.5rem] font-bold text-colorText text-center'>New product</p>
             <div className='w-full mt-10'>
                {products.length > 0 && (
-                  <Slide slidesPerView={4} navigation={false} autoplay={true} >
+                  <Slide slidesPerView={4} navigation={false} autoplay={true}>
                      {products.map((prd, index) => (
                         <SwiperSlide key={index}>
                            <CardProduct product={prd} link={`/products/${prd._id}`} />
