@@ -128,10 +128,18 @@ const Header = () => {
                </form>
             </div>
             <HeartIcon width='1.3rem' height='1.3rem' className='cursor-pointer hover:text-hightLigh' />
-            <CartIcon width='1.3rem' height='1.3rem' className='cursor-pointer hover:text-hightLigh' />
+            {/* <CartIcon width='1.3rem' height='1.3rem' className='cursor-pointer hover:text-hightLigh' /> */}
 
             {Object.keys(user).length > 0 ? (
                <div className=''>
+                  <Link to='/cart'>
+                     {' '}
+                     <CartIcon width='1.3rem' height='1.3rem' className='cursor-pointer hover:text-hightLigh' />
+                  </Link>
+                  <Link to='/orders'>
+                     {' '}
+                     <i className='fa-solid fa-pager'></i>
+                  </Link>
                   <span>{user.name} - </span>
                   <button onClick={handleClick}>Logout</button>
                </div>

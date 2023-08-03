@@ -1,6 +1,7 @@
+import { VariationPopulate } from '../../../common/product';
 import { Tab } from '../../../components/TabContent/TabContent';
-
-export const tabItem: (desc: string) => Tab[] = (descProduct: string) => [
+import Comments from '../../../components/comments/Comments';
+export const tabItem: (desc: string, variations: VariationPopulate[]) => Tab[] = (descProduct, variations) => [
    {
       label: 'Description',
       content:
@@ -12,21 +13,25 @@ export const tabItem: (desc: string) => Tab[] = (descProduct: string) => [
       label: 'Additional Info',
       content: (
          <table border={10} className='w-[50%] text-start'>
-            <tr>
-               <th className='font-bold text-gray-600 text-start p-3 border-[1px] border-gray-200'>Vendor</th>
-               <th className='text-grayLight200 text-start p-3 border-[1px] border-gray-200'>Freezy</th>
-            </tr>
-            <tr>
-               <th className='font-bold text-gray-600 text-start p-3 border-[1px] border-gray-200'>Weight</th>
-               <th className='text-grayLight200 text-start p-3 border-[1px] border-gray-200'>1.kg</th>
-            </tr>
+            <thead>
+               <th className='font-bold text-gray-600 text-start p-3 border-[1px] border-gray-200 uppercase'>Weight</th>
+               <th className='font-bold text-gray-600 text-start p-3 border-[1px] border-gray-200 uppercase'>Vendor</th>
+            </thead>
+            {variations?.map((item, index) => (
+               <tr key={index}>
+                  <th className='text-grayLight200 text-start p-3 border-[1px] border-gray-200'>{`${item.weight}.kg`}</th>
+                  <th className='text-grayLight200 text-start p-3 border-[1px] border-gray-200'>{`${item.vendorId.name} & ${item.vendorId.origin}`}</th>
+               </tr>
+            ))}
          </table>
       ),
       type: 'addition'
    },
    {
       label: 'Review',
-      content: <div>Review </div>,
+      content: <div>
+         <Comments></Comments>
+      </div>,
       type: 'review'
    }
 ];

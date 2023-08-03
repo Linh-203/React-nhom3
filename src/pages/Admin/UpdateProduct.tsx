@@ -99,7 +99,7 @@ const UpdateProduct = () => {
                .then(({ data }: AxiosResponse<formErrorsRespones>) => {
                   setLoading(false);
                   if (data?.errors && data?.errors?.length > 0) {
-                     alert('faild in Backend');
+                     alert('failed in Backend');
                      return;
                   }
                   setMsg({ content: 'Upadte product successfully !', type: 'success' });

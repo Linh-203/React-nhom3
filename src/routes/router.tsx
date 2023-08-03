@@ -15,6 +15,12 @@ import UpdateProduct from '../pages/Admin/UpdateProduct';
 import UpdateCategory from '../pages/Admin/UpdateCategory';
 import SignUp from '../pages/SignUp';
 import Login from '../pages/Login';
+import Cart from '../pages/Cart';
+import Orders from '../pages/ProductPage/orders/Orders';
+import DetailOrder from '../pages/ProductPage/order-detail/DetailOrder';
+import OrderSuccessNotification from '../pages/OrderSuccsec';
+import ListOrders from '../pages/Admin/ListOrders';
+import OrdersDetail from '../components/orders/OrdersDetail';
 
 export const router = createBrowserRouter([
    {
@@ -44,6 +50,22 @@ export const router = createBrowserRouter([
          {
             path: '/products/:id',
             element: <DetailProduct />
+         },
+         {
+            path: '/cart',
+            element: <Cart />
+         },
+         {
+            path: '/orders',
+            element: <Orders />
+         },
+         {
+            path: '/order/:id',
+            element: <DetailOrder />
+         },
+         {
+            path: '/message',
+            element: <OrderSuccessNotification />
          }
       ]
    },
@@ -70,6 +92,14 @@ export const router = createBrowserRouter([
          {
             path: 'product-update/:id',
             element: <UpdateProduct />
+         },
+         {
+            path: 'orders',
+            element: <ListOrders />
+         },
+         {
+            path: 'order/:id',
+            element: <OrdersDetail />
          },
          {
             path: 'categories',
