@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { saveTokenAndUser } from '../slices/Auth';
+import { saveTokenAndUser } from '../slices/AuthSlice';
 import { useNavigate } from 'react-router-dom';
 import { loginApi } from '../api/auth';
 // import Cookies from 'js-cookie';
@@ -12,18 +12,24 @@ export const useLogin = () => {
    const login = async (email, password) => {
       setIsLoading(true);
       setError(null);
-
-      const response = await loginApi({ email, password });
-      const json = await response.data;
-      if (json.error) {
+      const response = await loginApi({ email, password }).catch(({ response: { data } }) => {
+         return data.error;
+      });
+      if (!response.data) {
+         alert(response);
          setIsLoading(false);
-         setError(json.error);
       }
-      if (!json.error) {
-         // update lai cai authContext
+      if (response.data) {
+         const json = response.data;
+         console.log(json);
          dispatch(saveTokenAndUser(json));
          setIsLoading(false);
-         navigate('/');
+
+         if (json.user.role !== 'admin') {
+            navigate('/');
+         } else {
+            navigate('/admin');
+         }
       }
    };
    return { login, isLoading, error };

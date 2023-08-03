@@ -2,12 +2,23 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import AdminSideBar from '../../components/AdminSideBar';
 import AdminHeader from '../../components/AdminHeader';
+import { useDispatch } from 'react-redux';
+import { getToken } from '../../api/auth';
+import { saveTokenAndUser } from '../../slices/AuthSlice';
 //cho ai không dùng tailwind thì import file css
 //import styles from './AdminLayout.module.css';
 
 function AdminLayout() {
    const [menuState, setMenuState] = useState(true);
    const navigate = useNavigate();
+   const dispatch = useDispatch();
+   useEffect(() => {
+      const user = JSON.parse(localStorage.getItem('auth') ? localStorage.getItem('auth')! : '{}');
+      void (async () => {
+         const { data } = await getToken();
+         dispatch(saveTokenAndUser({ user, token: data.token }));
+      })();
+   }, [window.location.pathname]);
    const toggleMenu = () => {
       setMenuState((prev) => !prev);
    };

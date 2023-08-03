@@ -5,14 +5,42 @@ import { Link } from 'react-router-dom';
 import FacebookIcon from '../assets/icons/Fb';
 import Gg from '../assets/icons/Gg';
 import Twitter from '../assets/icons/Twitter';
+import { useState } from 'react';
 // import Message from '../components/Message/Message';
 const { InputField } = FormInputFeild;
-
 const Login = () => {
+   const [errors, setErrors] = useState<Record<string, string | undefined>>({});
+   const validateForm = (values: { [key: string]: string }): boolean => {
+      let isValid = true;
+      const newErrors: { [key: string]: string | undefined } = {};
+
+      // Kiểm tra trường email
+      if (!values.email) {
+         newErrors.email = 'Email is required.';
+         isValid = false;
+      } else if (!/\S+@\S+\.\S+/.test(values.email)) {
+         newErrors.email = 'Invalid email address.';
+         isValid = false;
+      }
+
+      // Kiểm tra trường password
+      if (!values.password) {
+         newErrors.password = 'Password is required.';
+         isValid = false;
+      }
+
+      setErrors(newErrors);
+      return isValid;
+   };
    const { login, isLoading, error } = useLogin();
    const onHandleSubmit = async (res: FormResponse<{ email: string; password: string }>) => {
-      await login(res.result.email, res.result.password);
+      const { result } = res;
+      const isValid = validateForm(result);
+      if (isValid) {
+         await login(result.email, result.password);
+      }
    };
+
    return (
       <div className='relative'>
          {/* {msg && <Message msg={msg.content} type={msg.type} duration={1000} navigateLink='/admin/products' />} */}
@@ -30,14 +58,12 @@ const Login = () => {
                   <div>
                      <h2 className='text-4xl pt-4 pb-4 font-bold dark:text-white'>Login</h2>
                   </div>
-                  <div className='pt-4'>
-                     <InputField type='text' name='email' placeholder='Your Email' />
-                     {/* <p className='text-sm text-red-400'>{errors?.name}</p> */}
-                  </div>
-                  <div className='py-8'>
-                     <InputField type='text' name='password' placeholder='Your Password' />
-                     {/* <p className='text-sm text-red-400'>{errors?.price}</p> */}
-                  </div>
+                  <InputField type='text' name='email' placeholder='Your Email' />
+                  {errors.email && <p className='text-sm text-red-400'>{errors.email}</p>}
+
+                  <InputField type='password' name='password' placeholder='Your Password' />
+                  {errors.password && <p className='text-sm text-red-400'>{errors.password}</p>}
+
                   <button
                      disabled={isLoading}
                      type='submit'

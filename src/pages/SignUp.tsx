@@ -1,20 +1,65 @@
-import FormSubmit, { FormResponse } from './Admin/components/FormSubmit';
-import FormInputFeild from '../components/InputField/InputFeild';
-import { useSignUp } from '../hooks/useSignUp';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-// import Message from '../components/Message/Message';
-const { InputField } = FormInputFeild;
+import FormSubmit, { FormResponse } from './Admin/components/FormSubmit';
+import FormInputField from '../components/InputField/InputFeild';
+import { useSignUp } from '../hooks/useSignUp';
+
+const { InputField } = FormInputField;
 
 const SignUp = () => {
    const { signup, isLoading, error } = useSignUp();
+   const [errors, setErrors] = useState<Record<string, string | undefined>>({});
+
+   const validateForm = (values: { [key: string]: string }): boolean => {
+      let isValid = true;
+      const newErrors: { [key: string]: string | undefined } = {};
+
+      // Kiểm tra trường name
+      if (!values.name) {
+         newErrors.name = 'Name is required.';
+         isValid = false;
+      } else if (values.name.length < 3) {
+         newErrors.name = 'Name must be at least 3 characters long.';
+         isValid = false;
+      }
+
+      // Kiểm tra trường email
+      if (!values.email) {
+         newErrors.email = 'Email is required.';
+         isValid = false;
+      } else if (!/\S+@\S+\.\S+/.test(values.email)) {
+         newErrors.email = 'Invalid email address.';
+         isValid = false;
+      }
+
+      // Kiểm tra trường password
+      if (!values.password) {
+         newErrors.password = 'Password is required.';
+         isValid = false;
+      }
+
+      // Kiểm tra trường phone
+      if (!values.phone) {
+         newErrors.phone = 'Phone is required.';
+         isValid = false;
+      }
+
+      setErrors(newErrors);
+      return isValid;
+   };
+
    const onHandleSubmit = async (
       res: FormResponse<{ name: string; email: string; password: string; phone: string }>
    ) => {
-      await signup(res.result.name, res.result.email, res.result.password, res.result.phone);
+      const { result } = res;
+      const isValid = validateForm(result);
+      if (isValid) {
+         await signup(result.name, result.email, result.password, result.phone);
+      }
    };
+
    return (
       <div className='relative'>
-         {/* {msg && <Message msg={msg.content} type={msg.type} duration={1000} navigateLink='/admin/products' />} */}
          <div>
             <h2 className='text-4xl pl-[400px] pt-24 font-bold dark:text-white'>Sign up</h2>
          </div>
@@ -32,19 +77,19 @@ const SignUp = () => {
                <div className='w-80'>
                   <div className='pt-4'>
                      <InputField type='text' name='name' placeholder='Your Name' />
-                     {/* <p className='text-sm text-red-400'>{errors?.name}</p> */}
+                     {errors.name && <p className='text-sm text-red-400'>{errors.name}</p>}
                   </div>
                   <div className='py-8'>
                      <InputField type='text' name='email' placeholder='Your Email' />
-                     {/* <p className='text-sm text-red-400'>{errors?.price}</p> */}
+                     {errors.email && <p className='text-sm text-red-400'>{errors.email}</p>}
                   </div>
-                  <div className='pb-24'>
-                     <InputField type='text' name='password' placeholder='Your Password' />
-                     {/* <p className='text-sm text-red-400'>{errors?.price}</p> */}
+                  <div className='pb-8'>
+                     <InputField type='password' name='password' placeholder='Your Password' />
+                     {errors.password && <p className='text-sm text-red-400'>{errors.password}</p>}
                   </div>
                   <div className='pb-24'>
                      <InputField type='text' name='phone' placeholder='Your Phone' />
-                     {/* <p className='text-sm text-red-400'>{errors?.price}</p> */}
+                     {errors.phone && <p className='text-sm text-red-400'>{errors.phone}</p>}
                   </div>
                </div>
                <div className=''>

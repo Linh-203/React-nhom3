@@ -8,3 +8,10 @@ export const loginApi = (user: IUser) => {
 export const signupApi = (user: IUser) => {
    return instance.post('/signup', user);
 };
+
+export const getToken = () => {
+   return instance.get('/token', { withCredentials: true });
+};
+export const clearToken = () => {
+   return instance.delete('/token', { withCredentials: true });
+};
