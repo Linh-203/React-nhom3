@@ -41,24 +41,24 @@ const AddCategory = () => {
     await axios.post('http://localhost:8000/api/upload', formData)
       .then((response) => {
         console.log(response.data.data[0].url);
-        setCateImg(response.data.data[0].url);
 
+        if (cateName.length > 0) {
+          const data = {
+            name: cateName,
+            image: response.data.data[0].url
+          }
+          console.log(data);
+
+          createCate(data)
+          alert("oki")
+          navigate("/admin/categories")
+        }
       })
       .catch((error) => {
         console.log(error);
       });
 
-    if (cateImg && cateName.length > 0) {
-      const data = {
-        name: cateName,
-        image: cateImg
-      }
-      console.log(data);
 
-      createCate(data)
-      alert("oki")
-      navigate("/admin/categories")
-    }
   }
 
 

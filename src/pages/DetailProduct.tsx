@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom';
-import { IProduct } from '../common/product';
 import productService from '../api/product';
-import images from '../assets/images';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import CateSlide from '../components/CateSlide/CateSlide';
+import { addToCart } from '../api/cart';
+import Comments from '../components/comments/Comments';
+import { usePostCartMutation } from '../api-slice/baseAPI';
 
 
 
@@ -23,24 +26,34 @@ const DetailProduct = () => {
 
 
     const [rotate, setRotate] = useState(false);
-    const [count, setCount] = useState(0);
+    const [count, setCount] = useState(1);
 
     const addCount = () => {
-        setCount((prev) => prev + 1);
+        console.log(count);
+
+        setCount(count + 1);
     };
 
     const minusCount = () => {
         if (count > 0) {
-            setCount((prev) => prev - 1);
+            setCount(count - 1);
         }
     };
-
+    const [postCart] = usePostCartMutation()
+    const handleAddToCart = () => {
+        const data = {
+            productId: products?._id,
+            quantity: count,
+            userId: "64c70e3980d555c680c5b0d5"
+        }
+        postCart(data)
+    }
     return (
 
 
         <div>
-
-         <CateSlide />
+            <ToastContainer></ToastContainer>
+            <CateSlide />
 
             {Object.keys(products).length > 0 && (
 
@@ -81,7 +94,7 @@ const DetailProduct = () => {
                                         <span onClick={minusCount} className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 cursor-pointer border border-gray-300 border-r-0 w-7 h-7 flex items-center justify-center pb-1">
                                             -
                                         </span>
-                                        <input id="counter" aria-label="input" className="border border-gray-300 h-full text-center w-14 pb-1" type="text" value={count} onChange={(e) => e.target.value} />
+                                        <input id="counter" aria-label="input" className="border border-gray-300 h-full text-center w-14 pb-1" type="text" value={count} onChange={(e) => setCount(e.target.value)} />
                                         <span onClick={addCount} className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 cursor-pointer border border-gray-300 border-l-0 w-7 h-7 flex items-center justify-center pb-1 ">
                                             +
                                         </span>
@@ -98,7 +111,7 @@ const DetailProduct = () => {
 
                             </div>
 
-                            <button className="focus:outline-none focus:ring-2 hover:bg-black focus:ring-offset-2 focus:ring-gray-800 font-medium text-base leading-4 text-white bg-gray-800 w-full py-5 lg:mt-12 mt-6">Add to shopping bag</button>
+                            <button onClick={() => handleAddToCart()} className="focus:outline-none focus:ring-2 hover:bg-black focus:ring-offset-2 focus:ring-gray-800 font-medium text-base leading-4 text-white bg-gray-800 w-full py-5 lg:mt-12 mt-6">Add to shopping bag</button>
                         </div>
 
                         {/* <!-- Preview Images Div For larger Screen--> */}
@@ -106,7 +119,7 @@ const DetailProduct = () => {
                     </div>
 
 
-                    <div className="flex  justify-center items-center w-full">
+                    {/* <div className="flex  justify-center items-center w-full">
                     <div className="w-full sm:w-96 md:w-8/12 lg:w-full grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1 lg:gap-28 sm:gap-x-6 sm:gap-y-12 gap-y-12 sm:mt-14 mt-10">
                         <div>
                            
@@ -129,7 +142,8 @@ const DetailProduct = () => {
                             <p className="text-normal text-base leading-6 text-gray-600 mt-4">Minimalist interior design is very similar to modern interior design and involves using the bare essentials </p>
                         </div>
                     </div>
-                </div>
+                </div> */}
+                    <Comments></Comments>
                 </div>
             )}
 

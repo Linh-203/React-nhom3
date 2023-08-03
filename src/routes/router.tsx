@@ -12,6 +12,10 @@ import AddCategory from '../pages/Admin/AddCategory';
 import DetailProduct from '../pages/DetailProduct';
 import UpdateProduct from '../pages/Admin/UpdateProduct';
 import UpdateCategory from '../pages/Admin/UpdateCategory';
+import Cart from '../pages/Cart';
+import OrderSuccessNotification from '../pages/OrderSuccsec';
+import Orders from '../pages/ProductPage/orders/Orders';
+import DetailOrder from '../pages/ProductPage/order-detail/DetailOrder';
 
 export const router = createBrowserRouter([
    {
@@ -25,12 +29,28 @@ export const router = createBrowserRouter([
          {
             path: '/products',
             element: <ProductPage />,
-            
+
          },
          {
             path: '/products/:id',
-            element: <DetailProduct/>
-          }
+            element: <DetailProduct />
+         },
+         {
+            path: '/cart',
+            element: <Cart />
+         },
+         {
+            path: '/orders',
+            element: <Orders />
+         },
+         {
+            path: '/order/:id',
+            element: <DetailOrder />
+         },
+         {
+            path: '/message',
+            element: <OrderSuccessNotification />
+         },
       ]
    },
    {
