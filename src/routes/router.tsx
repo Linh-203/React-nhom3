@@ -17,6 +17,8 @@ import Cart from '../pages/Cart';
 import Orders from '../pages/ProductPage/orders/Orders';
 import DetailOrder from '../pages/ProductPage/order-detail/DetailOrder';
 import OrderSuccessNotification from '../pages/OrderSuccsec';
+import ListOrders from '../pages/Admin/ListOrders';
+import OrdersDetail from '../components/orders/OrdersDetail';
 
 export const router = createBrowserRouter([
    {
@@ -82,8 +84,12 @@ export const router = createBrowserRouter([
             element: <UpdateProduct />
          },
          {
-            path: 'categories',
-            element: <CategoryListPage />
+            path: 'orders',
+            element: <ListOrders />
+         },
+         {
+            path: 'order/:id',
+            element: <OrdersDetail />
          },
          {
             path: 'category-add',

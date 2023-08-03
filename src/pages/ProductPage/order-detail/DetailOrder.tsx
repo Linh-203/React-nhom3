@@ -4,31 +4,30 @@ import "./OrderDetail.css"
 import { useParams } from "react-router-dom"
 import { getOrder } from "../../../api/orders"
 import { format } from 'date-fns';
+import { useCancelOrderMutation, useDetailOrderQuery } from "../../../api-slice/baseOrderAPI";
 
 const DetailOrder = () => {
   const { id } = useParams()
-  const [detailOrder, setDetailOrder] = useState()
+  const { data } = useDetailOrderQuery(id)
+  const detailOrder = data?.order
+  const remainingTimeMessage = data?.remainingTimeMessage
   const [formattedDateTime, setFormattedDateTime] = useState()
-
-  useEffect(() => {
-    getOrder(id).then(({ data }) => {
-      setDetailOrder(data.order)
-
-    })
-  }, [])
+  const [cancelOrder] = useCancelOrderMutation()
   console.log(detailOrder);
 
 
   useEffect(() => {
     const date = new Date(detailOrder?.createdAt)
-  
+
     if (date.getTime()) {
       const fomatTime = format(date, "yyyy-MM-dd hh:mm a")
       setFormattedDateTime(fomatTime)
     }
   }, [detailOrder])
 
-
+  const handleCancelOrder=()=>{
+    cancelOrder(id)
+  }
 
 
 
@@ -65,7 +64,7 @@ const DetailOrder = () => {
           </div>
           <div className="order-info-item">
             <span className="info-item-label">Dự kiến ngày nhận: </span>
-            <span className="info-item-value">01/07/2023</span>
+            <span className="info-item-value">{detailOrder?.receivedDate}</span>
           </div>
           <div className="order-info-item">
             <span className="info-item-label">Trạng thái:</span>
@@ -95,9 +94,14 @@ const DetailOrder = () => {
           <h3 className="summary-title">Tổng thanh toán:</h3>
           <p className="summary-amount">${detailOrder?.totalPrice}</p>
         </div>
-        <button className="bg-orange-500 text-black font-bold py-2 px-4 rounded">
-          HỦY ĐƠN HÀNG
-        </button>
+        <p>{remainingTimeMessage && detailOrder?.status !=="Đã hủy" ? remainingTimeMessage : ""} </p>
+        {( detailOrder?.status !=="Đã hủy" && remainingTimeMessage ) ?
+          <button className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-red-500" onClick={()=>handleCancelOrder()}>
+            HỦY ĐƠN HÀNG
+          </button> : <button className="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded border border-gray-400 hover:border-gray-500">
+            ĐÃ HỦY
+          </button>
+        }
       </div>
 
     </div>

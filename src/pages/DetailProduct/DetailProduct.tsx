@@ -12,7 +12,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import Slide from '../../components/Slide/Slide';
-import { usePostCartMutation } from '../../api-slice/baseAPI';
+import { usePostCartMutation } from '../../api-slice/baseCartAPI';
 const DetailProduct = () => {
     const { id } = useParams();
     const [product, setProduct] = useState<IProduct>({} as IProduct);
@@ -39,8 +39,10 @@ const DetailProduct = () => {
         setCount((prev) => prev + 1);
     };
     const minusCount = () => {
-        if (count > 0) {
+        if (count > 1) {
             setCount((prev) => prev - 1);
+        } else {
+            setCount(1)
         }
     };
     console.log('detail', product)
@@ -52,7 +54,9 @@ const DetailProduct = () => {
             quantity: count,
             userId: "64c70e3980d555c680c5b0d5"
         }
-        postCart(data)
+        postCart(data).then(() => {
+            alert("Thêm thành công")
+        })
     }
 
     return (
@@ -110,7 +114,7 @@ const DetailProduct = () => {
                                             onChange={(e) => setCount(Number(e.target.value))}
                                             max={product?.stock}
                                             step={1}
-                                            min={0}
+                                            min={1}
                                             value={count}
                                         />
                                         <span
