@@ -1,6 +1,6 @@
-import { VariationPopulate} from '../../../common/product';
+import { VariationPopulate } from '../../../common/product';
 import { Tab } from '../../../components/TabContent/TabContent';
-
+import Comments from '../../../components/comments/Comments';
 export const tabItem: (desc: string, variations: VariationPopulate[]) => Tab[] = (descProduct, variations) => [
    {
       label: 'Description',
@@ -29,7 +29,9 @@ export const tabItem: (desc: string, variations: VariationPopulate[]) => Tab[] =
    },
    {
       label: 'Review',
-      content: <div>Review </div>,
+      content: <div>
+         <Comments></Comments>
+      </div>,
       type: 'review'
    }
 ];
