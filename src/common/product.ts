@@ -1,5 +1,5 @@
 // dung de data:any o day xin day !!!!!
-export interface IProduct  {
+export interface IProduct {
    _id: string;
    name: string;
    favorite: number;
@@ -8,7 +8,7 @@ export interface IProduct  {
    categoryId: string;
    stock: number;
    solded: number;
-   variations: IVariation[];
+   variations: IVariation[] | VariationPopulate[];
    images: { url: string; public_id?: string; _id?: string }[];
    discount: number;
 }
@@ -40,7 +40,7 @@ export type IVariation = {
    _id: string;
    weight: number;
    quantity: number;
-   vendorId: string;
+   vendorId: string | IVendor;
 };
 
 export type IVendor = {
@@ -48,3 +48,11 @@ export type IVendor = {
    name: string;
    origin: string;
 };
+
+export type VariationPopulate = {
+   vendorId: {
+      _if: string;
+      name: string;
+      origin: string;
+   };
+} & Omit<IVariation, 'vendorId'>;
