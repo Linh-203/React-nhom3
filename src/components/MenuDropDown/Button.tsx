@@ -32,20 +32,20 @@ function Button(props: IProps) {
    
    return (
       <Comp
-         className={`relative w-full mx-auto rounded-2xl h-14 items-center justify-between  flex p-5 hover:bg-navBg dark:hover:bg-navDarkBg text-black dark:text-white`}
+         className={`relative w-full mx-auto rounded-xl h-14 items-center justify-between  flex p-5  text-black dark:text-white`}
          onClick={props.hadChildren?onHandleClick:()=>undefined}
          {...prps}
       >
-         <span className='flex-1 flex gap-2 text-left'>
+         <span className='flex-1 flex gap-2 text-left hover:text-hightLigh'>
             {props.icon && <span className='py-1'>{props.icon}</span>}
             {props.title}
          </span>
          {props.hadChildren && (
             <span>
                {props.isDropdown ? (
-                  <DownArrow className='w-5 absolute right-2 top-1/3 dark:text-white' />
+                  <DownArrow className='w-3 absolute right-2 top-1/3 dark:text-white ' />
                ) : (
-                  <UpArrow className='w-5 absolute right-2 top-1/3 dark:text-white' />
+                  <UpArrow className='w-3 absolute right-2 top-1/3 dark:text-white ' />
                )}
             </span>
          )}

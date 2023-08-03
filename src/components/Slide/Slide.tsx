@@ -1,6 +1,6 @@
 import React from 'react';
 import { Swiper } from 'swiper/react';
-import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
+import { Navigation, Pagination, Scrollbar, A11y, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -9,17 +9,19 @@ type IProps = {
    children: React.ReactNode;
    slidesPerView: number;
    navigation?: boolean;
+   autoplay?: boolean;
 };
 const Slide = (props: IProps) => {
    return (
       <Swiper
-         modules={[Navigation, Pagination, Scrollbar, A11y]}
+         modules={[Navigation, Pagination, Scrollbar, A11y, Autoplay]}
          spaceBetween={50}
+         autoplay={props.autoplay ? { delay: 2000 } : false}
          slidesPerView={props.slidesPerView}
          navigation={props.navigation || false}
-         onSwiper={(swiper) => console.log(swiper)}
          onSlideChange={() => console.log('slide change')}
          loop={true}
+         
       >
          {props.children}
       </Swiper>

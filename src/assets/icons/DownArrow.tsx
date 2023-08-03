@@ -9,7 +9,7 @@ const DownArrow = ({ className, width = '1rem', height = '1rem' }: IconProps) =>
          height={height}
          fill='none'
          stroke='currentColor'
-         strokeWidth='3'
+         strokeWidth='1'
          strokeLinecap='round'
          strokeLinejoin='round'
          viewBox='0 0 32 32'

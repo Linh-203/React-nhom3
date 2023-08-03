@@ -6,7 +6,6 @@ type IProps = {
 };
 function ProductDetail(props: IProps) {
    const [item, setItem] = useState<IProduct>({} as IProduct);
-   console.log(item);
    const [loading, setLoading] = useState<boolean>(true);
 
    const getItem = async () => {
@@ -16,16 +15,14 @@ function ProductDetail(props: IProps) {
    };
 
    useEffect(() => {
-      console.log(props.id);
-
       if (props.id !== '') {
          setLoading(true);
          getItem().catch(() => {
             console.log('getItem failed');
          });
       }
+   // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [props.id]);
-   //console.log(item, toggle, props.id);
 
    return (
       <div className='text-black'>
@@ -76,7 +73,7 @@ function ProductDetail(props: IProps) {
                         </tbody>
                      </table>
                      <h1 className='py-3 font-bold text-[20px]'>Product Description</h1>
-                     <p>{item?.desc}</p>
+                     <p className='w-full'>{item?.desc}</p>
                   </div>
                   <div className='w-full'>
                      <div className='w-[400px]'>

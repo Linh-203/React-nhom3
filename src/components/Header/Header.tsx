@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import styles from './header.module.css';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import GlassIcon from '../../assets/icons/GlassIcon';
 import HeartIcon from '../../assets/icons/HeartIcon';
 import CartIcon from '../../assets/icons/CartIcon';
@@ -25,27 +26,69 @@ const navItems: NavLink[] = [
    }
 ];
 const Header = () => {
+   const [searchKeyword, setSearchKeyword] = useState('');
+   const [historyPosition, setHistoryPosition] = useState<number>(0);
    const location = useLocation();
+   const navigate = useNavigate();
    const [path, setPath] = useState<string>('');
-   const headerRef = useRef(null);
+   const headerRef = useRef<HTMLElement>(null);
    useEffect(() => {
       setPath(location.pathname);
    }, [location.pathname]);
+   useEffect(() => {
+      function handleScroll() {
+         const pos = window.pageYOffset || document.documentElement.scrollTop;
+         if (headerRef.current) {
+            if (pos > historyPosition) {
+               headerRef.current.classList.add('-top-[120px]');
+               headerRef.current.classList.remove('top-0');
+               headerRef.current.classList.remove('shadow-lg');
+            } else {
+               headerRef.current.classList.add('top-0');
+               headerRef.current.classList.add('shadow-lg');
+               headerRef.current.classList.remove('-top-[120px]');
+            }
+            if (pos === 0) {
+               headerRef.current.classList.remove('shadow-lg');
+            }
+            pos === 0 && headerRef.current.classList.remove('shadow-md', 'shadow-black');
+         }
+         setHistoryPosition(pos);
+      }
+      window.addEventListener('scroll', handleScroll);
+      return () => {
+         window.removeEventListener('scroll', handleScroll);
+      };
+   });
+   const handleSearchInputChange = (event: Event) => {
+      if (event.target) setSearchKeyword(event.target.value);
+   };
+
+   const handleSearchSubmit = (event: Event) => {
+      event.preventDefault();
+      const searchParams = new URLSearchParams();
+      searchParams.append('q', searchKeyword);
+      navigate({
+         pathname: 'search',
+         search: searchParams.toString()
+      });
+   };
+
    return (
       //get height of header
       // listen window scroll
       //set history of each time scroll
       // smaller than history -> up -> fixed header
       // contrary
-      <header className={`${styles['header']}`} ref={headerRef}>
-         <div className='w-[20%]'>
+      <header className={`${styles['header']} bg-white`} ref={headerRef}>
+         <Link to={'/'} className='w-[20%]'>
             <img
                src='https://spacingtech.com/html/tm/freozy/freezy-ltr/image/logo/logo.png'
                alt='logo'
                className='aspect-[3/1] w-[50%]'
             />
-         </div>
-         <nav className='w-[60%]'>
+         </Link>
+         <nav className='w-[30%]'>
             <ul className='w-full flex justify-stretch items-center gap-8'>
                {navItems.map((item, index) => (
                   <li
@@ -59,10 +102,21 @@ const Header = () => {
                ))}
             </ul>
          </nav>
-         <div className='w-[25%] flex justify-end items-center gap-8'>
-            <div className='flex items-center gap-1 text-colorText hover:text-hightLigh cursor-pointer'>
-               <GlassIcon width='1.3rem' height='1.3rem' />
-               <span className=''>Find our item</span>
+         <div className='w-[60%] flex justify-end items-center gap-8'>
+            <div className='flex justify-between items-center gap-1 text-colorText  cursor-pointer '>
+               <form onSubmit={handleSearchSubmit} className='flex justify-center items-center'>
+                  {/* <GlassIcon width='1.3rem' height='1.3rem' /> */}
+                  <input
+                     type='text'
+                     className='hover:text-hightLigh outline-none focus:border-b-[1px] focus:border-b-grayLight100 mr-4 text-hightLigh'
+                     value={searchKeyword}
+                     onChange={handleSearchInputChange}
+                     placeholder='Tìm kiếm'
+                  />
+                  <button type='submit'>
+                     <GlassIcon width='1.3rem' height='1.3rem' />
+                  </button>
+               </form>
             </div>
             <HeartIcon width='1.3rem' height='1.3rem' className='cursor-pointer hover:text-hightLigh' />
           <Link to="/cart"> <CartIcon width='1.3rem' height='1.3rem' className='cursor-pointer hover:text-hightLigh' /></Link> 

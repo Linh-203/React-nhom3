@@ -1,0 +1,17 @@
+.wrap-msg{
+    max-width: 300px;
+    position: fixed;
+    top:1rem;
+    right:1rem;
+    padding: 1rem 2rem;
+    animation: move 0.5s  1 ease-in-out;
+    border-radius: 5px;
+}
+
+@keyframes move {
+    from{
+      right:-5rem;
+    }to{
+      right:1rem;
+    }
+}

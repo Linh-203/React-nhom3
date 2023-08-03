@@ -1,76 +1,34 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import SearchIcon from '../../assets/icons/SearchIcon';
 import productService from '../../api/product';
 import ProductTbaleItem from '../../components/ProductTableItem/ProductTableItem';
 import { IProduct } from '../../common/product';
+import { useDebounce } from '../../hooks/useDebounce';
+import { usePaginate } from '../../hooks/usePaginate';
 
 const ProductListPage = () => {
    const [item, setItem] = useState<IProduct[]>([]);
-   const [pages, setPages] = useState<number>(1);
-   const [itemToRender, setItemToRender] = useState<IProduct[]>([]);
-   const [totalPages, setTotalPage] = useState<number[]>([]);
-   const [itemPerpage] = useState(5);
-   const [currentPage, setCurrentPage] = useState(1);
-
-   const handleSearch = (value: string) => {
-      const filter = item.filter((item) => item.name.toLowerCase().match(value.toLowerCase()));
-      renderItemPerpage(filter);
-   };
-
-   const renderItemPerpage = (item: IProduct[]) => {
-      setPages(Math.ceil(item.length / itemPerpage));
-      setTotalPage(Array.from(Array(Math.ceil(item.length / itemPerpage)).keys()).map((page) => page + 1));
-      const start = (currentPage - 1) * itemPerpage;
-      const end = start + itemPerpage;
-      setItemToRender(item.slice(start, end));
-   };
-
-   const nextPage = () => {
-      if (currentPage < pages) {
-         setCurrentPage((prev) => (prev += 1));
-      }
-   };
-
-   const handleDeleteItem = async (id: string): Promise<void> => {
-      await productService
-         .deleteProduct(id)
-         .then(() => {
-            alert('Deleted product');
-            getAllProducts().catch(() => {
-               console.log('getAllProducts failed');
-            });
-         })
-         .catch(() => {
-            console.log('error deleting product');
-         });
-   };
-
-   const prevPage = () => {
-      if (currentPage > 1) {
-         setCurrentPage((prev) => (prev -= 1));
-      }
-   };
-   const changePage = (page: number) => {
-      setCurrentPage(page);
-   };
-
-   const getAllProducts = async () => {
-      const { data } = await productService.getAllProduct({});
+   const [key, setKey] = useState<string>('');
+   const [totalPage, setTotalPage] = useState<number>(1);
+   const finalKey = useDebounce<string>(key, 500);
+   const { goToPage, nextPage, page, pageRange, prevPage } = usePaginate({ totalPages: totalPage });
+   //Vì tôi còn dùng lại hàm này nữa
+   const handleGetAllItem = async () => {
+      const { data } = await productService.getAllProduct({ q: finalKey, limit: 6, page: page });
       setItem(data.data);
+      setTotalPage(data.pagination.totalPages);
    };
-
+   const resetProduct = useCallback(
+      (id: string) => {
+         const newProducts = item.filter((prd) => prd._id !== id);
+         setItem(newProducts);
+      },
+      [item]
+   );
    useEffect(() => {
-      renderItemPerpage(item);
+      handleGetAllItem().catch((err) => console.log(err));
       // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [item, currentPage]);
-
-   useEffect(() => {
-      getAllProducts().catch(() => {
-         console.log('getAllProducts failed');
-      });
-   }, []);
-   console.log(itemToRender);
-
+   }, [finalKey, page]);
    return (
       <div>
          <div className='flex pb-4 justify-between items-center'>
@@ -80,7 +38,7 @@ const ProductListPage = () => {
                   type='search'
                   placeholder='search here...'
                   className='border-[1px] border-gray-300 rounded-l-2xl p-2 hover:border-black text-black outline-none'
-                  onChange={(e) => handleSearch(e.target.value)}
+                  onChange={(e) => setKey(e.target.value)}
                />
                <button className='border-[1px] bg-red-400 text-white hover:bg-red-500 px-3 border-gray-300 rounded-r-2xl'>
                   <SearchIcon />
@@ -111,23 +69,24 @@ const ProductListPage = () => {
                </tr>
             </thead>
             <tbody>
-               {itemToRender.length > 0 &&
+               {item.length > 0 &&
                   // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                  itemToRender?.map((prd, index) => <ProductTbaleItem deleteAction={handleDeleteItem} prd={prd} index={index} key={index} />)
-               }
+                  item.map((prd, index) => (
+                     <ProductTbaleItem prd={prd} index={index} key={index} resetProducts={resetProduct} />
+                  ))}
             </tbody>
          </table>
          <div className='paginate flex gap-1 justify-end py-3'>
             <button className='rounded-2xl bg-navBg p-2 hover:bg-slate-400' onClick={() => prevPage()}>
                Prev
             </button>
-            {totalPages.map((_: number, index: number) => (
+            {pageRange.map((_: number, index: number) => (
                <button
                   key={index}
                   className={`rounded-2xl hover:bg-zinc-200 w-10 h-10 p-2 border-[1px] ${
-                     currentPage === index + 1 ? 'border-gray-500' : ''
+                     page === index + 1 ? 'border-gray-500' : ''
                   }`}
-                  onClick={() => changePage(index + 1)}
+                  onClick={() => goToPage(index + 1)}
                >
                   <span>{index + 1}</span>
                </button>

@@ -3,30 +3,34 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-import { useEffect, useState } from 'react';
-import productService from '../api/product';
 import Slide from '../components/Slide/Slide';
+import { useEffect } from 'react';
+import { IQuery } from '../api/product';
 import Banner from '../components/Banner/Banner';
 import CardProduct from '../components/CardProduct/CardProduct';
 import CateSlide from '../components/CateSlide/CateSlide';
 import Delivery from '../components/Delivery/Delivery';
 import BannerSales from '../components/BannerSales/BannerSales';
 import Blog from '../components/Blog/Blog';
-import { IProduct } from '../common/product';
+import { useDispatch, useSelector } from 'react-redux';
+import { allInfoSelector, fetchProduct, productsSelector } from '../slices/ProductSlice';
+import Message from '../components/Message/Message';
+import { AppDispatch } from '../store/store';
+import Loading from '../components/Loading/Loading';
 const HomePage = () => {
-   const [products, setProduct] = useState<IProduct[]>([]);
+   const products = useSelector(productsSelector);
+   const dispatch = useDispatch<AppDispatch>();
+   const { error, loading } = useSelector(allInfoSelector);
    useEffect(() => {
-      productService
-         .getAllProduct({})
-         .then(({ data }) => setProduct(data.data))
-         .catch(({ response }) => {
-            alert(response.data.message);
-         });
+      void (async () => {
+         await dispatch(fetchProduct({} as IQuery));
+      })();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
    }, []);
-   console.log(products);
-
+   if (loading) return <Loading screen='large' />;
    return (
       <div className='w-full'>
+         {error?.content !== '' && <Message msg={error?.content} type={error?.type} duration={2000} />}
          <hr />
          <CateSlide />
          <Banner />
@@ -41,7 +45,7 @@ const HomePage = () => {
             <Slide slidesPerView={4} navigation={true}>
                {products.map((prd, index) => (
                   <SwiperSlide key={index}>
-                     <CardProduct product={prd} link={'/products'} />{' '}
+                     <CardProduct product={prd} link={`/products/${prd._id}`} />{' '}
                   </SwiperSlide>
                ))}
             </Slide>
