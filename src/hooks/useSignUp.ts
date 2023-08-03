@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { saveTokenAndUser } from '../slices/Auth';
 import { useNavigate } from 'react-router-dom';
+import { signupApi } from '.././api/auth';
 // import Cookies from 'js-cookie';
 export const useSignUp = () => {
    const navigate = useNavigate();
@@ -12,17 +13,13 @@ export const useSignUp = () => {
       setIsLoading(true);
       setError(null);
 
-      const response = await fetch('http://localhost:8000/api/signup', {
-         method: 'POST',
-         headers: { 'Content-Type': 'application/json' },
-         body: JSON.stringify({ name, email, password, phone })
-      });
-      const json = await response.json();
-      if (!response.ok) {
+      const response = await signupApi({ name, email, password, phone });
+      const json = await response.data;
+      if (json.error) {
          setIsLoading(false);
          setError(json.error);
       }
-      if (response.ok) {
+      if (!json.error) {
          // update lai cai authContext
          dispatch(saveTokenAndUser(json));
          setIsLoading(false);

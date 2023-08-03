@@ -1,13 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
-// import { IUser } from '../common/user';
+import { IUser } from '../common/user';
 
 type ProductSideInfo = {
    token: string;
-   user: string;
+   user: IUser;
 };
+
 const initState: ProductSideInfo = {
    token: '',
-   user: ''
+   user: {} as IUser
 };
 
 export const authToken = createSlice({
@@ -17,14 +18,16 @@ export const authToken = createSlice({
       saveTokenAndUser: (state, action) => {
          localStorage.setItem('auth', JSON.stringify(action.payload));
          state.token = action.payload.token;
-         state.user = action.payload.email;
+         state.user = action.payload.user;
       },
       deleteTokenAndUser: (state) => {
          localStorage.removeItem('auth');
          state.token = '';
-         state.user = '';
+         state.user = {};
       }
    }
 });
+
 export const { saveTokenAndUser, deleteTokenAndUser } = authToken.actions;
+
 export default authToken.reducer;

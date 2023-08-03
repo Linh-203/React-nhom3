@@ -2,6 +2,9 @@ import FormSubmit, { FormResponse } from './Admin/components/FormSubmit';
 import FormInputFeild from '../components/InputField/InputFeild';
 import { useLogin } from '../hooks/useLogin';
 import { Link } from 'react-router-dom';
+import FacebookIcon from '../assets/icons/Fb';
+import Gg from '../assets/icons/Gg';
+import Twitter from '../assets/icons/Twitter';
 // import Message from '../components/Message/Message';
 const { InputField } = FormInputFeild;
 
@@ -47,10 +50,13 @@ const Login = () => {
             </div>
             <div className='flex justify-center gap-48 py-16'>
                <div className=''>
-                  <Link to={'/signup'}>Create an account</Link>
+                  <Link to={'/signup'}>Create an account !</Link>
                </div>
-               <div className='pr-36'>
+               <div className=' flex items-center gap-5 pl-10 pr-24'>
                   <a href='#'>Or login with</a>
+                  <FacebookIcon className='w-7 h-7' />
+                  <Gg className='w-7 h-7' />
+                  <Twitter className='w-8 h-8' />
                </div>
             </div>
          </FormSubmit>

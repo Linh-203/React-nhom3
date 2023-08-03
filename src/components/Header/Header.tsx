@@ -7,7 +7,6 @@ import User from '../../assets/icons/User';
 import CartIcon from '../../assets/icons/CartIcon';
 import { useEffect, useRef, useState } from 'react';
 import { useLogout } from '../../hooks/useLogout';
-import { useAuthContext } from '../../hooks/useAuthContext';
 import { useSelector } from 'react-redux';
 type NavLink = {
    path: string;
@@ -131,9 +130,9 @@ const Header = () => {
             <HeartIcon width='1.3rem' height='1.3rem' className='cursor-pointer hover:text-hightLigh' />
             <CartIcon width='1.3rem' height='1.3rem' className='cursor-pointer hover:text-hightLigh' />
 
-            {user !== '' ? (
+            {Object.keys(user).length > 0 ? (
                <div className=''>
-                  <span>{user.email}</span>
+                  <span>{user.name} - </span>
                   <button onClick={handleClick}>Logout</button>
                </div>
             ) : (

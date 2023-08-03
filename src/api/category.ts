@@ -11,7 +11,7 @@ export const getAllCategory = async (): Promise<AxiosResponse<ResponsePaginate<I
    const res = await instance.get('/categories?_expand');
    return res;
 };
-export const getCategoryById = async (id: string):Promise<AxiosResponse<ResponsePaginate<ICategory>, any>> => {
+export const getCategoryById = async (id: string): Promise<AxiosResponse<ResponsePaginate<ICategory>, any>> => {
    return await instance.get('/categories/' + id);
 };
 export const removeCategoryById = async (id: string) => {
