@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import { IProduct } from '../common/product';
-import { createOrder } from '../api/orders';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../store/store';
 import { fetchCart, handleUpdateCart, removeItemInCart } from '../slices/CartSlice';
-import UpdateProduct from './Admin/UpdateProduct';
-import { useGetCartQuery, useRemoveProductInCartMutation, useUpdateCartMutation } from '../api-slice/baseAPI';
+import { useGetCartQuery, usePostCartMutation, useRemoveProductInCartMutation, useUpdateCartMutation } from '../api-slice/baseCartAPI';
+import { usePostOrderMutation } from '../api-slice/baseOrderAPI';
 interface IFormData {
   customerName: string,
   phone: string,
@@ -25,7 +24,7 @@ const Cart = () => {
   const [removeProductInCart] = useRemoveProductInCartMutation()
   const cart = data?.cart
   const dispatch = useDispatch<AppDispatch>()
-
+  const [createOrder] = usePostOrderMutation()
   const handleFetchCart = async () => {
     try {
       const data = await dispatch(fetchCart()).unwrap()
@@ -131,23 +130,12 @@ const Cart = () => {
         quantity
       };
       updateCart(data)
-      // void (async () => {
-      //   await dispatch(handleUpdateCart(data)).unwrap()
-      // })()
-      // updateCart(data)
-      //   .then(() => {
-      //     getCart(userId).then(({ data }) => {
-      //       setCarts(data.cart);
-      //     });
-      //   })
-      //   .catch((error) => {
-      //     console.log('Error updating cart:', error);
-      //   });
+     
     }
 
   };
   const removeCart = async (productId: string) => {
-    removeProductInCart({userId, productId})
+    removeProductInCart({ userId, productId })
   }
   useEffect(() => {
     if (formData.customerName && formData.phone && formData.address) {
@@ -161,7 +149,8 @@ const Cart = () => {
     formData["cartId"] = cart._id
     console.log(formData);
     createOrder(formData).then(() => {
-      navigate("/message")
+      // navigate("/message")
+      alert("OKI")
     })
       .catch((error) => console.log(error)
       )
@@ -173,7 +162,7 @@ const Cart = () => {
   return (
     <div>
       <hr />
-      {cart?.products ?
+      {cart?.products.length > 0 ?
         <div className="show-cart">
 
           <div id='cart'>
@@ -354,9 +343,9 @@ const Cart = () => {
             </button>
           </form>
         </div>
-        : <div>
-          <img src="https://bizweb.dktcdn.net/100/331/465/themes/684469/assets/empty-bags.jpg?1541753997372" alt="" />
-          <p>Gio hàng trống</p>
+        : <div style={{textAlign:"center"}}>
+          <img style={{margin:"auto"}} src="https://bizweb.dktcdn.net/100/331/465/themes/684469/assets/empty-bags.jpg?1541753997372" alt="" />
+          <p>Giỏ hàng trống</p>
         </div>}
     </div>
   );

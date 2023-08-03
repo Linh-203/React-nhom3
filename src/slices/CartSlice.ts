@@ -32,7 +32,7 @@ export const handleUpdateCart = createAsyncThunk(
 )
 
 export const removeItemInCart = createAsyncThunk(
-    'cart/update',
+    'cart/remove',
     async (arg: string, thunkAPI) => {
         try {
             await removeOneProductInCart(userId, arg)

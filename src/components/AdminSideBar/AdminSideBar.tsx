@@ -24,7 +24,7 @@ const menu: IMenu[] = [
         {title: 'Add Product', to: '/admin/product-add'},
     ]},
     {title: 'Category Managerment', icon: <CategoryIcon/>, children: [
-        {title: 'Categories', to: '/admin/categories'},
+        {title: 'List Orders', to: '/admin/orders'},
         {title: 'Add Category', to: '/admin/category-add'},
     ]},
 ]
