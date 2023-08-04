@@ -1,7 +1,9 @@
-import { useState, useReducer, useEffect, FormEventHandler } from 'react';
+import { useState, useReducer, useEffect } from 'react';
 import { createOrder } from '../../api/orders';
 import { useNavigate } from 'react-router-dom';
-import { useGetCartQuery } from '../../api-slice/baseAPI';
+import { useGetCartQuery } from '../../api-slice/baseCartAPI';
+import { RootState } from '../../store/store';
+import { useSelector } from 'react-redux';
 
 interface IFormData {
    customerName: string;
@@ -17,7 +19,8 @@ interface IFormDataValid {
    isValidAddress: boolean;
 }
 const Checkout = () => {
-   const userId = '64c70e3980d555c680c5b0d5';
+   const userId = useSelector((state: RootState) => state.authReducer.user._id);
+   const user = useSelector((state: RootState) => state.authReducer.user);
    const navigate = useNavigate();
    const { data } = useGetCartQuery(userId);
    const cart = data?.cart;
@@ -33,7 +36,10 @@ const Checkout = () => {
       isValidPhone: true,
       isValidAddress: true
    };
-
+   useEffect(() => {
+      dispatchFormData({ type: 'UPDATE_CUSTOMER_NAME', payload: user.name });
+      dispatchFormData({ type: 'UPDATE_PHONE', payload: user.phone });
+   }, [user]);
    const reducerFormData = (state: IFormData, action: { type: string; payload: string }) => {
       switch (action.type) {
          case 'UPDATE_CUSTOMER_NAME':
@@ -53,9 +59,7 @@ const Checkout = () => {
       switch (action.type) {
          case 'VALIDATE_CUSTOMER_NAME':
             console.log(action.payload.customerName);
-
             isValid = action.payload.customerName.length > 0;
-
             return { ...state, isValidCustomerName: isValid };
          case 'VALIDATE_PHONE':
             isValid = action.payload.phone.length > 0;
@@ -99,6 +103,7 @@ const Checkout = () => {
                      className='appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500'
                      id='name'
                      type='text'
+                     value={formData.customerName}
                      placeholder='Nhập tên khách hàng'
                      onChange={(e) => {
                         dispatchFormData({
@@ -131,6 +136,7 @@ const Checkout = () => {
                      className='appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500'
                      id='phone'
                      type='text'
+                     value={formData.phone}
                      placeholder='Nhập số điện thoại'
                      onChange={(e) => {
                         dispatchFormData({
@@ -217,11 +223,7 @@ const Checkout = () => {
                </div>
             </div>
             <h1>Tổng tiền thanh toán: ${cart?.totalPrice}</h1>
-            <button
-               disabled={buttonDisabled}
-               className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
-               type='submit'
-            >
+            <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' type='submit'>
                Đặt hàng
             </button>
          </form>

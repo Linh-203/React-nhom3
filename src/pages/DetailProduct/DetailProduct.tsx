@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import productService from '../../api/product';
 import CateSlide from '../../components/CateSlide/CateSlide';
 import { IProduct, VariationPopulate } from '../../common/product';
@@ -12,13 +12,17 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import Slide from '../../components/Slide/Slide';
-import { usePostCartMutation } from '../../api-slice/baseAPI';
+import { usePostCartMutation } from '../../api-slice/baseCartAPI';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 const DetailProduct = () => {
    const { id } = useParams();
    const [product, setProduct] = useState<IProduct>({} as IProduct);
    const [products, setProducts] = useState<IProduct[]>([]);
    const [variationId, setVariationId] = useState<string>('');
    const tabs = useMemo(() => tabItem(product.desc, product.variations as VariationPopulate[]), [product]);
+   const userId = useSelector((state: RootState) => state.authReducer.user._id);
+   const navigate = useNavigate();
    useEffect(() => {
       productService
          .getProductById(id!)
@@ -49,11 +53,15 @@ const DetailProduct = () => {
    };
    const [postCart] = usePostCartMutation();
    const handleAddToCart = async () => {
+      if (!userId) {
+         navigate('/login');
+         return;
+      }
       const data = {
          productId: product?._id,
          quantity: count,
          variationId: variationId,
-         userId: '64c70e3980d555c680c5b0d5'
+         userId: userId
       };
       await postCart(data);
    };

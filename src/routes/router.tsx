@@ -13,11 +13,15 @@ import SearchContext from '../components/SearchContext/SearchContext';
 import DetailProduct from '../pages/DetailProduct/DetailProduct';
 import UpdateProduct from '../pages/Admin/UpdateProduct';
 import UpdateCategory from '../pages/Admin/UpdateCategory';
+import SignUp from '../pages/SignUp';
+import Login from '../pages/Login';
 import Cart from '../pages/Cart/Cart';
-import Orders from '../pages/ProductPage/orders/Orders';
-import DetailOrder from '../pages/ProductPage/order-detail/DetailOrder';
+import Orders from '../pages/Order/Orders';
+import DetailOrder from '../pages/Order/order-detail/DetailOrder';
 import OrderSuccessNotification from '../pages/OrderSuccsec';
 import Checkout from '../pages/Cart/Checkout';
+import ListOrders from '../pages/Admin/ListOrders';
+import OrdersDetail from '../components/orders/OrdersDetail';
 
 export const router = createBrowserRouter([
    {
@@ -35,6 +39,14 @@ export const router = createBrowserRouter([
          {
             path: 'search',
             element: <SearchContext />
+         },
+         {
+            path: 'signup',
+            element: <SignUp />
+         },
+         {
+            path: 'login',
+            element: <Login />
          },
          {
             path: '/products/:id',
@@ -85,6 +97,14 @@ export const router = createBrowserRouter([
          {
             path: 'product-update/:id',
             element: <UpdateProduct />
+         },
+         {
+            path: 'orders',
+            element: <ListOrders />
+         },
+         {
+            path: 'order/:id',
+            element: <OrdersDetail />
          },
          {
             path: 'categories',

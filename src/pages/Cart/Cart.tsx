@@ -1,14 +1,16 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { ChangeEvent, useState } from 'react';
-import { useGetCartQuery, useRemoveProductInCartMutation, useUpdateCartMutation } from '../../api-slice/baseAPI';
+import { useGetCartQuery, useRemoveProductInCartMutation, useUpdateCartMutation } from '../../api-slice/baseCartAPI';
 import { InputCart } from '../../common/cart';
 import Loading from '../../components/Loading/Loading';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 
 const Cart = () => {
-   const userId = '64c70e3980d555c680c5b0d5';
-   const { data, error, isLoading } = useGetCartQuery(userId);
+   const userId = useSelector((state: RootState) => state.authReducer.user._id);
+   const { data, error, isLoading } = useGetCartQuery(userId, { skip: !userId });
    const [updateCart] = useUpdateCartMutation();
    const [removeProductInCart] = useRemoveProductInCartMutation();
    const cart = data?.cart;
@@ -102,7 +104,7 @@ const Cart = () => {
                </div>
             </div>
          ) : (
-            <div className='w-full flex justify-center items-center py-5 gap-5'>
+            <div className='w-full flex justify-center items-center py-5 gap-5 min-h-[300px]'>
                <p className='text-3xl text-colorText font-semibold'>Cart Empty</p>
                <Link to={'/products'}>
                   <button className='bg-hightLigh text-white font-semibold p-3 rounded-lg'>Continue shopping</button>
