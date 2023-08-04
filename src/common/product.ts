@@ -1,5 +1,7 @@
 // dung de data:any o day xin day !!!!!
 export interface IProduct {
+   productId: any;
+   quantity: any;
    _id: string;
    name: string;
    favorite: number;
@@ -10,7 +12,7 @@ export interface IProduct {
    solded: number;
    variations: IVariation[] | VariationPopulate[];
    images: { url: string; public_id?: string; _id?: string }[];
-   discount: number;
+   discount: number;,
 }
 
 export type InputProduct = {
