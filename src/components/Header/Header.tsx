@@ -3,9 +3,11 @@ import styles from './header.module.css';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import GlassIcon from '../../assets/icons/GlassIcon';
 import HeartIcon from '../../assets/icons/HeartIcon';
+import User from '../../assets/icons/User';
 import CartIcon from '../../assets/icons/CartIcon';
 import { useEffect, useRef, useState } from 'react';
-
+import { useLogout } from '../../hooks/useLogout';
+import { useSelector } from 'react-redux';
 type NavLink = {
    path: string;
    title: string;
@@ -26,6 +28,10 @@ const navItems: NavLink[] = [
    }
 ];
 const Header = () => {
+   const logout = useLogout();
+   const user = useSelector((state: any) => {
+      return state.authReducer.user;
+   });
    const [searchKeyword, setSearchKeyword] = useState('');
    const [historyPosition, setHistoryPosition] = useState<number>(0);
    const location = useLocation();
@@ -73,6 +79,9 @@ const Header = () => {
          search: searchParams.toString()
       });
    };
+   const handleClick = () => {
+      logout();
+   };
 
    return (
       //get height of header
@@ -119,8 +128,26 @@ const Header = () => {
                </form>
             </div>
             <HeartIcon width='1.3rem' height='1.3rem' className='cursor-pointer hover:text-hightLigh' />
-          <Link to="/cart"> <CartIcon width='1.3rem' height='1.3rem' className='cursor-pointer hover:text-hightLigh' /></Link> 
-        <Link to="/orders"> <i className="fa-solid fa-pager"></i></Link> 
+            {/* <CartIcon width='1.3rem' height='1.3rem' className='cursor-pointer hover:text-hightLigh' /> */}
+
+            {Object.keys(user).length > 0 ? (
+               <div className=''>
+                  <Link to='/cart'>
+                     {' '}
+                     <CartIcon width='1.3rem' height='1.3rem' className='cursor-pointer hover:text-hightLigh' />
+                  </Link>
+                  <Link to='/orders'>
+                     {' '}
+                     <i className='fa-solid fa-pager'></i>
+                  </Link>
+                  <span>{user.name} - </span>
+                  <button onClick={handleClick}>Logout</button>
+               </div>
+            ) : (
+               <Link to={'/login'}>
+                  <User width='1.3rem' height='1.3rem' className='cursor-pointer hover:text-hightLigh' />
+               </Link>
+            )}
          </div>
       </header>
    );
