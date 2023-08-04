@@ -5,6 +5,8 @@ import GlassIcon from '../../assets/icons/GlassIcon';
 import HeartIcon from '../../assets/icons/HeartIcon';
 import CartIcon from '../../assets/icons/CartIcon';
 import { useEffect, useRef, useState } from 'react';
+import { useGetCartQuery } from '../../api-slice/baseAPI';
+import { Badge } from 'antd';
 
 type NavLink = {
    path: string;
@@ -30,6 +32,8 @@ const Header = () => {
    const [historyPosition, setHistoryPosition] = useState<number>(0);
    const location = useLocation();
    const navigate = useNavigate();
+   const userId = '64c70e3980d555c680c5b0d5';
+   const { data } = useGetCartQuery(userId);
    const [path, setPath] = useState<string>('');
    const headerRef = useRef<HTMLElement>(null);
    useEffect(() => {
@@ -119,8 +123,15 @@ const Header = () => {
                </form>
             </div>
             <HeartIcon width='1.3rem' height='1.3rem' className='cursor-pointer hover:text-hightLigh' />
-          <Link to="/cart"> <CartIcon width='1.3rem' height='1.3rem' className='cursor-pointer hover:text-hightLigh' /></Link> 
-        <Link to="/orders"> <i className="fa-solid fa-pager"></i></Link> 
+            <Link to='/cart'>
+               <Badge count={data?.cart?.products?.length} color='#d2401e' offset={[1,2]} size='small'>
+                  <CartIcon width='1.3rem' height='1.3rem' className='cursor-pointer hover:text-hightLigh' />
+               </Badge>
+            </Link>
+            <Link to='/orders'>
+               {' '}
+               <i className='fa-solid fa-pager'></i>
+            </Link>
          </div>
       </header>
    );

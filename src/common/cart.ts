@@ -9,6 +9,11 @@ export type resCart={
  products:ProductPopulate[]
 
 } & Omit<ICart, "products">
+
+export type CartDataResponse ={
+    message:string,
+    cart:resCart
+} 
 type ProductPopulate={
     productId:IProduct,
     variationId:string,
@@ -20,5 +25,11 @@ export interface ICart{
     userId:string,
     quantity:number,
     totalPrice:number,
+}
 
+export type InputCart = {
+    productId:string,
+    quantity:number,
+    variationId:string,
+    userId:string
 }
