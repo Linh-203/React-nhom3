@@ -24,7 +24,7 @@ function AdminLayout() {
    };
    //bg-primaryBg dark:bg-gradient-to-r dark:from-[#4B79A1] dark:to-[#283E51]
    useEffect(() => {
-      const { user } = JSON.parse(localStorage.getItem(`auth`) as string);
+      const user = JSON.parse(localStorage.getItem(`auth`) as string);
       if (!user || (user && user.role != 'admin')) {
          navigate('/login');
       }

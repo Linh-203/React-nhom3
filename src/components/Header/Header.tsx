@@ -131,7 +131,7 @@ const Header = () => {
             {/* <CartIcon width='1.3rem' height='1.3rem' className='cursor-pointer hover:text-hightLigh' /> */}
 
             {Object.keys(user).length > 0 ? (
-               <div className=''>
+               <div className='flex gap-5'>
                   <Link to='/cart'>
                      {' '}
                      <CartIcon width='1.3rem' height='1.3rem' className='cursor-pointer hover:text-hightLigh' />
