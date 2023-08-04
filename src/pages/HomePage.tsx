@@ -17,6 +17,7 @@ import { allInfoSelector, fetchProduct, productsSelector } from '../slices/Produ
 import Message from '../components/Message/Message';
 import { AppDispatch } from '../store/store';
 import Loading from '../components/Loading/Loading';
+
 const HomePage = () => {
    const products = useSelector(productsSelector);
    const dispatch = useDispatch<AppDispatch>();
