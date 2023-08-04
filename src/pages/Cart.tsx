@@ -149,7 +149,7 @@ const Cart = () => {
     formData["cartId"] = cart._id
     console.log(formData);
     createOrder(formData).then(() => {
-      // navigate("/message")
+       navigate("/message")
       alert("OKI")
     })
       .catch((error) => console.log(error)
