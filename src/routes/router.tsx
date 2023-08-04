@@ -36,7 +36,7 @@ export const router = createBrowserRouter([
             element: <DetailProduct />
          },
          {
-            path: '/account/:id',
+            path: '/acc/:id',
             element: <AccountPage />
          },
       ]

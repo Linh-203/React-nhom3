@@ -2,6 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from 'react-router-dom'
 import { IUser, Iuser } from "../../common/users";
 import userService from "../../api/usersaccount";
+import { Alert } from "@material-tailwind/react";
+
+function AlertDefault() {
+  return <Alert>A simple alert for showing message.</Alert>;
+}
+
 
 const AccountPage = () => {
   const [password, setPassword] = useState<string>('')
@@ -27,11 +33,13 @@ const AccountPage = () => {
       updatedAt: undefined,
       password,
     } as IUser).then(
-      void getUser(id as string)
+      void getUser(id as string),
+      
     ).catch(err => {
       console.log(err);
     })
     setPassword('')
+   
   }
   //   if (!user) {
   //     // The user is not logged in, so redirect them to the login page
