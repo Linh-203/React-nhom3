@@ -7,11 +7,11 @@ type IField = {
    className?: string;
    value?: string | number;
    title?: string;
-   getValues?: (name: string, value: string|number) => void;
+   getValues?: (name: string, value: string | number) => void;
 };
 
 type IInputField = IField & {
-   type?: 'text' | 'file' | 'date' | 'number' | 'search' | 'color' | 'radio' | 'checkbox';
+   type?: 'text' | 'file' | 'date' | 'number' | 'search' | 'color' | 'radio' | 'checkbox' | 'password';
    multiple?: boolean;
 };
 

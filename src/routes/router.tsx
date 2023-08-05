@@ -13,10 +13,13 @@ import SearchContext from '../components/SearchContext/SearchContext';
 import DetailProduct from '../pages/DetailProduct/DetailProduct';
 import UpdateProduct from '../pages/Admin/UpdateProduct';
 import UpdateCategory from '../pages/Admin/UpdateCategory';
-import Cart from '../pages/Cart';
-import Orders from '../pages/ProductPage/orders/Orders';
-import DetailOrder from '../pages/ProductPage/order-detail/DetailOrder';
+import SignUp from '../pages/SignUp';
+import Login from '../pages/Login';
+import Cart from '../pages/Cart/Cart';
+import Orders from '../pages/Order/Orders';
+import DetailOrder from '../pages/Order/order-detail/DetailOrder';
 import OrderSuccessNotification from '../pages/OrderSuccsec';
+import Checkout from '../pages/Cart/Checkout';
 import ListOrders from '../pages/Admin/ListOrders';
 import OrdersDetail from '../components/orders/OrdersDetail';
 
@@ -38,6 +41,14 @@ export const router = createBrowserRouter([
             element: <SearchContext />
          },
          {
+            path: 'signup',
+            element: <SignUp />
+         },
+         {
+            path: 'login',
+            element: <Login />
+         },
+         {
             path: '/products/:id',
             element: <DetailProduct />
          },
@@ -57,6 +68,10 @@ export const router = createBrowserRouter([
             path: '/message',
             element: <OrderSuccessNotification />
          },
+         {
+            path: '/checkout',
+            element: <Checkout />
+         }
       ]
    },
    {
@@ -90,6 +105,10 @@ export const router = createBrowserRouter([
          {
             path: 'order/:id',
             element: <OrdersDetail />
+         },
+         {
+            path: 'categories',
+            element: <CategoryListPage />
          },
          {
             path: 'category-add',
