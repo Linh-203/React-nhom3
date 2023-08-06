@@ -162,7 +162,7 @@ const Cart = () => {
   return (
     <div>
       <hr />
-      {cart?.products.length > 0 ?
+      {(cart && cart?.products?.length) > 0 ?
         <div className="show-cart">
 
           <div id='cart'>

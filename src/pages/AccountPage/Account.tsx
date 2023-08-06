@@ -13,6 +13,8 @@ const AccountPage = () => {
   const [password, setPassword] = useState<string>('')
   const [user, setUser] = useState<IUser>({} as IUser);
   const { id } = useParams();
+  console.log(user);
+  
   useEffect(() => {
     void getUser(id as string)
   }, [id]);

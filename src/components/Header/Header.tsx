@@ -140,7 +140,10 @@ const Header = () => {
                      {' '}
                      <i className='fa-solid fa-pager'></i>
                   </Link>
+                  <Link to={'/acc/' + user._id}>
                   <span>{user.name} - </span>
+                  </Link>
+                  
                   <button onClick={handleClick}>Logout</button>
                </div>
             ) : (
