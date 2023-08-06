@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { IProduct, ResponsePaginate,InputProduct } from '../common/product';
+import { IProduct, ResponsePaginate, InputProduct } from '../common/product';
 import instanse from './instance';
 
 export type IQuery = {
@@ -46,7 +46,7 @@ export const getAllProduct = async ({
    });
    return res;
 };
-export const getProductById = async (id: string): Promise<AxiosResponse<ResponsePaginate<IProduct>,any>> => {
+export const getProductById = async (id: string): Promise<AxiosResponse<ResponsePaginate<IProduct>, any>> => {
    const res = await instanse.get('/products/' + id);
    return res;
 };
