@@ -23,13 +23,13 @@ export const handleUpdateCart = createAsyncThunk('cart/update', async (arg: ICar
    }
 });
 
-export const removeItemInCart = createAsyncThunk('cart/remove', async (arg: string, thunkAPI) => {
-   try {
-      await removeOneProductInCart(userId, arg);
-   } catch (err) {
-      return thunkAPI.rejectWithValue(err);
-   }
-});
+// export const removeItemInCart = createAsyncThunk('cart/remove', async (arg: string, thunkAPI) => {
+//    try {
+//       await removeOneProductInCart(userId, arg);
+//    } catch (err) {
+//       return thunkAPI.rejectWithValue(err);
+//    }
+// });
 export const cartSlice = createSlice({
    name: 'cart',
    initialState: initialState,
