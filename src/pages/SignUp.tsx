@@ -99,7 +99,6 @@ const SignUp = () => {
             <div className='flex pl-96 pr-[470px]  justify-between items-center'>
                <div className=''>
                   <button
-                     disabled={isLoading}
                      type='submit'
                      className='text-lg py-1 px-4 border-transparent shadow-sm text-white rounded bg-[dodgerblue] hover:bg-gradient-to-r hover:from-[rgba(30,144,255,1)] hover:from-0% hover:to-[rgba(0,212,255,1)] hover:to-100%'
                   >

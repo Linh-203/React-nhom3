@@ -15,10 +15,11 @@ import UpdateProduct from '../pages/Admin/UpdateProduct';
 import UpdateCategory from '../pages/Admin/UpdateCategory';
 import SignUp from '../pages/SignUp';
 import Login from '../pages/Login';
-import Cart from '../pages/Cart';
-import Orders from '../pages/ProductPage/orders/Orders';
-import DetailOrder from '../pages/ProductPage/order-detail/DetailOrder';
+import Cart from '../pages/Cart/Cart';
+import Orders from '../pages/Order/Orders';
+import DetailOrder from '../pages/Order/order-detail/DetailOrder';
 import OrderSuccessNotification from '../pages/OrderSuccsec';
+import Checkout from '../pages/Cart/Checkout';
 import ListOrders from '../pages/Admin/ListOrders';
 import OrdersDetail from '../components/orders/OrdersDetail';
 
@@ -66,6 +67,10 @@ export const router = createBrowserRouter([
          {
             path: '/message',
             element: <OrderSuccessNotification />
+         },
+         {
+            path: '/checkout',
+            element: <Checkout />
          }
       ]
    },
@@ -112,6 +117,10 @@ export const router = createBrowserRouter([
          {
             path: 'category-edit/:id',
             element: <UpdateCategory />
+         },
+         {
+            path: 'orders',
+            element: <DashBoard />
          }
       ]
    }
