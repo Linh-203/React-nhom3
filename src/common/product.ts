@@ -12,7 +12,7 @@ export interface IProduct {
    solded: number;
    variations: IVariation[] | VariationPopulate[];
    images: { url: string; public_id?: string; _id?: string }[];
-   discount: number;,
+   discount: number;
 }
 
 export type InputProduct = {
