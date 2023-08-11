@@ -54,7 +54,7 @@ const UpdateCategory = () => {
          }
 
          await axios
-            .post('http://localhost:8000/api/upload', formData)
+            .post('https://freshmart-tkt6.onrender.com/api/upload', formData)
             .then((response) => {
                console.log(response.data.data[0].url);
                imgCate = response.data.data[0].url;

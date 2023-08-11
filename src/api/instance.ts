@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { store } from '../store/store';
 const instance = axios.create({
-   baseURL: 'http://localhost:8000/api',
+   baseURL: 'https://freshmart-tkt6.onrender.com/api',
    headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',

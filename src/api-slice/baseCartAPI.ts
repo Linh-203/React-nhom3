@@ -3,7 +3,7 @@ import { CartDataResponse, ICart, InputCart, resCart } from '../common/cart';
 
 export const cartApi = createApi({
    reducerPath: 'cartApi',
-   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8000/api/' }),
+   baseQuery: fetchBaseQuery({ baseUrl: 'https://freshmart-tkt6.onrender.com/api/' }),
    endpoints: (builder) => ({
       getCart: builder.query<CartDataResponse, string>({
          query: (idUser) => `cart/${idUser}`,
