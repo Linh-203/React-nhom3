@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import filterReducer from '../slices/FilterSlice';
 import productsReducer from '../slices/ProductSlice';
-import cartReducer from '../slices/CartSlice';
+// import cartReducer from '../slices/CartSlice';
 import orderReducer from '../slices/OrderSlice';
 import authReducer from '../slices/AuthSlice';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
@@ -11,7 +11,7 @@ export const store = configureStore({
    reducer: {
       filterReducer,
       productsReducer,
-      cartReducer,
+      // cartReducer,
       orderReducer,
       authReducer,
       [cartApi.reducerPath]: cartApi.reducer,
