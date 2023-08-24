@@ -20,6 +20,7 @@ type IMenu = {
 
 const menu: IMenu[] = [
    { title: 'DashBoard', icon: <DashBoardIcon />, to: '/admin/dashboard' },
+   { title: 'Orders', icon: <BillIcon />, to: '/admin/orders' },
    {
       title: 'Product Managerment',
       icon: <ProductIcon />,
@@ -31,12 +32,8 @@ const menu: IMenu[] = [
    {
       title: 'Category Managerment',
       icon: <CategoryIcon />,
-      children: [
-         { title: 'Categories', to: '/admin/categories' },
-         { title: 'Add Category', to: '/admin/category-add' }
-      ]
-   },
-   { title: 'Orders', icon: <BillIcon />, to: '/admin/orders' }
+      children: [{ title: 'Add Category', to: '/admin/category-add' }]
+   }
 ];
 
 function AdminSideBar(props: IProps) {
@@ -51,7 +48,7 @@ function AdminSideBar(props: IProps) {
          }`}
       >
          <div className='h-16 flex items-center justify-center dark:bg-dropBg'>
-            <Link to={'/'} className='flex justify-center items-center'>
+            <Link to={'/admin'} className='flex justify-center items-center'>
                <img
                   src='https://spacingtech.com/html/tm/freozy/freezy-ltr/image/logo/logo.png'
                   alt='logo'

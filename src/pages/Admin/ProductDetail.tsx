@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import productService from '../../api/product';
 import { IProduct } from '../../common/product';
+import { Link } from 'react-router-dom';
 type IProps = {
    id: string;
 };
@@ -21,7 +22,7 @@ function ProductDetail(props: IProps) {
             console.log('getItem failed');
          });
       }
-   // eslint-disable-next-line react-hooks/exhaustive-deps
+      // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [props.id]);
 
    return (
@@ -74,15 +75,12 @@ function ProductDetail(props: IProps) {
                      </table>
                      <h1 className='py-3 font-bold text-[20px]'>Product Description</h1>
                      <p className='w-full'>{item?.desc}</p>
-                  </div>
-                  <div className='w-full'>
-                     <div className='w-[400px]'>
-                        <h1>
-                           Favorite: <span>{item?.favorite}</span>
-                        </h1>
-                        <h1>
-                           Solded: <span>{item?.solded}</span>
-                        </h1>
+                     <div className='flex justify-start items-center gap-3'>
+                        <Link to={`/admin/variations/add/${item._id}`}>
+                           {' '}
+                           <button className='rounded-md bg-greenCus400 text-white p-2 mt-5'>Add Variation</button>
+                        </Link>
+                        <button className='rounded-md bg-greenCus400 text-white p-2 mt-5'>Manage Variation</button>
                      </div>
                   </div>
                </div>

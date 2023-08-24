@@ -1,10 +1,30 @@
-import { useGetOrdersAdminQuery } from '../../api-slice/baseOrderAPI';
+import { useEffect, useRef, useState } from 'react';
+import { useGetOrdersAdminQuery } from '../../api-slice/orderAPI';
 import Orders from '../../components/orders/Orders';
+import { IOrders } from '../../common/orders';
+import { adminSocket } from '../../socket/config';
 
 const ListOrders = () => {
    const { data } = useGetOrdersAdminQuery('argumentValue');
-   const orders = data?.order;
-
+   const [orders, setOrders] = useState<IOrders[]>([]);
+   const lastEventId = useRef(null);
+   useEffect(() => {
+      if (data) setOrders(data.order!);
+   }, [data]);
+   useEffect(() => {
+      adminSocket.open();
+      adminSocket.on('orderConfirm', ({ data }) => {
+         if (data.eventId !== lastEventId.current) {
+            setOrders((prev) => [data.order as IOrders, ...orders]);
+            lastEventId.current = data.eventId;
+         } else {
+            console.log('not run');
+         }
+      });
+      return () => {
+         adminSocket.disconnect();
+      };
+   }, [data]);
    return (
       <div className='bg-gray-100'>
          <div className='container mx-auto py-8'>

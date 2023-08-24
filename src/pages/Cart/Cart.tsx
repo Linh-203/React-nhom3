@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import { ChangeEvent, useState } from 'react';
-import { useGetCartQuery, useRemoveProductInCartMutation, useUpdateCartMutation } from '../../api-slice/baseCartAPI';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { useGetCartQuery, useRemoveProductInCartMutation, useUpdateCartMutation } from '../../api-slice/cartAPI';
 import { InputCart } from '../../common/cart';
 import Loading from '../../components/Loading/Loading';
 import { Link } from 'react-router-dom';
@@ -14,11 +14,8 @@ const Cart = () => {
    const [updateCart] = useUpdateCartMutation();
    const [removeProductInCart] = useRemoveProductInCartMutation();
    const cart = data?.cart;
-   const [quantityInput, setQuantityInput] = useState<number>(cart?.quantity ? cart.quantity : 1);
-
    const onChangeQuantity = async (e: ChangeEvent<HTMLInputElement>, productId: string, variationId: string) => {
       if (e.target) {
-         setQuantityInput(Number(e.target.value));
          const data: InputCart = {
             userId,
             productId,
@@ -72,7 +69,7 @@ const Cart = () => {
                                           aria-label='input'
                                           className='border border-gray-300 h-full text-center w-14 p-5 outline-none rounded-md text-md text-colorText'
                                           type='text'
-                                          value={quantityInput}
+                                          value={product.quantity}
                                           onChange={(e) =>
                                              onChangeQuantity(e, product.productId._id, product.variationId)
                                           }

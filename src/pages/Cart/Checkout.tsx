@@ -1,9 +1,10 @@
 import { useState, useReducer, useEffect } from 'react';
 import { createOrder } from '../../api/orders';
 import { useNavigate } from 'react-router-dom';
-import { useGetCartQuery } from '../../api-slice/baseCartAPI';
+import { useGetCartQuery } from '../../api-slice/cartAPI';
 import { RootState } from '../../store/store';
 import { useSelector } from 'react-redux';
+import { adminSocket } from '../../socket/config';
 
 interface IFormData {
    customerName: string;
@@ -85,8 +86,12 @@ const Checkout = () => {
       formData['userId'] = userId;
       formData['cartId'] = cart?._id;
       createOrder(formData)
-         .then(() => {
-            navigate('/message');
+         .then((res) => {
+            console.log(res.data);
+            if (res.status === 201) {
+               adminSocket.emit('newOrder', { data: { user, order: res.data.order } });
+               navigate('/message');
+            }
          })
          .catch((error) => console.log(error));
    };

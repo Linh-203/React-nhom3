@@ -67,7 +67,7 @@ const Login = () => {
                   <button
                      disabled={isLoading}
                      type='submit'
-                     className='text-lg py-1 px-5 border-transparent shadow-sm text-white rounded bg-[dodgerblue] hover:bg-gradient-to-r hover:from-[rgba(30,144,255,1)] hover:from-0% hover:to-[rgba(0,212,255,1)] hover:to-100%'
+                     className='mt-10 text-lg py-1 px-5 border-transparent shadow-sm text-white rounded bg-[dodgerblue] hover:bg-gradient-to-r hover:from-[rgba(30,144,255,1)] hover:from-0% hover:to-[rgba(0,212,255,1)] hover:to-100%'
                   >
                      Submit
                   </button>

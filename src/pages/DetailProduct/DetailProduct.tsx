@@ -12,9 +12,10 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import Slide from '../../components/Slide/Slide';
-import { usePostCartMutation } from '../../api-slice/baseCartAPI';
+import { usePostCartMutation } from '../../api-slice/cartAPI';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
+import { adminSocket } from '../../socket/config';
 const DetailProduct = () => {
    const { id } = useParams();
    const [product, setProduct] = useState<IProduct>({} as IProduct);
@@ -40,7 +41,7 @@ const DetailProduct = () => {
          });
    }, []);
    useEffect(() => {
-      if (product.variations) setVariationId(product.variations[0]._id);
+      if (product.variations && product.variations.length > 0) setVariationId(product.variations[0]._id);
    }, [product]);
    const [count, setCount] = useState(1);
    const addCount = () => {
@@ -53,6 +54,7 @@ const DetailProduct = () => {
    };
    const [postCart] = usePostCartMutation();
    const handleAddToCart = async () => {
+      console.log('run')
       if (!userId) {
          navigate('/login');
          return;
@@ -157,7 +159,6 @@ const DetailProduct = () => {
                      </div>
                      <button
                         // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                        disabled={variationId === ''}
                         onClick={handleAddToCart}
                         className='focus:outline-none focus:ring-2 hover:bg-hightLigh hover:text-white duration-300 focus:ring-offset-2 focus:ring-gray-800 font-medium text-base leading-4 text-white bg-gray-800 w-full py-5 lg:mt-12 mt-6'
                      >

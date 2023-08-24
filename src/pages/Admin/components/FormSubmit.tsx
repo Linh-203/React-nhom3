@@ -18,7 +18,7 @@ type IProps<T> = {
    onSubmit: (res: FormResponse<T>) => void;
    haveFiles?: boolean;
    className?: string;
-   pattern?: ValidationPattern;
+   pattern: ValidationPattern;
 };
 
 function FormSubmit<T>(props: IProps<T>) {

@@ -4,15 +4,21 @@ import { Outlet } from 'react-router-dom';
 import Footer from '../components/Footer/Footer';
 import { useDispatch } from 'react-redux';
 import { getToken } from '../api/auth';
-import { saveTokenAndUser } from '../slices/AuthSlice';
+import { deleteTokenAndUser, saveTokenAndUser } from '../slices/AuthSlice';
 const ClientLayout = () => {
    const dispatch = useDispatch();
    useEffect(() => {
-      console.log(window.location.pathname);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const user = JSON.parse(localStorage.getItem('auth') ? localStorage.getItem('auth')! : '{}');
       void (async () => {
          const { data } = await getToken();
-         dispatch(saveTokenAndUser({ user, token: data.token }));
+         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+         if (data.token === '') {
+            dispatch(deleteTokenAndUser());
+         } else {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            dispatch(saveTokenAndUser({ user, token: data.token }));
+         }
       })();
    }, [window.location.pathname]);
    return (

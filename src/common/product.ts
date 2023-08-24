@@ -12,7 +12,7 @@ export interface IProduct {
    solded: number;
    variations: IVariation[] | VariationPopulate[];
    images: { url: string; public_id?: string; _id?: string }[];
-   discount: number;,
+   discount: number;
 }
 
 export type InputProduct = {
@@ -43,6 +43,7 @@ export type IVariation = {
    weight: number;
    quantity: number;
    vendorId: string | IVendor;
+   productId:string
 };
 
 export type IVendor = {
