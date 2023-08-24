@@ -4,6 +4,7 @@ import DashBoardIcon from '../../assets/icons/DashBoardIcon';
 import ProductIcon from '../../assets/icons/ProductIcon';
 import CategoryIcon from '../../assets/icons/CategoryIcon';
 import { Link } from 'react-router-dom';
+import BillIcon from '../../assets/icons/BillIcon';
 
 type IProps = {
    isMenuActive: boolean;
@@ -19,7 +20,7 @@ type IMenu = {
 
 const menu: IMenu[] = [
    { title: 'DashBoard', icon: <DashBoardIcon />, to: '/admin/dashboard' },
-   { title: 'Orders', icon: <DashBoardIcon />, to: '/admin/orders' },
+   { title: 'Orders', icon: <BillIcon />, to: '/admin/orders' },
    {
       title: 'Product Managerment',
       icon: <ProductIcon />,
