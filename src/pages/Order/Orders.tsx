@@ -5,7 +5,7 @@
 import './orders.css';
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useFilterOrderMutation, useGetOrderUserQuery } from '../../api-slice/baseOrderAPI';
+import { useFilterOrderMutation, useGetOrderUserQuery } from '../../api-slice/orderAPI';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 
@@ -18,11 +18,6 @@ const Orders = () => {
    if (result?.data?.order) {
       orders = result?.data?.order;
    }
-   useEffect(() => {
-      if (!userId) {
-         navigate('/login');
-      }
-   }, []);
    const onHandleFilterOrder = (status: string) => {
       filterOrder({ userId, status });
    };

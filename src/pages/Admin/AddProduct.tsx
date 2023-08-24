@@ -1,8 +1,8 @@
 import productService from '../../api/product';
 import categoryService from '../../api/category';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 
-import { IVariation, InputProduct } from '../../common/product';
+import {  InputProduct } from '../../common/product';
 import { ICategory } from '../../common/category';
 import Message from '../../components/Message/Message';
 import Loading from '../../components/Loading/Loading';
@@ -11,7 +11,7 @@ import FormInputField from '../../components/InputField/InputFeild';
 import { uploadImage } from '../../api/upload';
 import { AxiosResponse } from 'axios';
 import { formErrorsRespones } from './UpdateProduct';
-import MultiField from './components/MultiField';
+
 
 const { InputField, SelectField, SelectOption, TextareaField } = FormInputField;
 
@@ -24,7 +24,6 @@ const AddProduct = () => {
    const [loading, setLoading] = useState<boolean>(false);
    const [msg, setMsg] = useState<MessageProp>();
    const [errors, setErrors] = useState<Record<string, string | undefined> | InputProduct | null>();
-   const [variations, setVariations] = useState<IVariation[]>([]);
    const getAllCategory4 = async () => {
       const { data } = await categoryService.getAllCategory();
       setCategories(data.data);
@@ -36,10 +35,6 @@ const AddProduct = () => {
    }, []);
 
    const onhandleSubmit = ({ result, isValid, errs }: FormResponse<InputProduct>): void => {
-      if (variations.length === 0) {
-         setErrors({ ...errs, variations: 'Create at least 1 variation please !' });
-         return;
-      }
       if (isValid) {
          setLoading(true);
          const formData = new FormData();
@@ -50,15 +45,8 @@ const AddProduct = () => {
             const { data } = await uploadImage(formData);
             if (data.data.length > 0) {
                result.images = data.data as string;
-               const transformResult = {
-                  ...result,
-                  variations,
-                  quantity: undefined,
-                  vendorId: undefined,
-                  weight: undefined
-               };
                await productService
-                  .addProduct(transformResult)
+                  .addProduct(result)
                   .then(({ data }: AxiosResponse<formErrorsRespones>) => {
                      setLoading(false);
                      if (data?.errors && data?.errors?.length > 0) {
@@ -80,9 +68,6 @@ const AddProduct = () => {
          setErrors(errs);
       }
    };
-   const handleGetVariations = useCallback((value: IVariation[]) => {
-      setVariations(value);
-   }, []);
    if (loading) return <Loading />;
    return (
       <div className='relative'>
@@ -130,11 +115,6 @@ const AddProduct = () => {
                   <InputField type='file' name='images' title='Images' multiple={true} />
                   <p className='text-sm text-red-400'>{errors?.images?.toString()}</p>
                </div>
-            </div>
-            <div className='mt-5'>
-               <p className='font-semibold text-sm'>Create Variation:</p>
-               <MultiField<IVariation> getValues={handleGetVariations} />
-               <p className='text-sm text-red-400'>{errors?.variations as string}</p>
             </div>
             <div>
                <TextareaField name='desc' title='desc' />

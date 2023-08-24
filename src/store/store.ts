@@ -2,17 +2,15 @@ import { configureStore } from '@reduxjs/toolkit';
 import filterReducer from '../slices/FilterSlice';
 import productsReducer from '../slices/ProductSlice';
 import cartReducer from '../slices/CartSlice';
-import orderReducer from '../slices/OrderSlice';
 import authReducer from '../slices/AuthSlice';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
-import { cartApi } from '../api-slice/baseCartAPI';
-import { orderAPI } from '../api-slice/baseOrderAPI';
+import { cartApi } from '../api-slice/cartAPI';
+import { orderAPI } from '../api-slice/orderAPI';
 export const store = configureStore({
    reducer: {
       filterReducer,
       productsReducer,
       cartReducer,
-      orderReducer,
       authReducer,
       [cartApi.reducerPath]: cartApi.reducer,
       [orderAPI.reducerPath]: orderAPI.reducer

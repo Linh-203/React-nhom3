@@ -22,6 +22,7 @@ import OrderSuccessNotification from '../pages/OrderSuccsec';
 import Checkout from '../pages/Cart/Checkout';
 import ListOrders from '../pages/Admin/ListOrders';
 import OrdersDetail from '../components/orders/OrdersDetail';
+import AddVaration from '../pages/Admin/AddVaration';
 
 export const router = createBrowserRouter([
    {
@@ -81,6 +82,10 @@ export const router = createBrowserRouter([
          {
             path: '',
             element: <DashBoard />
+         },
+         {
+            path: 'variations/add/:id',
+            element: <AddVaration />
          },
          {
             path: 'dashboard',

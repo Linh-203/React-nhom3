@@ -1,10 +1,10 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import productService from '../../api/product';
 import categoryService from '../../api/category';
 import { useState, useEffect } from 'react';
 import { uploadImage } from '../../api/upload';
-import { IProduct, IVariation, InputProduct } from '../../common/product';
+import { IProduct, InputProduct } from '../../common/product';
 import { ICategory } from '../../common/category';
 import FormInputField from '../../components/InputField/InputFeild';
 import { MessageProp } from './AddProduct';
@@ -13,7 +13,6 @@ import Message from '../../components/Message/Message';
 import FormSubmit, { FormResponse } from './components/FormSubmit';
 import { Image } from '../../common/image';
 import { AxiosResponse } from 'axios';
-import MultiField from './components/MultiField';
 
 const { InputField, SelectField, SelectOption, TextareaField } = FormInputField;
 
@@ -38,7 +37,6 @@ const UpdateProduct = () => {
    const [categories, setCategories] = useState<ICategory[]>([]);
    const [product, setProduct] = useState<IProduct>({} as IProduct);
    const [errors, setErrors] = useState<Record<string, string | undefined> | ProductFormCheck | null>();
-   const [variations, setVariations] = useState<IVariation[]>([]);
    const getAllCategory4 = async () => {
       const { data } = await categoryService.getAllCategory();
       setCategories(data.data);
@@ -54,16 +52,11 @@ const UpdateProduct = () => {
          .getProductById(id!)
          .then(({ data }) => {
             setProduct(data.data);
-            setVariations(data.data.variations.map((item) => ({ ...item, vendorId: item.vendorId?._id })));
          })
          .catch((err) => console.log(err));
    }, [id]);
    const onhandleSubmit = ({ result, isValid, errs }: FormResponse<InputProduct>): void => {
       //need to re-design useValidate
-      if (variations.length === 0) {
-         setErrors({ ...errs, variations: 'Create at least 1 variation please !' });
-         return;
-      }
       //get images in db
       let imagesUpload = product.images.map((img) => {
          img._id = undefined;
@@ -87,15 +80,8 @@ const UpdateProduct = () => {
             }
             result.images = imagesUpload as Image[];
             //transform data for submit update because FormSubmit need to re-design
-            const transformResult = {
-               ...result,
-               variations,
-               quantity: undefined,
-               vendorId: undefined,
-               weight: undefined
-            };
             await productService
-               .updateProduct(id!, transformResult)
+               .updateProduct(id!, result)
                .then(({ data }: AxiosResponse<formErrorsRespones>) => {
                   setLoading(false);
                   if (data?.errors && data?.errors?.length > 0) {
@@ -113,9 +99,6 @@ const UpdateProduct = () => {
          setErrors(errs);
       }
    };
-   const handleGetVariations = useCallback((value: IVariation[]) => {
-      setVariations(value);
-   }, []);
    if (loading) return <Loading />;
    return (
       <div>
@@ -170,11 +153,6 @@ const UpdateProduct = () => {
                      <InputField type='file' name='images' title='Images' multiple={true} />
                   </div>
                </div>{' '}
-               <div className='mt-5'>
-                  <p className='font-semibold text-sm'>Create Variation:</p>
-                  <MultiField<IVariation> getValues={handleGetVariations} defaultValue={variations} />
-                  <p className='text-sm text-red-400'>{errors?.variations as string}</p>
-               </div>
                <div>
                   <TextareaField name='desc' value={product?.desc} title='desc' />
                   <p className='text-sm text-red-400'>{errors?.desc}</p>

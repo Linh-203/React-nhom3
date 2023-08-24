@@ -6,7 +6,7 @@ import HeartIcon from '../../assets/icons/HeartIcon';
 import User from '../../assets/icons/User';
 import CartIcon from '../../assets/icons/CartIcon';
 import { useEffect, useRef, useState } from 'react';
-import { useGetCartQuery } from '../../api-slice/baseCartAPI';
+import { useGetCartQuery } from '../../api-slice/cartAPI';
 import { Badge, Dropdown } from 'antd';
 
 import { useLogout } from '../../hooks/useLogout';
@@ -138,7 +138,7 @@ const Header = () => {
                </Badge>
             </Link>
             {token === '' ? (
-               <Link to={'/login'}>
+               <Link to={'/login'} onClick={() => window.scroll(0, 0)}>
                   <User width='1.3rem' height='1.3rem' className='cursor-pointer hover:text-hightLigh' />
                </Link>
             ) : (

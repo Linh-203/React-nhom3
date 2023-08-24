@@ -1,12 +1,12 @@
 import { useEffect, memo, useState } from 'react';
 
 type IField = {
-   name?: string;
+   name: string;
    id?: string;
    placeholder?: string;
    className?: string;
    value?: string | number;
-   title?: string;
+   title: string;
    getValues?: (name: string, value: string | number) => void;
 };
 
@@ -21,8 +21,8 @@ type ISelectField = IField & {
 };
 
 type ISelectOption = {
-   value?: string | number;
-   label?: string;
+   value: string | number;
+   label: string;
 };
 
 type ITextAriaField = IField & {
@@ -46,7 +46,7 @@ const InputField = memo((props: IInputField) => {
             type={props.type || 'text'}
             name={props.name}
             id={props.id}
-            className={`mt-3 block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer ${
+            className={`mt-3 block py-2.5 px-0 w-full text-sm text-gray-900 p-2 px-3 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer ${
                props.className || ''
             }`}
             placeholder={props.placeholder}

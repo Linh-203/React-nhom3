@@ -9,7 +9,7 @@ export const useLogin = () => {
    const dispatch = useDispatch();
    const [error, setError] = useState(null);
    const [isLoading, setIsLoading] = useState<boolean>(false);
-   const login = async (email, password) => {
+   const login = async (email:string, password:string) => {
       setIsLoading(true);
       setError(null);
       const response = await loginApi({ email, password }).catch(({ response: { data } }) => {
@@ -21,7 +21,6 @@ export const useLogin = () => {
       }
       if (response.data) {
          const json = response.data;
-         console.log(json);
          dispatch(saveTokenAndUser(json));
          setIsLoading(false);
 
