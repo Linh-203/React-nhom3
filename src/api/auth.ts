@@ -15,3 +15,7 @@ export const getToken = () => {
 export const clearToken = () => {
    return instance.delete('/token', { withCredentials: true });
 };
+
+export const clearToken2 = () => {
+   return instance.delete('/token', { withCredentials: true });
+};
